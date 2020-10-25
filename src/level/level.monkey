@@ -5342,14 +5342,18 @@ Class Level
                     ' Place Bounce Traps in 2 corners.
                     If Util.RndBool(True)
                         ' Top left
-                        New BounceTrap(room.x + 1, room.y + 1, BounceTrapDirection.None)
+                        Local bounceTrap1 := New BounceTrap(room.x + 1, room.y + 1, BounceTrapDirection.None)
+                        bounceTrap1.canBeReplacedByTempoTrap = False
                         ' Bottom right
-                        New BounceTrap(room.x + room.w - 1, room.y + room.h - 1, BounceTrapDirection.None)
+                        Local bounceTrap2 := New BounceTrap(room.x + room.w - 1, room.y + room.h - 1, BounceTrapDirection.None)
+                        bounceTrap2.canBeReplacedByTempoTrap = False
                     Else
                         ' Top right
-                        New BounceTrap(room.x + room.w - 1, room.y + 1, BounceTrapDirection.None)
+                        Local bounceTrap1 := New BounceTrap(room.x + room.w - 1, room.y + 1, BounceTrapDirection.None)
+                        bounceTrap1.canBeReplacedByTempoTrap = False
                         ' Bottom left
-                        New BounceTrap(room.x + 1, room.y + room.h - 1, BounceTrapDirection.None)
+                        Local bounceTrap2 := New BounceTrap(room.x + 1, room.y + room.h - 1, BounceTrapDirection.None)
+                        bounceTrap2.canBeReplacedByTempoTrap = False
                     End If
 
                     ' Fill the rest of the room with a variety of Spike Traps, Trap Doors, or Bomb Traps.
