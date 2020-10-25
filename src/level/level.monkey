@@ -5337,8 +5337,7 @@ Class Level
                secretRoomVariantRoll > 25
                 If (secretRoomVariantRoll <= 60 And Not Level.isHardcoreMode) Or
                    secretRoomVariantRoll <= 45
-                    ' TODO: Give a more appropriate name to `i`.
-                    Local i := (room.w - 1) * (room.h - 1) - 2
+                    Local fillerTrapCount := (room.w - 1) * (room.h - 1) - 2
 
                     ' Place Bounce Traps in 2 corners.
                     If Util.RndBool(True)
@@ -5354,7 +5353,7 @@ Class Level
                     End If
 
                     ' Fill the rest of the room with a variety of Spike Traps, Trap Doors, or Bomb Traps.
-                    For i = i - 1 Until 0 Step -1
+                    For Local i = 0 Until fillerTrapCount
                         Local point := Level.GetRandPointInRoomWithOptions(room)
                         If point <> Null
                             Local bombTrapRoll := Util.RndIntRangeFromZero(10, True)
