@@ -36571,8 +36571,7 @@ bool c_Item::m_IsValidItemForCurrentChars(c_XMLNode* t_n){
 	return true;
 }
 bool c_Item::m_IsValidItemForCurrentChars2(String t_name){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Item.IsValidItemForCurrentChars(String)",39));
-	return true;
+	return m_IsValidItemForCurrentChars(m_GetItemXML(t_name));
 }
 bool c_Item::m_IsDisabled(String t_item){
 	if(!c_Player::m_ArePrototypesEnabled()){

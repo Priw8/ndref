@@ -1145,8 +1145,8 @@ Class Item Extends Entity
     End Function
 
     Function IsValidItemForCurrentChars: Bool(name: String)
-        Debug.TraceNotImplemented("Item.IsValidItemForCurrentChars(String)")
-        Return True
+        'I assume Item.GetItemXML call got inlined
+        return Item.IsValidItemForCurrentChars(Item.GetItemXML(name))
     End Function
 
     Function IsValidRandomItem: Bool(t: String)
