@@ -22038,7 +22038,7 @@ bool c_Level::m_IsSecretRoom(int t_rmType){
 	return false;
 }
 void c_Level::m_FillVault(c_RoomData* t_tmpRoom){
-	int t_itemRoll=int(c_Util::m_RndFloatRange(FLOAT(0.0),FLOAT(6.0),true));
+	int t_itemRoll=c_Util::m_RndIntRange(0,5,true,-1);
 	String t_itemType=String();
 	if(t_itemRoll<=0){
 		if(!c_Item::m_IsValidItemForCurrentChars2(String(L"weapon_obsidian_bow",19))){

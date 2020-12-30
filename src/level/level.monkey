@@ -6091,7 +6091,7 @@ Class Level
     End Function
 
     Function FillVault: Void(tmpRoom: RoomData)
-        Local itemRoll:Int = Util.RndFloatRange(0.0, 6.0, true)
+        Local itemRoll:Int = Util.RndIntRange(0, 5, true) ' I *think* that's the right function, hard to tell with the inlining
         Local itemType:String
         'First, the item is determined
         If itemRoll <= 0 Then
