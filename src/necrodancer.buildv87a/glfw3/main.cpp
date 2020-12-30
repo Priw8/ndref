@@ -37187,7 +37187,7 @@ void c_SaleItem::p_SetBloodCost(){
 		if(this->m_bloodCost<=FLOAT(0.0)){
 			this->m_bloodCost=FLOAT(0.5);
 		}
-		if((this->m_forceCost)!=0){
+		if(this->m_forceCost>FLOAT(0.0)){
 			this->m_bloodCost=this->m_forceCost;
 		}
 	}

@@ -205,7 +205,7 @@ Class SaleItem Extends Item
             End If
 
             If Self.bloodCost <= 0.0 Then Self.bloodCost = 0.5
-            If Self.forceCost Then Self.bloodCost = Self.forceCost
+            If Self.forceCost > 0.0 Then Self.bloodCost = Self.forceCost
         End If
     End Method
 
