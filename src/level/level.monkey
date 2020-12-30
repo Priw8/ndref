@@ -5230,12 +5230,10 @@ Class Level
             If room.type = RoomType.Vault
                 If controller_game.currentLevel = 3
                     Local vaultRoll := Util.RndIntRangeFromZero(5, True)
-                    ' TODO: Does the `Continue` only belong to `FillVault`?
                     If vaultRoll = 0
                         Level.FillVault(room)
+                        Continue
                     End If
-
-                    Continue
                 End If
 
                 New Item(room.x + 2, room.y + 2, ItemType.Potion, False, -1, False)
@@ -6093,7 +6091,82 @@ Class Level
     End Function
 
     Function FillVault: Void(tmpRoom: RoomData)
-        Debug.TraceNotImplemented("Level.FillVault(RoomData)")
+        Local itemRoll:Int = Util.RndFloatRange(0.0, 6.0, true)
+        Local itemType:String
+        'First, the item is determined
+        If itemRoll <= 0 Then
+            If Not Item.IsValidItemForCurrentChars(ItemType.ObsidianBow) Then
+                itemType = ItemType.ShieldSpell
+            Else
+                itemType = ItemType.ObsidianBow
+            End If
+        Else If itemRoll = 1 Then
+            itemType = ItemType.Potion
+        Else If itemRoll = 2 Then
+            If Not Item.IsValidItemForCurrentChars(ItemType.ObsidianCrossbow) Then
+                If Not Item.IsValidItemForCurrentChars(ItemType.FreezeEnemiesSpell) Then
+                    'Happens for Diamond?
+                    itemType = ItemType.TitaniumLongsword
+                Else
+                    itemType = ItemType.FreezeEnemiesSpell
+                End If
+            Else
+                itemType = ItemType.ObsidianCrossbow
+            End If
+        Else If itemRoll = 3 Then
+            If Not Item.IsValidItemForCurrentChars(ItemType.Blunderbuss) Then
+                If Not Item.IsValidItemForCurrentChars(ItemType.FireballSpell) Then
+                    If Not Item.IsValidItemForCurrentChars(ItemType.BombSpell) Then
+                        itemType = ItemType.GoldenHarp
+                    Else
+                        itemType = ItemType.BombSpell
+                    End If
+                Else
+                    itemType = ItemType.FireballSpell
+                End If
+            Else
+                itemType = ItemType.Blunderbuss
+            End If
+        Else If itemRoll = 4 Then
+            If Not Item.IsValidItemForCurrentChars(ItemType.HeavyPlate) Then
+                itemType = ItemType.BombSpell
+            Else
+                itemType = ItemType.HeavyPlate
+            End If
+        Else
+            If Not Item.IsValidItemForCurrentChars(ItemType.Rifle) Then
+                If Not Item.IsValidItemForCurrentChars(ItemType.TransmuteSpell) Then
+                    itemType = ItemType.ObsidianStaff
+                Else
+                    itemType = ItemType.TransmuteSpell
+                End If
+            Else
+                itemType = ItemType.Rifle
+            End If
+        End If
+
+        'Spawn the item
+        New Item(tmpRoom.x + 2, tmpRoom.y + 2, itemType, false, -1, false)
+
+        Local resourceCoinType := item.GetResourceCoinType(10)
+        New Item(tmpRoom.x + 1, tmpRoom.y + 1, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 2, tmpRoom.y + 1, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 3, tmpRoom.y + 1, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 1, tmpRoom.y + 2, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 3, tmpRoom.y + 2, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 1, tmpRoom.y + 3, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 2, tmpRoom.y + 3, resourceCoinType, false, -1, false)
+        New Item(tmpRoom.x + 3, tmpRoom.y + 3, resourceCoinType, false, -1, false)
+
+        New Bat(tmpRoom.x + 1, tmpRoom.y + 1, 2)
+        New SkeletonKnight(tmpRoom.x + 2, tmpRoom.y + 1, 3)
+        New Bat(tmpRoom.x + 3, tmpRoom.y + 1, 2)
+        New Monkey(tmpRoom.x + 1, tmpRoom.y + 2, 2)
+        New SkeletonMage(tmpRoom.x + 2, tmpRoom.y + 2, 3)
+        New Monkey(tmpRoom.x + 3, tmpRoom.y + 2, 2)
+        New Bat(tmpRoom.x + 1, tmpRoom.y + 3, 2)
+        New ArmoredSkeleton(tmpRoom.x + 2, tmpRoom.y + 3, 3)
+        New Bat(tmpRoom.x + 3, tmpRoom.y + 3, 2)
     End Function
 
     Function FindTileOfType: Point(tileType: Int)

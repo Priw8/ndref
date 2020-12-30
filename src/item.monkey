@@ -1146,6 +1146,7 @@ Class Item Extends Entity
 
     Function IsValidItemForCurrentChars: Bool(name: String)
         Debug.TraceNotImplemented("Item.IsValidItemForCurrentChars(String)")
+        Return True
     End Function
 
     Function IsValidRandomItem: Bool(t: String)

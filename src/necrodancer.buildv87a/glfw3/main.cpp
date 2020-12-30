@@ -22038,7 +22038,84 @@ bool c_Level::m_IsSecretRoom(int t_rmType){
 	return false;
 }
 void c_Level::m_FillVault(c_RoomData* t_tmpRoom){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.FillVault(RoomData)",25));
+	int t_itemRoll=int(c_Util::m_RndFloatRange(FLOAT(0.0),FLOAT(6.0),true));
+	String t_itemType=String();
+	if(t_itemRoll<=0){
+		if(!c_Item::m_IsValidItemForCurrentChars2(String(L"weapon_obsidian_bow",19))){
+			t_itemType=String(L"spell_shield",12);
+		}else{
+			t_itemType=String(L"weapon_obsidian_bow",19);
+		}
+	}else{
+		if(t_itemRoll==1){
+			t_itemType=String(L"misc_potion",11);
+		}else{
+			if(t_itemRoll==2){
+				if(!c_Item::m_IsValidItemForCurrentChars2(String(L"weapon_obsidian_crossbow",24))){
+					if(!c_Item::m_IsValidItemForCurrentChars2(String(L"spell_freeze_enemies",20))){
+						t_itemType=String(L"weapon_titanium_longsword",25);
+					}else{
+						t_itemType=String(L"spell_freeze_enemies",20);
+					}
+				}else{
+					t_itemType=String(L"weapon_obsidian_crossbow",24);
+				}
+			}else{
+				if(t_itemRoll==3){
+					if(!c_Item::m_IsValidItemForCurrentChars2(String(L"weapon_blunderbuss",18))){
+						if(!c_Item::m_IsValidItemForCurrentChars2(String(L"spell_fireball",14))){
+							if(!c_Item::m_IsValidItemForCurrentChars2(String(L"spell_bomb",10))){
+								t_itemType=String(L"weapon_golden_harp",18);
+							}else{
+								t_itemType=String(L"spell_bomb",10);
+							}
+						}else{
+							t_itemType=String(L"spell_fireball",14);
+						}
+					}else{
+						t_itemType=String(L"weapon_blunderbuss",18);
+					}
+				}else{
+					if(t_itemRoll==4){
+						if(!c_Item::m_IsValidItemForCurrentChars2(String(L"armor_heavyplate",16))){
+							t_itemType=String(L"spell_bomb",10);
+						}else{
+							t_itemType=String(L"armor_heavyplate",16);
+						}
+					}else{
+						if(!c_Item::m_IsValidItemForCurrentChars2(String(L"weapon_rifle",12))){
+							if(!c_Item::m_IsValidItemForCurrentChars2(String(L"spell_transmute",15))){
+								t_itemType=String(L"weapon_obsidian_staff",21);
+							}else{
+								t_itemType=String(L"spell_transmute",15);
+							}
+						}else{
+							t_itemType=String(L"weapon_rifle",12);
+						}
+					}
+				}
+			}
+		}
+	}
+	(new c_Item)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+2,t_itemType,false,-1,false);
+	String t_resourceCoinType=bb_item_GetResourceCoinType(10);
+	(new c_Item)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+1,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+1,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+1,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+2,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+2,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+3,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+3,t_resourceCoinType,false,-1,false);
+	(new c_Item)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+3,t_resourceCoinType,false,-1,false);
+	(new c_Bat)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+1,2);
+	(new c_SkeletonKnight)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+1,3);
+	(new c_Bat)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+1,2);
+	(new c_Monkey)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+2,2);
+	(new c_SkeletonMage)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+2,3);
+	(new c_Monkey)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+2,2);
+	(new c_Bat)->m_new(t_tmpRoom->m_x+1,t_tmpRoom->m_y+3,2);
+	(new c_ArmoredSkeleton)->m_new(t_tmpRoom->m_x+2,t_tmpRoom->m_y+3,3);
+	(new c_Bat)->m_new(t_tmpRoom->m_x+3,t_tmpRoom->m_y+3,2);
 }
 c_Point* c_Level::m_GetRandPointInRoomWithOptions(c_RoomBase* t_room,bool t_skipCollisions,bool t_skipExit,bool t_skipTraps,bool t_skipWater,bool t_nearWallIsOk,bool t_secretRoomOK){
 	c_IntPointSet* t_pointsTested=(new c_IntPointSet)->m_new();
@@ -22671,8 +22748,8 @@ bool c_Level::m_FillSecretRoomsZone1(){
 				int t_vaultRoll=c_Util::m_RndIntRangeFromZero(5,true);
 				if(t_vaultRoll==0){
 					m_FillVault(t_room);
+					continue;
 				}
-				continue;
 			}
 			(new c_Item)->m_new(t_room->m_x+2,t_room->m_y+2,String(L"misc_potion",11),false,-1,false);
 			continue;
@@ -36491,7 +36568,7 @@ bool c_Item::m_IsValidItemForCurrentChars(c_XMLNode* t_n){
 }
 bool c_Item::m_IsValidItemForCurrentChars2(String t_name){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Item.IsValidItemForCurrentChars(String)",39));
-	return false;
+	return true;
 }
 bool c_Item::m_IsDisabled(String t_item){
 	if(!c_Player::m_ArePrototypesEnabled()){
