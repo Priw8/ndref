@@ -22829,15 +22829,19 @@ bool c_Level::m_FillSecretRoomsZone1(){
 		}
 		if((t_secretRoomVariantRoll>50 || m_isHardcoreMode) && t_secretRoomVariantRoll>25){
 			if(t_secretRoomVariantRoll<=60 && !m_isHardcoreMode || t_secretRoomVariantRoll<=45){
-				int t_i=(t_room->m_w-1)*(t_room->m_h-1)-2;
+				int t_fillerTrapCount=(t_room->m_w-1)*(t_room->m_h-1)-2;
 				if(c_Util::m_RndBool(true)){
-					(new c_BounceTrap)->m_new(t_room->m_x+1,t_room->m_y+1,-1);
-					(new c_BounceTrap)->m_new(t_room->m_x+t_room->m_w-1,t_room->m_y+t_room->m_h-1,-1);
+					c_BounceTrap* t_bounceTrap12=(new c_BounceTrap)->m_new(t_room->m_x+1,t_room->m_y+1,-1);
+					t_bounceTrap12->m_canBeReplacedByTempoTrap=false;
+					c_BounceTrap* t_bounceTrap22=(new c_BounceTrap)->m_new(t_room->m_x+t_room->m_w-1,t_room->m_y+t_room->m_h-1,-1);
+					t_bounceTrap22->m_canBeReplacedByTempoTrap=false;
 				}else{
-					(new c_BounceTrap)->m_new(t_room->m_x+t_room->m_w-1,t_room->m_y+1,-1);
-					(new c_BounceTrap)->m_new(t_room->m_x+1,t_room->m_y+t_room->m_h-1,-1);
+					c_BounceTrap* t_bounceTrap13=(new c_BounceTrap)->m_new(t_room->m_x+t_room->m_w-1,t_room->m_y+1,-1);
+					t_bounceTrap13->m_canBeReplacedByTempoTrap=false;
+					c_BounceTrap* t_bounceTrap23=(new c_BounceTrap)->m_new(t_room->m_x+1,t_room->m_y+t_room->m_h-1,-1);
+					t_bounceTrap23->m_canBeReplacedByTempoTrap=false;
 				}
-				for(t_i=t_i-1;t_i>0;t_i=t_i+-1){
+				for(int t_i=0;t_i<t_fillerTrapCount;t_i=t_i+1){
 					c_Point* t_point2=m_GetRandPointInRoomWithOptions6(t_room);
 					if(t_point2!=0){
 						int t_bombTrapRoll=c_Util::m_RndIntRangeFromZero(10,true);
