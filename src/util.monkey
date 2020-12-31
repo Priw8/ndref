@@ -415,24 +415,26 @@ Class Util
     End Function
 
     Function IsBomblessCharacterActive: Bool()
-        For Local i := 0 Until controller_game.numPlayers
-            Local player := controller_game.players[i]
-            If player <> Null And
-               player.IsBomblessCharacter()
-                Return True
-            End If
-        End For
-
-        Return False
+        'For Local i := 0 Until controller_game.numPlayers
+        '    Local player := controller_game.players[i]
+        '    If player <> Null And
+        '       player.IsBomblessCharacter()
+        '        Return True
+        '    End If
+        'End For
+        '
+        'Return False
+        return game_controller.activeCharacterTypes & (1 Shl Character.Eli)
     End Function
 
     Function IsCharacterActive: Bool(charID: Int)
-        For Local i := 0 Until controller_game.numPlayers
-            Local player := controller_game.players[i]
-            If player And player.characterID = charID Then Return True
-        End For
-
-        Return False
+        'For Local i := 0 Until controller_game.numPlayers
+        '    Local player := controller_game.players[i]
+        '    If player And player.characterID = charID Then Return True
+        'End For
+        '
+        'Return False
+        return (controller_game.activeCharacterTypes & (1 Shl charID)) <> 0
     End Function
 
     Function IsEnemyAdjacent: Bool(xVal: Int, yVal: Int)
@@ -514,12 +516,15 @@ Class Util
     End Function
 
     Function IsWeaponlessCharacterActive: Bool()
-        For Local i := 0 Until controller_game.numPlayers
-            Local player := controller_game.players[i]
-            If player.IsWeaponlessCharacter() Then Return True
-        End For
-
-        Return False
+        'For Local i := 0 Until controller_game.numPlayers
+        '    Local player := controller_game.players[i]
+        '    If player.IsWeaponlessCharacter() Then Return True
+        'End For
+        '
+        'Return False
+        'Weaponless characters are Melody, Aria, Eli, Dove, Coda
+        Local weaponlessMask = (1 Shl Character.Melody) | (1 Shl Character.Aria) | (1 Shl Character.Eli) | (1 Shl Character.Dove) | (1 Shl Character.Coda)
+        return (controller_game.activeCharacterTypes & weaponlessMask) <> 0
     End Function
 
     ' TODO: Figure out what's actually going on in this function.

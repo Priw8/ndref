@@ -7650,8 +7650,8 @@ class c_Player : public c_MobileEntity{
 	void p_StopFalling();
 	void p_ResetStateAfterLevel();
 	static void m_PlayVOPlayer1(String);
-	bool p_IsWeaponlessCharacter();
 	static bool m_ArePrototypesEnabled();
+	bool p_IsWeaponlessCharacter();
 	bool p_IsBomblessCharacter();
 	static bool m_DoesPlayer1HaveItemOfType(String);
 	bool p_IsSlotCursed(String);
@@ -8533,6 +8533,7 @@ class c_BossBattleType : public Object{
 	c_BossBattleType();
 	void mark();
 };
+extern int bb_controller_game_activeCharacterTypes;
 class c_Stairs_callback : public Object,public virtual c_Callback{
 	public:
 	c_Stairs_callback();
@@ -14172,13 +14173,7 @@ void c_Util::m_GetLeaderboardScores(int t_rangeStart,int t_rangeEnd,int t_dayOff
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Util.GetLeaderboardScores(Int, Int, Int, String, Bool, Bool, Bool)",66));
 }
 bool c_Util::m_IsCharacterActive(int t_charID){
-	for(int t_i=0;t_i<bb_controller_game_numPlayers;t_i=t_i+1){
-		c_Player* t_player=bb_controller_game_players[t_i];
-		if(((t_player)!=0) && t_player->m_characterID==t_charID){
-			return true;
-		}
-	}
-	return false;
+	return (bb_controller_game_activeCharacterTypes&1<<t_charID)!=0;
 }
 int c_Util::m_storedSeed;
 Float c_Util::m_RndFloatRange(Float t_low,Float t_high,bool t_useSeed){
@@ -14404,13 +14399,8 @@ bool c_Util::m_IsAnyPlayerAt(int t_xVal,int t_yVal){
 	return false;
 }
 bool c_Util::m_IsWeaponlessCharacterActive(){
-	for(int t_i=0;t_i<bb_controller_game_numPlayers;t_i=t_i+1){
-		c_Player* t_player=bb_controller_game_players[t_i];
-		if(t_player->p_IsWeaponlessCharacter()){
-			return true;
-		}
-	}
-	return false;
+	int t_weaponlessMask=214;
+	return (bb_controller_game_activeCharacterTypes&t_weaponlessMask)!=0;
 }
 int c_Util::m_GetL1Dist(int t_x1,int t_y1,int t_x2,int t_y2){
 	return bb_math_Abs(t_x1-t_x2)+bb_math_Abs(t_y1-t_y2);
@@ -34234,15 +34224,15 @@ void c_Player::p_ResetStateAfterLevel(){
 void c_Player::m_PlayVOPlayer1(String t_voSound){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Player.PlayVOPlayer1(String)",28));
 }
+bool c_Player::m_ArePrototypesEnabled(){
+	return true && bb_controller_game_debugEnablePrototypes;
+}
 bool c_Player::p_IsWeaponlessCharacter(){
 	int t_41=this->m_characterID;
 	if(t_41==1 || t_41==2 || t_41==4 || t_41==6 || t_41==7){
 		return true;
 	}
 	return false;
-}
-bool c_Player::m_ArePrototypesEnabled(){
-	return true && bb_controller_game_debugEnablePrototypes;
 }
 bool c_Player::p_IsBomblessCharacter(){
 	int t_40=this->m_characterID;
@@ -43071,6 +43061,7 @@ c_BossBattleType::c_BossBattleType(){
 void c_BossBattleType::mark(){
 	Object::mark();
 }
+int bb_controller_game_activeCharacterTypes;
 c_Stairs_callback::c_Stairs_callback(){
 }
 int c_Stairs_callback::m_levelVal;
@@ -62564,6 +62555,7 @@ int bbInit(){
 	c_ControllerLevelEditor::m_playingLevel=-1;
 	c_ControllerLevelEditor::m_playingWholeDungeon=false;
 	c_Level::m_forceBoss=-1;
+	bb_controller_game_activeCharacterTypes=0;
 	c_Stairs_callback::m_levelVal=-1;
 	c_Stairs_callback::m_zoneVal=-1;
 	c_Stairs_callback::m_playerVal=-1;

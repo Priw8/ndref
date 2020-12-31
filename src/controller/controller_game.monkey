@@ -63,6 +63,7 @@ Global lastPlayerMoveBeat: Int[necrodancergame.MAX_NUM_PLAYERS]
 Global numPlayers: Int = 1
 Global player1: Int
 Global players: Player[necrodancergame.MAX_NUM_PLAYERS]
+Global activeCharacterTypes: Int = 0 'NecroLevel: active character bitmask
 Global runPlaytimeLastAdded: Int
 Global runPlaytimeMilliseconds: Int
 Global showScoreMessage: Bool
