@@ -6329,8 +6329,8 @@ Class Level
         Return
     End Function
 
-    Function GetHardModeXML: XMLDoc()
-        Debug.TraceNotImplemented("Level.GetHardModeXML()")
+    Function GetHardModeXML: XMLNode()
+        return necrodancergame.xmlData.GetChild("modes").GetChild("hard")
     End Function
 
     Function GetInitialZone: Int()

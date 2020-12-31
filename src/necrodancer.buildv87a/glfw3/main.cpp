@@ -6890,7 +6890,7 @@ class c_Level : public Object{
 	static void m_PaintTriggerInterior(int,int,int,int,int);
 	static c_Point* m_GetRandomOffsetPoint();
 	static bool m_isHardMode;
-	static c_XMLDoc* m_GetHardModeXML();
+	static c_XMLNode* m_GetHardModeXML();
 	static bool m_QueryHarderBosses();
 	static void m_ClearMinibossWall();
 	static int m_ActivateTrigger(int,c_Entity*,c_RenderableObject*);
@@ -19763,13 +19763,12 @@ c_Point* c_Level::m_GetRandomOffsetPoint(){
 	return (new c_Point)->m_new(t_x,t_y);
 }
 bool c_Level::m_isHardMode;
-c_XMLDoc* c_Level::m_GetHardModeXML(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.GetHardModeXML()",22));
-	return 0;
+c_XMLNode* c_Level::m_GetHardModeXML(){
+	return bb_necrodancergame_xmlData->p_GetChild2(String(L"modes",5),false)->p_GetChild2(String(L"hard",4),false);
 }
 bool c_Level::m_QueryHarderBosses(){
 	if(m_isHardMode){
-		c_XMLDoc* t_hardModeXML=m_GetHardModeXML();
+		c_XMLNode* t_hardModeXML=m_GetHardModeXML();
 		return t_hardModeXML->p_GetAttribute2(String(L"harderBosses",12),false);
 	}
 	return false;
@@ -23858,7 +23857,7 @@ void c_Level::m_PlaceAppropriateMinibosses(c_RoomBase* t_room){
 		t_numMinibosses+=1;
 	}
 	if(m_isHardMode || c_Util::m_IsCharacterActive(13)){
-		c_XMLDoc* t_hardModeNode=m_GetHardModeXML();
+		c_XMLNode* t_hardModeNode=m_GetHardModeXML();
 		int t_extraMinibossesPerExit=t_hardModeNode->p_GetAttribute3(String(L"extraMinibossesPerExit",22),0);
 		t_numMinibosses+=t_extraMinibossesPerExit;
 	}
@@ -23973,7 +23972,7 @@ void c_Level::m_PlaceRareEnemies(c_RoomBase* t_room,bool t_hasExit){
 	if(!m_isHardMode || t_hasExit){
 		return;
 	}
-	c_XMLDoc* t_hardModeXML=m_GetHardModeXML();
+	c_XMLNode* t_hardModeXML=m_GetHardModeXML();
 	int t_minibossesPerNonExit=t_hardModeXML->p_GetAttribute3(String(L"minibossesPerNonExit",20),0);
 	c_WeightedPicker* t_weights=(new c_WeightedPicker)->m_new();
 	c_IntStack* t_enemyTypes=(new c_IntStack)->m_new2();
@@ -24197,7 +24196,7 @@ c_Point* c_Level::m_GetRandPointInRoomOfTileType2(int t_xVal,int t_yVal,int t_wV
 }
 int c_Level::m_GetHardModeExtraEnemies(){
 	if(m_isHardMode || c_Util::m_IsCharacterActive(13)){
-		c_XMLDoc* t_hardModeXML=m_GetHardModeXML();
+		c_XMLNode* t_hardModeXML=m_GetHardModeXML();
 		return t_hardModeXML->p_GetAttribute3(String(L"extraEnemiesPerRoom",19),0);
 	}
 	return 0;
@@ -30751,7 +30750,7 @@ void c_Level::m_NewLevel(int t_level,int t_zone,int t_playerID,bool t_inEditor,c
 	m_skipNextPenaltyBox=false;
 	m_creatingMap=false;
 	if(m_isHardMode){
-		c_XMLDoc* t_hardModeXML=m_GetHardModeXML();
+		c_XMLNode* t_hardModeXML=m_GetHardModeXML();
 		if(t_hardModeXML->p_GetAttribute2(String(L"spawnHelperItems",16),false)){
 			int t_x2=-2;
 			if(!m_IsFloorAt(t_x2,0)){
@@ -60943,7 +60942,7 @@ c_ToughSarcophagus::c_ToughSarcophagus(){
 	m_spawnType=0;
 }
 int c_ToughSarcophagus::m_GetPerRoomCount(){
-	c_XMLDoc* t_hardModeXML=c_Level::m_GetHardModeXML();
+	c_XMLNode* t_hardModeXML=c_Level::m_GetHardModeXML();
 	return t_hardModeXML->p_GetAttribute3(String(L"sarcsPerRoom",12),0);
 }
 c_ToughSarcophagus* c_ToughSarcophagus::m_new(int t_xVal,int t_yVal,int t_etype){
