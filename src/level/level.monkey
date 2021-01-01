@@ -965,7 +965,7 @@ Class Level
 
             Select controller_game.currentZone
                 Case 1
-                    If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace, False)
+                    If controller_game.peaceRingActive
                         minibossType1 = EnemyType.LightMinotaur
                         minibossType2 = EnemyType.GreenDragon
                     Else
@@ -973,7 +973,7 @@ Class Level
                         minibossType2 = EnemyType.RedDragon
                     End If
                 Case 2
-                    If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace, False)
+                    If controller_game.peaceRingActive
                         minibossType1 = EnemyType.DarkNightmare
                         minibossType2 = EnemyType.BlueBanshee
                     Else
@@ -981,7 +981,7 @@ Class Level
                         minibossType2 = EnemyType.GreenBanshee
                     End If
                 Case 3
-                    If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace, False)
+                    If controller_game.peaceRingActive
                         minibossType1 = EnemyType.LightMinotaur
                         minibossType2 = EnemyType.DarkNightmare
                     Else
@@ -992,7 +992,7 @@ Class Level
                     minibossType1 = EnemyType.TheMommy
                     minibossType2 = EnemyType.Ogre
                 Default
-                    If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace, False)
+                    If controller_game.peaceRingActive
                         minibossType1 = EnemyType.GoldMetroGnome
                         minibossType2 = EnemyType.GreenDragon
                     Else
@@ -6307,7 +6307,7 @@ Class Level
     Function GetExtraEnemiesBase: Int()
         Local extraEnemies := 0
 
-        If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfWar, False) And Level.randSeed = -1
+        If controller_game.warRingActive And Level.randSeed = -1
             extraEnemies = 1
         End If
 
@@ -9000,7 +9000,7 @@ Class Level
            Util.IsCharacterActive(Character.Bolt)
             Local maxEnemies := 0
 
-            If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfWar, False)
+            If controller_game.warRingActive
                 maxEnemies = 5
             End If
 
@@ -9038,7 +9038,7 @@ Class Level
             Enemy.CreateLord()
         End If
 
-        If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace, False) Or
+        If controller_game.peaceRingActive Or
            Level.isDDRMode
             Local i := 500
             Local numEnemiesToCull := 8
@@ -9457,7 +9457,7 @@ Class Level
                     End If
             End Select
         End For
-
+'
         If Util.IsCharacterActive(Character.Aria)
             Debug.TraceNotImplemented("Level.PlaceEnemiesZone1() (Aria)")
         End If
@@ -10620,8 +10620,8 @@ Class Level
             If Util.RndBool(True) Then level = 4
         End If
 
-        If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfPeace) Then level = 1
-        If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfWar) Then level = 2
+        If controller_game.peaceRingActive Then level = 1
+        If controller_game.warRingActive Then level = 2
 
         If Level.isHardMode
             ' TODO: Hard Mode

@@ -424,7 +424,7 @@ Class Util
         'End For
         '
         'Return False
-        return game_controller.activeCharacterTypes & (1 Shl Character.Eli)
+        return (controller_game.activeCharacterTypes & (1 Shl Character.Eli)) <> 0
     End Function
 
     Function IsCharacterActive: Bool(charID: Int)

@@ -64,6 +64,8 @@ Global numPlayers: Int = 1
 Global player1: Int
 Global players: Player[necrodancergame.MAX_NUM_PLAYERS]
 Global activeCharacterTypes: Int = 0 'NecroLevel: active character bitmask
+Global peaceRingActive: Bool = False 'NecroLevel: ring of peace state
+Global warRingActive: Bool = False 'NecroLevel: ring of war state
 Global runPlaytimeLastAdded: Int
 Global runPlaytimeMilliseconds: Int
 Global showScoreMessage: Bool

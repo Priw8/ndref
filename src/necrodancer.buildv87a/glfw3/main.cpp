@@ -7652,7 +7652,6 @@ class c_Player : public c_MobileEntity{
 	static void m_PlayVOPlayer1(String);
 	static bool m_ArePrototypesEnabled();
 	bool p_IsWeaponlessCharacter();
-	bool p_IsBomblessCharacter();
 	static bool m_DoesPlayer1HaveItemOfType(String);
 	bool p_IsSlotCursed(String);
 	void p_EmptySlot(String);
@@ -10329,6 +10328,7 @@ class c_EvilEye : public c_Enemy{
 	void p_Update();
 	void mark();
 };
+extern bool bb_controller_game_peaceRingActive;
 class c_EnemyType : public Object{
 	public:
 	c_EnemyType();
@@ -12588,6 +12588,7 @@ class c_EnemyBaseType : public Object{
 	c_EnemyBaseType();
 	void mark();
 };
+extern bool bb_controller_game_warRingActive;
 class c_ToughSarcophagus : public c_Enemy{
 	public:
 	int m_spawnType;
@@ -14406,13 +14407,7 @@ int c_Util::m_GetL1Dist(int t_x1,int t_y1,int t_x2,int t_y2){
 	return bb_math_Abs(t_x1-t_x2)+bb_math_Abs(t_y1-t_y2);
 }
 bool c_Util::m_IsBomblessCharacterActive(){
-	for(int t_i=0;t_i<bb_controller_game_numPlayers;t_i=t_i+1){
-		c_Player* t_player=bb_controller_game_players[t_i];
-		if(t_player!=0 && t_player->p_IsBomblessCharacter()){
-			return true;
-		}
-	}
-	return false;
+	return (bb_controller_game_activeCharacterTypes&16)!=0;
 }
 String c_Util::m_DirToString(int t_dir){
 	int t_1=t_dir;
@@ -19819,7 +19814,7 @@ void c_Level::m_BossMaybeMinibossesAt(int t_x1,int t_y1,int t_x2,int t_y2){
 		int t_minibossType2=0;
 		int t_5=bb_controller_game_currentZone;
 		if(t_5==1){
-			if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false)){
+			if(bb_controller_game_peaceRingActive){
 				t_minibossType1=407;
 				t_minibossType2=402;
 			}else{
@@ -19828,7 +19823,7 @@ void c_Level::m_BossMaybeMinibossesAt(int t_x1,int t_y1,int t_x2,int t_y2){
 			}
 		}else{
 			if(t_5==2){
-				if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false)){
+				if(bb_controller_game_peaceRingActive){
 					t_minibossType1=409;
 					t_minibossType2=405;
 				}else{
@@ -19837,7 +19832,7 @@ void c_Level::m_BossMaybeMinibossesAt(int t_x1,int t_y1,int t_x2,int t_y2){
 				}
 			}else{
 				if(t_5==3){
-					if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false)){
+					if(bb_controller_game_peaceRingActive){
 						t_minibossType1=407;
 						t_minibossType2=409;
 					}else{
@@ -19849,7 +19844,7 @@ void c_Level::m_BossMaybeMinibossesAt(int t_x1,int t_y1,int t_x2,int t_y2){
 						t_minibossType1=411;
 						t_minibossType2=412;
 					}else{
-						if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false)){
+						if(bb_controller_game_peaceRingActive){
 							t_minibossType1=413;
 							t_minibossType2=402;
 						}else{
@@ -23762,10 +23757,10 @@ c_Enemy* c_Level::m_PlaceMinibossOfShapeAt(int t_newMiniboss,int t_xVal,int t_yV
 			t_level=4;
 		}
 	}
-	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false)){
+	if(bb_controller_game_peaceRingActive){
 		t_level=1;
 	}
-	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_war",8),false)){
+	if(bb_controller_game_warRingActive){
 		t_level=2;
 	}
 	if(m_isHardMode){
@@ -24203,7 +24198,7 @@ int c_Level::m_GetHardModeExtraEnemies(){
 }
 int c_Level::m_GetExtraEnemiesBase(){
 	int t_extraEnemies=0;
-	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_war",8),false) && m_randSeed==-1){
+	if(bb_controller_game_warRingActive && m_randSeed==-1){
 		t_extraEnemies=1;
 	}
 	if(m_isHardcoreMode){
@@ -25870,7 +25865,7 @@ void c_Level::m_PlaceEnemies(){
 	}
 	if(c_Util::m_IsCharacterActive(2) || c_Util::m_IsCharacterActive(7) || c_Util::m_IsCharacterActive(6) || c_Util::m_IsCharacterActive(8)){
 		int t_maxEnemies=0;
-		if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_war",8),false)){
+		if(bb_controller_game_warRingActive){
 			t_maxEnemies=5;
 		}
 		t_maxEnemies+=5*m_GetHardModeExtraEnemies();
@@ -25899,7 +25894,7 @@ void c_Level::m_PlaceEnemies(){
 	if(bb_controller_game_currentLevel<=3 && bb_controller_game_currentDepth*bb_controller_game_currentLevel==m_placeLordOnLevel){
 		c_Enemy::m_CreateLord();
 	}
-	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_peace",10),false) || m_isDDRMode){
+	if(bb_controller_game_peaceRingActive || m_isDDRMode){
 		int t_i=500;
 		int t_numEnemiesToCull=8;
 		for(t_i=t_i-1;t_i>0;t_i=t_i+-1){
@@ -34229,13 +34224,6 @@ bool c_Player::m_ArePrototypesEnabled(){
 bool c_Player::p_IsWeaponlessCharacter(){
 	int t_41=this->m_characterID;
 	if(t_41==1 || t_41==2 || t_41==4 || t_41==6 || t_41==7){
-		return true;
-	}
-	return false;
-}
-bool c_Player::p_IsBomblessCharacter(){
-	int t_40=this->m_characterID;
-	if(t_40==4){
 		return true;
 	}
 	return false;
@@ -51968,6 +51956,7 @@ void c_EvilEye::p_Update(){
 void c_EvilEye::mark(){
 	c_Enemy::mark();
 }
+bool bb_controller_game_peaceRingActive;
 c_EnemyType::c_EnemyType(){
 }
 void c_EnemyType::mark(){
@@ -60938,6 +60927,7 @@ c_EnemyBaseType::c_EnemyBaseType(){
 void c_EnemyBaseType::mark(){
 	Object::mark();
 }
+bool bb_controller_game_warRingActive;
 c_ToughSarcophagus::c_ToughSarcophagus(){
 	m_spawnType=0;
 }
@@ -62698,6 +62688,7 @@ int bbInit(){
 	c_Sarcophagus::m_sarcophagi=(new c_List19)->m_new();
 	c_KingConga::m_theKing=0;
 	c_Level::m_isHardMode=false;
+	bb_controller_game_peaceRingActive=false;
 	c_Stack4::m_NIL=0;
 	c_Audio::m_debugEnablePlaceholders=true;
 	c_Enemy::m_killingAllEnemies=false;
@@ -62764,6 +62755,7 @@ int bbInit(){
 	c_Level::m_chestsStillToPlace=0;
 	c_Poltergeist::m_theGhoul=0;
 	c_Level::m_hallwayZone5=0;
+	bb_controller_game_warRingActive=false;
 	bb_controller_game_runPlaytimeLastAdded=0;
 	bb_controller_game_runPlaytimeMilliseconds=0;
 	bb_controller_game_subRunPlaytimeMilliseconds=0;
