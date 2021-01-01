@@ -8149,6 +8149,7 @@ class c_Enemy : public c_MobileEntity{
 	bool m_dontMove;
 	bool m_inSecretRoom;
 	bool m_isSarcophagus;
+	bool m_inArena;
 	bool m_enableDeathEffects;
 	int m_minEnemyMoveDistance;
 	bool m_isNecroDancer;
@@ -8157,7 +8158,6 @@ class c_Enemy : public c_MobileEntity{
 	bool m_attemptedMoveThisFrame;
 	bool m_changedTilePositionThisFrame;
 	bool m_charmed;
-	bool m_inArena;
 	bool m_isUnaffectedByArenas;
 	c_Player* m_seekingPlayer;
 	c_Point* m_lastAttemptedMove;
@@ -8209,10 +8209,12 @@ class c_Enemy : public c_MobileEntity{
 	void p_MakeLord();
 	static c_Enemy* m_GetEnemyAt(int,int,bool);
 	static int m_GetBaseType(int);
+	bool p_IsCullable();
+	static int m_GetNumCullableEnemies();
+	void p_Cull();
 	static void m_CullEnemiesDownTo(int);
 	virtual bool p_CanBeLord();
 	static void m_CreateLord();
-	void p_Cull();
 	static void m_MoveSwarmEnemiesAwayFromStartLocation();
 	static void m_SetAllEnemiesMinimumMoveDistance(int);
 	static void m_StartRandomizerRun();
@@ -37617,6 +37619,7 @@ c_Enemy::c_Enemy(){
 	m_dontMove=false;
 	m_inSecretRoom=false;
 	m_isSarcophagus=false;
+	m_inArena=false;
 	m_enableDeathEffects=true;
 	m_minEnemyMoveDistance=3;
 	m_isNecroDancer=false;
@@ -37625,7 +37628,6 @@ c_Enemy::c_Enemy(){
 	m_attemptedMoveThisFrame=false;
 	m_changedTilePositionThisFrame=false;
 	m_charmed=false;
-	m_inArena=false;
 	m_isUnaffectedByArenas=false;
 	m_seekingPlayer=0;
 	m_lastAttemptedMove=(new c_Point)->m_new(0,0);
@@ -38626,8 +38628,41 @@ int c_Enemy::m_GetBaseType(int t_fullType){
 	bb_logger_Debug->p_Assert(t_baseType!=-1,String());
 	return t_baseType;
 }
+bool c_Enemy::p_IsCullable(){
+	return !(this->m_inSecretRoom || this->m_dead || this->m_isMiniboss || this->m_containsItem || this->m_isNPC || this->m_inArena || this->m_isSarcophagus);
+}
+int c_Enemy::m_GetNumCullableEnemies(){
+	int t_cullableEnemies=0;
+	c_Enumerator4* t_=m_enemyList->p_ObjectEnumerator();
+	while(t_->p_HasNext()){
+		c_Enemy* t_enemy=t_->p_NextObject();
+		if(t_enemy->p_IsCullable()){
+			t_cullableEnemies+=1;
+		}
+	}
+	return t_cullableEnemies;
+}
+void c_Enemy::p_Cull(){
+	this->m_enableDeathEffects=false;
+	this->m_coinsToDrop=0;
+	this->p_Die();
+}
 void c_Enemy::m_CullEnemiesDownTo(int t_cullNum){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Enemy.CullEnemiesDownTo(Int)",28));
+	int t_cullableEnemies=m_GetNumCullableEnemies();
+	int t_limit=5000;
+	while(t_cullNum<t_cullableEnemies){
+		t_limit-=1;
+		if(t_limit<=0){
+			return;
+		}
+		int t_enemyIndex=c_Util::m_RndIntRangeFromZero(m_enemyList->p_Count()-1,true);
+		Array<c_Enemy* > t_enemyArray=m_enemyList->p_ToArray();
+		c_Enemy* t_enemy=t_enemyArray[t_enemyIndex];
+		if(t_enemy!=0 && t_enemy->p_IsCullable()){
+			t_enemy->p_Cull();
+			t_cullableEnemies-=1;
+		}
+	}
 }
 bool c_Enemy::p_CanBeLord(){
 	return !this->m_isMiniboss && !this->m_isLord && this->m_beatsPerMove>1;
@@ -38642,11 +38677,6 @@ void c_Enemy::m_CreateLord(){
 			return;
 		}
 	}
-}
-void c_Enemy::p_Cull(){
-	this->m_enableDeathEffects=false;
-	this->m_coinsToDrop=0;
-	this->p_Die();
 }
 void c_Enemy::m_MoveSwarmEnemiesAwayFromStartLocation(){
 	c_Enumerator4* t_=m_enemyList->p_ObjectEnumerator();
