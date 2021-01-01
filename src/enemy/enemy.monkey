@@ -3042,7 +3042,8 @@ Class Enemy Extends MobileEntity Abstract
     End Method
 
     Method IsCullable: Bool()
-        Debug.TraceNotImplemented("Enemy.IsCullable()")
+        'TODO: I don't know what field_0x3c is; it being False is a part of the condition
+        return Not (Self.inSecretRoom Or Self.dead Or Self.isMiniboss Or Self.containsItem Or Self.isNPC Or Self.inArena or Self.isSarcophagus)
     End Method
 
     Method IsDoubleHit: Bool(damageSource: Int, hitter: Object)
