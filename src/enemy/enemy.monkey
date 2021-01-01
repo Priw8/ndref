@@ -1274,7 +1274,13 @@ Class Enemy Extends MobileEntity Abstract
     End Function
 
     Function GetNumCullableEnemies: Int()
-        Debug.TraceNotImplemented("Enemy.GetNumCullableEnemies()")
+        Local cullableEnemies := 0
+        For Local enemy := EachIn Enemy.enemyList
+            If enemy.IsCullable()
+                cullableEnemies += 1
+            End If
+        End For
+        Return cullableEnemies
     End Function
 
     Function GetNumEnemies: Int()
