@@ -2646,7 +2646,9 @@ Class Enemy Extends MobileEntity Abstract
     End Method
 
     Method Cull: Void()
-        Debug.TraceNotImplemented("Enemy.Cull()")
+        Self.enableDeathEffects = False
+        Self.coinsToDrop = 0
+        Self.Die()
     End Method
 
     Method CustomMoveCheck: Bool(newX: Int, newY: Int)

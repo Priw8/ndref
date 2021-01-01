@@ -8149,6 +8149,7 @@ class c_Enemy : public c_MobileEntity{
 	bool m_dontMove;
 	bool m_inSecretRoom;
 	bool m_isSarcophagus;
+	bool m_enableDeathEffects;
 	int m_minEnemyMoveDistance;
 	bool m_isNecroDancer;
 	bool m_isDancer;
@@ -8178,7 +8179,6 @@ class c_Enemy : public c_MobileEntity{
 	int m_overrideTellTiming;
 	bool m_justSpawned;
 	bool m_wasVisibleLastFrame;
-	bool m_enableDeathEffects;
 	bool m_earthquaked;
 	c_Enemy();
 	static c_EnemyList* m_enemyList;
@@ -37617,6 +37617,7 @@ c_Enemy::c_Enemy(){
 	m_dontMove=false;
 	m_inSecretRoom=false;
 	m_isSarcophagus=false;
+	m_enableDeathEffects=true;
 	m_minEnemyMoveDistance=3;
 	m_isNecroDancer=false;
 	m_isDancer=false;
@@ -37646,7 +37647,6 @@ c_Enemy::c_Enemy(){
 	m_overrideTellTiming=-1;
 	m_justSpawned=true;
 	m_wasVisibleLastFrame=false;
-	m_enableDeathEffects=true;
 	m_earthquaked=false;
 }
 c_EnemyList* c_Enemy::m_enemyList;
@@ -38644,7 +38644,9 @@ void c_Enemy::m_CreateLord(){
 	}
 }
 void c_Enemy::p_Cull(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Enemy.Cull()",12));
+	this->m_enableDeathEffects=false;
+	this->m_coinsToDrop=0;
+	this->p_Die();
 }
 void c_Enemy::m_MoveSwarmEnemiesAwayFromStartLocation(){
 	c_Enumerator4* t_=m_enemyList->p_ObjectEnumerator();
