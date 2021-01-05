@@ -1334,8 +1334,14 @@ Class Enemy Extends MobileEntity Abstract
         Return numStairLockingMinibosses
     End Function
 
-    Function GetRandomEnemy: Object()
-        Debug.TraceNotImplemented("Enemy.GetRandomEnemy()")
+    Function GetRandomEnemy: Enemy()
+        If Enemy.enemyList.Count() <> 0
+            Local enemyIndex := Util.RndIntRangeFromZero(Enemy.enemyList.Count() - 1, True)
+            Local enemyArray := Enemy.enemyList.ToArray()
+            Local enemy := enemyArray[enemyIndex]
+            Return enemy
+        End If
+        Return Null
     End Function
 
     Function KillAllEnemies: Void()
