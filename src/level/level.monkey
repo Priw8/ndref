@@ -10739,7 +10739,34 @@ Class Level
         End For
 
         If Util.IsCharacterActive(Character.Tempo)
-            Debug.TraceNotImplemented("Level.PlaceEnemiesZone4() (Tempo section)")
+            Local enemiesReplaced := 0
+            'TODO: figure out what in the world this actually is
+            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
+            Local edx := 0
+            If eax < 0 Then edx = 3
+            eax += edx
+            eax = eax / 4 - 1
+            If eax >= 0
+                Repeat
+                    Local enemy: Enemy = Null
+                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 700 Or enemy.enemyType < 300
+                        enemy = Enemy.GetRandomEnemy()
+                    End
+                                    
+                    Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
+
+                    enemy.coinsToDrop = 0
+                    enemy.Die()
+                    enemiesReplaced += 1
+
+                    'TODO: figure out what in the world this actually is
+                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
+                    edx = 0
+                    If eax < 0 Then edx = 3
+                    eax += edx
+                    eax = eax / 4 - 1
+                Until enemiesReplaced > eax
+            End If
         End If
 
         Local walls := New IntPointList()

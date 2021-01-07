@@ -7005,6 +7005,7 @@ class c_Level : public Object{
 	static bool m_IsWaterOrTarAt(int,int);
 	static c_Gargoyle* m_PlaceGargoyle(int,int,int);
 	static c_Gargoyle* m_PlaceGargoyle2(int,int);
+	static void m_PlaceRandomEnemyForTempo(int,int);
 	static void m_PlaceEnemiesZone4();
 	static c_Enemy* m_PlaceZone3Cauldron(int,int);
 	static bool m_IsInZone3Hot(int,int);
@@ -7012,7 +7013,6 @@ class c_Level : public Object{
 	static c_Enemy* m_PlaceZone3Elemental(int,int);
 	static c_Enemy* m_PlaceZone3Slime(int,int);
 	static c_Enemy* m_PlaceZone3Beetle(int,int);
-	static void m_PlaceRandomEnemyForTempo(int,int);
 	static void m_PlaceEnemiesZone3();
 	static void m_PlaceEnemiesZone2();
 	static void m_PlaceEnemiesZone1();
@@ -24444,6 +24444,83 @@ c_Gargoyle* c_Level::m_PlaceGargoyle2(int t_xVal,int t_yVal){
 	int t_level=c_Util::m_RndIntRange(1,5,true,-1);
 	return m_PlaceGargoyle(t_xVal,t_yVal,t_level);
 }
+void c_Level::m_PlaceRandomEnemyForTempo(int t_xVal,int t_yVal){
+	int t_enemyRoll=c_Util::m_RndIntRangeFromZero(18,true);
+	int t_129=t_enemyRoll;
+	if(t_129==0){
+		(new c_Skeleton)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+	}else{
+		if(t_129==1){
+			(new c_Slime)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,6,true,-1));
+		}else{
+			if(t_129==2){
+				(new c_ArmoredSkeleton)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+			}else{
+				if(t_129==3){
+					(new c_Goblin)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
+				}else{
+					if(t_129==4){
+						(new c_Ghost)->m_new(t_xVal,t_yVal,1);
+					}else{
+						if(t_129==5){
+							(new c_Pixie)->m_new(t_xVal,t_yVal,1);
+						}else{
+							if(t_129==6){
+								(new c_Armadillo)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+							}else{
+								if(t_129==7){
+									(new c_Blademaster)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
+								}else{
+									if(t_129==8){
+										(new c_ElectricMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+									}else{
+										if(t_129==9){
+											(new c_EvilEye)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
+										}else{
+											if(t_129==10){
+												(new c_Golem)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+											}else{
+												if(t_129==11){
+													(new c_Harpy)->m_new(t_xVal,t_yVal,1);
+												}else{
+													if(t_129==12){
+														(new c_Yeti)->m_new(t_xVal,t_yVal,1);
+													}else{
+														if(t_129==13){
+															(new c_Lich)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+														}else{
+															if(t_129==14){
+																(new c_Mushroom)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
+															}else{
+																if(t_129==15){
+																	(new c_Orc)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+																}else{
+																	if(t_129==16){
+																		(new c_Warlock)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
+																	}else{
+																		if(t_129==17){
+																			(new c_Skull)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+																		}else{
+																			(new c_ElectricMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 void c_Level::m_PlaceEnemiesZone4(){
 	bb_logger_Debug->p_Log(String(L"PLACEENEMIES: Placing zone 4 enemies",36));
 	c_Enumerator27* t_=m_rooms->p_ObjectEnumerator();
@@ -24638,7 +24715,33 @@ void c_Level::m_PlaceEnemiesZone4(){
 		}
 	}
 	if(c_Util::m_IsCharacterActive(13)){
-		bb_logger_Debug->p_TraceNotImplemented(String(L"Level.PlaceEnemiesZone4() (Tempo section)",41));
+		int t_enemiesReplaced=0;
+		int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
+		int t_edx=0;
+		if(t_eax<0){
+			t_edx=3;
+		}
+		t_eax+=t_edx;
+		t_eax=t_eax/4-1;
+		if(t_eax>=0){
+			do{
+				c_Enemy* t_enemy=0;
+				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=700 || t_enemy->m_enemyType<300){
+					t_enemy=c_Enemy::m_GetRandomEnemy();
+				}
+				m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
+				t_enemy->m_coinsToDrop=0;
+				t_enemy->p_Die();
+				t_enemiesReplaced+=1;
+				t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
+				t_edx=0;
+				if(t_eax<0){
+					t_edx=3;
+				}
+				t_eax+=t_edx;
+				t_eax=t_eax/4-1;
+			}while(!(t_enemiesReplaced>t_eax));
+		}
 	}
 	c_IntPointList* t_walls=(new c_IntPointList)->m_new();
 	c_NodeEnumerator2* t_2=m_tiles->p_ObjectEnumerator();
@@ -24703,83 +24806,6 @@ c_Enemy* c_Level::m_PlaceZone3Beetle(int t_xVal,int t_yVal){
 		return c_Enemy::m_MakeEnemy(t_xVal,t_yVal,209);
 	}
 	return c_Enemy::m_MakeEnemy(t_xVal,t_yVal,210);
-}
-void c_Level::m_PlaceRandomEnemyForTempo(int t_xVal,int t_yVal){
-	int t_enemyRoll=c_Util::m_RndIntRangeFromZero(18,true);
-	int t_129=t_enemyRoll;
-	if(t_129==0){
-		(new c_Skeleton)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-	}else{
-		if(t_129==1){
-			(new c_Slime)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,6,true,-1));
-		}else{
-			if(t_129==2){
-				(new c_ArmoredSkeleton)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-			}else{
-				if(t_129==3){
-					(new c_Goblin)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
-				}else{
-					if(t_129==4){
-						(new c_Ghost)->m_new(t_xVal,t_yVal,1);
-					}else{
-						if(t_129==5){
-							(new c_Pixie)->m_new(t_xVal,t_yVal,1);
-						}else{
-							if(t_129==6){
-								(new c_Armadillo)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-							}else{
-								if(t_129==7){
-									(new c_Blademaster)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
-								}else{
-									if(t_129==8){
-										(new c_ElectricMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-									}else{
-										if(t_129==9){
-											(new c_EvilEye)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
-										}else{
-											if(t_129==10){
-												(new c_Golem)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-											}else{
-												if(t_129==11){
-													(new c_Harpy)->m_new(t_xVal,t_yVal,1);
-												}else{
-													if(t_129==12){
-														(new c_Yeti)->m_new(t_xVal,t_yVal,1);
-													}else{
-														if(t_129==13){
-															(new c_Lich)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-														}else{
-															if(t_129==14){
-																(new c_Mushroom)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
-															}else{
-																if(t_129==15){
-																	(new c_Orc)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-																}else{
-																	if(t_129==16){
-																		(new c_Warlock)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,2,true,-1));
-																	}else{
-																		if(t_129==17){
-																			(new c_Skull)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-																		}else{
-																			(new c_ElectricMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 }
 void c_Level::m_PlaceEnemiesZone3(){
 	bb_logger_Debug->p_Log(String(L"PLACEENEMIES: Placing zone 3 enemies",36));
