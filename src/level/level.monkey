@@ -9462,132 +9462,115 @@ Class Level
             Debug.TraceNotImplemented("Level.PlaceEnemiesZone1() (Aria)")
         Else If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
-            'TODO: figure out what in the world this actually is
-            'According to some people more experienced than me, this might be 
-            'just some division, and the extra jank is caused by signed checks 
-            'put there to be able to apply certain optimisations?
-            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-            Local edx := 0
-            If eax < 0 Then edx = 3
-            eax += edx
-            eax = eax / 4 - 1
-            If eax >= 0
-                Repeat
-                    Local enemy: Enemy = Null
-                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 100
-                        enemy = Enemy.GetRandomEnemy()
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 100
+                    enemy = Enemy.GetRandomEnemy()
+                End
+                
+                If Skeleton(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(4, True)
+                    Select enemyRoll
+                        Case 0
+                            New Lich(enemy.x, enemy.y, enemy.level)
+                        Case 1
+                            New SkeletonKnight(enemy.x, enemy.y, enemy.level)
+                        Case 2
+                            New ArmoredSkeleton(enemy.x, enemy.y, enemy.level)
+                        Case 3
+                            New SkeletonMage(enemy.x, enemy.y, enemy.level)
+                        Case 4
+                            New Skull(enemy.x, enemy.y, enemy.level)
+                    End Select
+                Else If Slime(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(5, True)
+                    Select enemyRoll
+                        Case 0
+                            Local level := enemy.level - 1
+                            If level < 1 Then level = 1
+                            New Warlock(enemy.x, enemy.y, level)
+                        Case 1
+                            Local level := enemy.level - 1
+                            If level < 1 Then level = 1
+                            New Blademaster(enemy.x, enemy.y, level)
+                        Case 2
+                            New Clone(enemy.x, enemy.y, 1)
+                        Case 3
+                            Local level := enemy.level - 1
+                            If level < 1 Then level = 1
+                            New Mushroom(enemy.x, enemy.y, level)
+                        Case 4
+                            Local level := enemy.level - 1
+                            If level < 1 Then level = 1
+                            New Goblin(enemy.x, enemy.y, level)
+                        Case 5
+                            New Slime(enemy.x, enemy.y, enemy.level + 3)
+                    End Select
+                Else If Monkey(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(4, True)
+                    Select enemyRoll
+                        Case 0
+                            New Monkey(enemy.x, enemy.y, enemy.level + 2)
+                        Case 1
+                            New GoblinBomber(enemy.x, enemy.y, 1)
+                        Case 2
+                            If enemy.level = 1
+                                New IceElemental(enemy.x, enemy.y, 1)
+                            Else
+                                New FireElemental(enemy.x, enemy.y, 1)
+                            End If
+                        Case 3
+                            New Armadillo(enemy.x, enemy.y, enemy.level)
+                        Case 4
+                            New WaterBall(enemy.x, enemy.y, 1)
+                    End Select
+                Else If Wraith(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                    Select enemyRoll
+                        Case 0
+                            New Wight(enemy.x, enemy.y, 1)
+                        Case 1
+                            New Ghast(enemy.x, enemy.y, 1)
+                        Case 2
+                            New Wraith(enemy.x, enemy.y, 2)
+                    End Select
+                Else
+                    Local enemyRoll := Util.RndIntRangeFromZero(12, True)
+                    Select enemyRoll
+                        Case 0
+                            New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 1
+                            New Mole(enemy.x, enemy.y, 1)
+                        Case 2
+                            New Golem(enemy.x, enemy.y, 1)
+                        Case 3
+                            New Golem(enemy.x, enemy.y, 2)
+                        Case 4
+                            New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 5
+                            New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 6
+                            New Yeti(enemy.x, enemy.y, 1)
+                        Case 7
+                            New Hellhound(enemy.x, enemy.y, 1)
+                        Case 8
+                            New Harpy(enemy.x, enemy.y, 1)
+                        Case 9
+                            New Pixie(enemy.x, enemy.y, 1)
+                        Case 10
+                            New EvilEye(enemy.x, enemy.y, 1)
+                        Case 11
+                            New Orc(enemy.x, enemy.y, 1)
+                        Case 12
+                            New Devil(enemy.x, enemy.y, 1)
                     End
-                    
-                    If Skeleton(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(4, True)
-                        Select enemyRoll
-                            Case 0
-                                New Lich(enemy.x, enemy.y, enemy.level)
-                            Case 1
-                                New SkeletonKnight(enemy.x, enemy.y, enemy.level)
-                            Case 2
-                                New ArmoredSkeleton(enemy.x, enemy.y, enemy.level)
-                            Case 3
-                                New SkeletonMage(enemy.x, enemy.y, enemy.level)
-                            Case 4
-                                New Skull(enemy.x, enemy.y, enemy.level)
-                        End Select
-                    Else If Slime(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(5, True)
-                        Select enemyRoll
-                            Case 0
-                                Local level := enemy.level - 1
-                                If level < 1 Then level = 1
-                                New Warlock(enemy.x, enemy.y, level)
-                            Case 1
-                                Local level := enemy.level - 1
-                                If level < 1 Then level = 1
-                                New Blademaster(enemy.x, enemy.y, level)
-                            Case 2
-                                New Clone(enemy.x, enemy.y, 1)
-                            Case 3
-                                Local level := enemy.level - 1
-                                If level < 1 Then level = 1
-                                New Mushroom(enemy.x, enemy.y, level)
-                            Case 4
-                                Local level := enemy.level - 1
-                                If level < 1 Then level = 1
-                                New Goblin(enemy.x, enemy.y, level)
-                            Case 5
-                                New Slime(enemy.x, enemy.y, enemy.level + 3)
-                        End Select
-                    Else If Monkey(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(4, True)
-                        Select enemyRoll
-                            Case 0
-                                New Monkey(enemy.x, enemy.y, enemy.level + 2)
-                            Case 1
-                                New GoblinBomber(enemy.x, enemy.y, 1)
-                            Case 2
-                                If enemy.level = 1
-                                    New IceElemental(enemy.x, enemy.y, 1)
-                                Else
-                                    New FireElemental(enemy.x, enemy.y, 1)
-                                End If
-                            Case 3
-                                New Armadillo(enemy.x, enemy.y, enemy.level)
-                            Case 4
-                                New WaterBall(enemy.x, enemy.y, 1)
-                        End Select
-                    Else If Wraith(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
-                        Select enemyRoll
-                            Case 0
-                                New Wight(enemy.x, enemy.y, 1)
-                            Case 1
-                                New Ghast(enemy.x, enemy.y, 1)
-                            Case 2
-                                New Wraith(enemy.x, enemy.y, 2)
-                        End Select
-                    Else
-                        Local enemyRoll := Util.RndIntRangeFromZero(12, True)
-                        Select enemyRoll
-                            Case 0
-                                New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 1
-                                New Mole(enemy.x, enemy.y, 1)
-                            Case 2
-                                New Golem(enemy.x, enemy.y, 1)
-                            Case 3
-                                New Golem(enemy.x, enemy.y, 2)
-                            Case 4
-                                New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 5
-                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 6
-                                New Yeti(enemy.x, enemy.y, 1)
-                            Case 7
-                                New Hellhound(enemy.x, enemy.y, 1)
-                            Case 8
-                                New Harpy(enemy.x, enemy.y, 1)
-                            Case 9
-                                New Pixie(enemy.x, enemy.y, 1)
-                            Case 10
-                                New EvilEye(enemy.x, enemy.y, 1)
-                            Case 11
-                                New Orc(enemy.x, enemy.y, 1)
-                            Case 12
-                                New Devil(enemy.x, enemy.y, 1)
-                        End
-                    End
+                End
 
-                    enemy.coinsToDrop = 0
-                    enemy.Die()
-                    enemiesReplaced += 1
+                enemy.coinsToDrop = 0
+                enemy.Die()
 
-                    'TODO: figure out what in the world this actually is
-                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-                    edx = 0
-                    If eax < 0 Then edx = 3
-                    eax += edx
-                    eax = eax / 4 - 1
-                Until enemiesReplaced > eax
-            End If
+                enemiesReplaced += 1
+            End While
 
             Local walls := New IntPointList()
 
@@ -10003,121 +9986,107 @@ Class Level
             Debug.TraceNotImplemented("Level.PlaceEnemiesZone2() (Aria)")
         Else If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
-            'TODO: figure out what in the world this actually is
-            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-            Local edx := 0
-            If eax < 0 Then edx = 3
-            eax += edx
-            eax = eax / 4 - 1
-            If eax >= 0
-                Repeat
-                    Local enemy: Enemy = Null
-                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 200 Or enemy.enemyType < 100
-                        enemy = Enemy.GetRandomEnemy()
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 200 Or enemy.enemyType < 100
+                    enemy = Enemy.GetRandomEnemy()
+                End
+                
+                If ArmoredSkeleton(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(3, True)
+                    Select enemyRoll
+                        Case 0
+                            New Lich(enemy.x, enemy.y, enemy.level)
+                        Case 1
+                            New Skeleton(enemy.x, enemy.y, enemy.level)
+                        Case 2
+                            New Skull(enemy.x, enemy.y, enemy.level)
+                        Case 3
+                            New SkeletonKnight(enemy.x, enemy.y, enemy.level)
+                    End Select
+                Else If SkeletonMage(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(3, True)
+                    Select enemyRoll
+                        Case 0
+                            Local level := enemy.level - 1
+                            If level < 1 Then level = 1
+                            New Warlock(enemy.x, enemy.y, level)
+                        Case 1
+                            New Monkey(enemy.x, enemy.y, enemy.level)
+                        Case 2
+                            New ElectricMage(enemy.x, enemy.y, enemy.level)
+                        Case 3
+                            Local level := enemy.level + 3
+                            If level > 5 Then level = 5
+                            New Slime(enemy.x, enemy.y, level)
+                    End Select
+                Else If Mushroom(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                    Select enemyRoll
+                        Case 0
+                            New Blademaster(enemy.x, enemy.y, enemy.level)
+                        Case 1
+                            New Gorgon(enemy.x, enemy.y, 1)
+                        Case 2
+                            If enemy.level = 1
+                                New IceElemental(enemy.x, enemy.y, 1)
+                            Else
+                                New FireElemental(enemy.x, enemy.y, 1)
+                            End If
+                    End Select
+                Else If Armadillo(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                    Select enemyRoll
+                        Case 0
+                            New Armadillo(enemy.x, enemy.y, 3)
+                        Case 1
+                            New Zombie(enemy.x, enemy.y, 1)
+                        Case 2
+                            New Goblin(enemy.x, enemy.y, enemy.level)
+                    End Select
+                Else If Golem(enemy) <> Null
+                    Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                    Select enemyRoll
+                        Case 0
+                            New Golem(enemy.x, enemy.y, 3)
+                        Case 1
+                            New Orc(enemy.x, enemy.y, enemy.level)
+                        Case 2
+                            New Yeti(enemy.x, enemy.y, 1)
+                    End Select
+                Else
+                    Local enemyRoll := Util.RndIntRangeFromZero(10, True)
+                    Select enemyRoll
+                        Case 0
+                            New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 1
+                            New Hellhound(enemy.x, enemy.y, 1)
+                        Case 2
+                            New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 3
+                            New GoblinBomber(enemy.x, enemy.y, 1)
+                        Case 4
+                            New SleepingGoblin(enemy.x, enemy.y, 1)
+                        Case 5
+                            New Monkey(enemy.x, enemy.y, Util.RndIntRange(3, 4, True, -1))
+                        Case 6
+                            New Skull(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
+                        Case 7
+                            New Skeleton(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
+                        Case 8
+                            New Devil(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                        Case 9
+                            New WaterBall(enemy.x, enemy.y, 1)
+                        Case 10
+                            New Pixie(enemy.x, enemy.y, 1)
                     End
-                    
-                    If ArmoredSkeleton(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(3, True)
-                        Select enemyRoll
-                            Case 0
-                                New Lich(enemy.x, enemy.y, enemy.level)
-                            Case 1
-                                New Skeleton(enemy.x, enemy.y, enemy.level)
-                            Case 2
-                                New Skull(enemy.x, enemy.y, enemy.level)
-                            Case 3
-                                New SkeletonKnight(enemy.x, enemy.y, enemy.level)
-                        End Select
-                    Else If SkeletonMage(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(3, True)
-                        Select enemyRoll
-                            Case 0
-                                Local level := enemy.level - 1
-                                If level < 1 Then level = 1
-                                New Warlock(enemy.x, enemy.y, level)
-                            Case 1
-                                New Monkey(enemy.x, enemy.y, enemy.level)
-                            Case 2
-                                New ElectricMage(enemy.x, enemy.y, enemy.level)
-                            Case 3
-                                Local level := enemy.level + 3
-                                If level > 5 Then level = 5
-                                New Slime(enemy.x, enemy.y, level)
-                        End Select
-                    Else If Mushroom(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
-                        Select enemyRoll
-                            Case 0
-                                New Blademaster(enemy.x, enemy.y, enemy.level)
-                            Case 1
-                                New Gorgon(enemy.x, enemy.y, 1)
-                            Case 2
-                                If enemy.level = 1
-                                    New IceElemental(enemy.x, enemy.y, 1)
-                                Else
-                                    New FireElemental(enemy.x, enemy.y, 1)
-                                End If
-                        End Select
-                    Else If Armadillo(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
-                        Select enemyRoll
-                            Case 0
-                                New Armadillo(enemy.x, enemy.y, 3)
-                            Case 1
-                                New Zombie(enemy.x, enemy.y, 1)
-                            Case 2
-                                New Goblin(enemy.x, enemy.y, enemy.level)
-                        End Select
-                    Else If Golem(enemy) <> Null
-                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
-                        Select enemyRoll
-                            Case 0
-                                New Golem(enemy.x, enemy.y, 3)
-                            Case 1
-                                New Orc(enemy.x, enemy.y, enemy.level)
-                            Case 2
-                                New Yeti(enemy.x, enemy.y, 1)
-                        End Select
-                    Else
-                        Local enemyRoll := Util.RndIntRangeFromZero(10, True)
-                        Select enemyRoll
-                            Case 0
-                                New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 1
-                                New Hellhound(enemy.x, enemy.y, 1)
-                            Case 2
-                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 3
-                                New GoblinBomber(enemy.x, enemy.y, 1)
-                            Case 4
-                                New SleepingGoblin(enemy.x, enemy.y, 1)
-                            Case 5
-                                New Monkey(enemy.x, enemy.y, Util.RndIntRange(3, 4, True, -1))
-                            Case 6
-                                New Skull(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
-                            Case 7
-                                New Skeleton(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
-                            Case 8
-                                New Devil(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 9
-                                New WaterBall(enemy.x, enemy.y, 1)
-                            Case 10
-                                New Pixie(enemy.x, enemy.y, 1)
-                        End
-                    End
+                End
 
-                    enemy.coinsToDrop = 0
-                    enemy.Die()
-                    enemiesReplaced += 1
+                enemy.coinsToDrop = 0
+                enemy.Die()
 
-                    'TODO: figure out what in the world this actually is
-                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-                    edx = 0
-                    If eax < 0 Then edx = 3
-                    eax += edx
-                    eax = eax / 4 - 1
-                Until enemiesReplaced > eax
-            End If
+                enemiesReplaced += 1
+            End While
 
             Local walls := New IntPointList()
 
@@ -10466,47 +10435,33 @@ Class Level
             Debug.TraceNotImplemented("Level.PlaceEnemiesZone3() (Aria section)")
         Else If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
-            'TODO: figure out what in the world this actually is
-            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-            Local edx := 0
-            If eax < 0 Then edx = 3
-            eax += edx
-            eax = eax / 4 - 1
-            If eax >= 0
-                Repeat
-                    Local enemy: Enemy = Null
-                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 300 Or enemy.enemyType < 200
-                        enemy = Enemy.GetRandomEnemy()
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 300 Or enemy.enemyType < 200
+                    enemy = Enemy.GetRandomEnemy()
+                End
+                
+                If SkeletonKnight(enemy)
+                    Local enemyRoll = Util.RndIntRangeFromZero(3, True)
+                    Select enemyRoll
+                        Case 0
+                            New Skull(enemy.x, enemy.y, enemy.level)
+                        Case 1
+                            New Lich(enemy.x, enemy.y, enemy.level)
+                        Case 2
+                            New ArmoredSkeleton(enemy.x, enemy.y, enemy.level)
+                        Case 3
+                            New Skeleton(enemy.x, enemy.y, enemy.level)
                     End
-                    
-                    If SkeletonKnight(enemy)
-                        Local enemyRoll = Util.RndIntRangeFromZero(3, True)
-                        Select enemyRoll
-                            Case 0
-                                New Skull(enemy.x, enemy.y, enemy.level)
-                            Case 1
-                                New Lich(enemy.x, enemy.y, enemy.level)
-                            Case 2
-                                New ArmoredSkeleton(enemy.x, enemy.y, enemy.level)
-                            Case 3
-                                New Skeleton(enemy.x, enemy.y, enemy.level)
-                        End
-                    Else
-                        Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
-                    End
+                Else
+                    Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
+                End
 
-                    enemy.coinsToDrop = 0
-                    enemy.Die()
-                    enemiesReplaced += 1
+                enemy.coinsToDrop = 0
+                enemy.Die()
 
-                    'TODO: figure out what in the world this actually is
-                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-                    edx = 0
-                    If eax < 0 Then edx = 3
-                    eax += edx
-                    eax = eax / 4 - 1
-                Until enemiesReplaced > eax
-            End If
+                enemiesReplaced += 1
+            End While
 
             Local walls := New IntPointList()
 
@@ -10740,33 +10695,18 @@ Class Level
 
         If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
-            'TODO: figure out what in the world this actually is
-            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-            Local edx := 0
-            If eax < 0 Then edx = 3
-            eax += edx
-            eax = eax / 4 - 1
-            If eax >= 0
-                Repeat
-                    Local enemy: Enemy = Null
-                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 700 Or enemy.enemyType < 300
-                        enemy = Enemy.GetRandomEnemy()
-                    End
-                                    
-                    Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 700 Or enemy.enemyType < 300
+                    enemy = Enemy.GetRandomEnemy()
+                End
+                Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
 
-                    enemy.coinsToDrop = 0
-                    enemy.Die()
-                    enemiesReplaced += 1
-
-                    'TODO: figure out what in the world this actually is
-                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-                    edx = 0
-                    If eax < 0 Then edx = 3
-                    eax += edx
-                    eax = eax / 4 - 1
-                Until enemiesReplaced > eax
-            End If
+                enemy.coinsToDrop = 0
+                enemy.Die()
+    
+                enemiesReplaced += 1
+            End While
         End If
 
         Local walls := New IntPointList()
@@ -10831,33 +10771,18 @@ Class Level
 
         If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
-            'TODO: figure out what in the world this actually is
-            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-            Local edx := 0
-            If eax < 0 Then edx = 3
-            eax += edx
-            eax = eax / 4 - 1
-            If eax >= 0
-                Repeat
-                    Local enemy: Enemy = Null
-                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType < 700
-                        enemy = Enemy.GetRandomEnemy()
-                    End
-                                    
-                    Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType < 700
+                    enemy = Enemy.GetRandomEnemy()
+                End
+                                
+                Level.PlaceRandomEnemyForTempo(enemy.x, enemy.y)
 
-                    enemy.coinsToDrop = 0
-                    enemy.Die()
-                    enemiesReplaced += 1
-
-                    'TODO: figure out what in the world this actually is
-                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
-                    edx = 0
-                    If eax < 0 Then edx = 3
-                    eax += edx
-                    eax = eax / 4 - 1
-                Until enemiesReplaced > eax
-            End If
+                enemy.coinsToDrop = 0
+                enemy.Die()
+                enemiesReplaced += 1
+            End While
         End If
     End Function
 

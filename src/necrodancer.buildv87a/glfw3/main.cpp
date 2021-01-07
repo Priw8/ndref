@@ -24493,31 +24493,15 @@ void c_Level::m_PlaceEnemiesZone5(){
 	}
 	if(c_Util::m_IsCharacterActive(13)){
 		int t_enemiesReplaced=0;
-		int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-		int t_edx=0;
-		if(t_eax<0){
-			t_edx=3;
-		}
-		t_eax+=t_edx;
-		t_eax=t_eax/4-1;
-		if(t_eax>=0){
-			do{
-				c_Enemy* t_enemy=0;
-				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType<700){
-					t_enemy=c_Enemy::m_GetRandomEnemy();
-				}
-				m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
-				t_enemy->m_coinsToDrop=0;
-				t_enemy->p_Die();
-				t_enemiesReplaced+=1;
-				t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-				t_edx=0;
-				if(t_eax<0){
-					t_edx=3;
-				}
-				t_eax+=t_edx;
-				t_eax=t_eax/4-1;
-			}while(!(t_enemiesReplaced>t_eax));
+		while(t_enemiesReplaced<(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())/2){
+			c_Enemy* t_enemy=0;
+			while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType<700){
+				t_enemy=c_Enemy::m_GetRandomEnemy();
+			}
+			m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
+			t_enemy->m_coinsToDrop=0;
+			t_enemy->p_Die();
+			t_enemiesReplaced+=1;
 		}
 	}
 }
@@ -24742,31 +24726,15 @@ void c_Level::m_PlaceEnemiesZone4(){
 	}
 	if(c_Util::m_IsCharacterActive(13)){
 		int t_enemiesReplaced=0;
-		int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-		int t_edx=0;
-		if(t_eax<0){
-			t_edx=3;
-		}
-		t_eax+=t_edx;
-		t_eax=t_eax/4-1;
-		if(t_eax>=0){
-			do{
-				c_Enemy* t_enemy=0;
-				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=700 || t_enemy->m_enemyType<300){
-					t_enemy=c_Enemy::m_GetRandomEnemy();
-				}
-				m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
-				t_enemy->m_coinsToDrop=0;
-				t_enemy->p_Die();
-				t_enemiesReplaced+=1;
-				t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-				t_edx=0;
-				if(t_eax<0){
-					t_edx=3;
-				}
-				t_eax+=t_edx;
-				t_eax=t_eax/4-1;
-			}while(!(t_enemiesReplaced>t_eax));
+		while(t_enemiesReplaced<(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())/2){
+			c_Enemy* t_enemy=0;
+			while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=700 || t_enemy->m_enemyType<300){
+				t_enemy=c_Enemy::m_GetRandomEnemy();
+			}
+			m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
+			t_enemy->m_coinsToDrop=0;
+			t_enemy->p_Die();
+			t_enemiesReplaced+=1;
 		}
 	}
 	c_IntPointList* t_walls=(new c_IntPointList)->m_new();
@@ -25159,51 +25127,35 @@ void c_Level::m_PlaceEnemiesZone3(){
 	}else{
 		if(c_Util::m_IsCharacterActive(13)){
 			int t_enemiesReplaced=0;
-			int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-			int t_edx=0;
-			if(t_eax<0){
-				t_edx=3;
-			}
-			t_eax+=t_edx;
-			t_eax=t_eax/4-1;
-			if(t_eax>=0){
-				do{
-					c_Enemy* t_enemy=0;
-					while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=300 || t_enemy->m_enemyType<200){
-						t_enemy=c_Enemy::m_GetRandomEnemy();
-					}
-					if((dynamic_cast<c_SkeletonKnight*>(t_enemy))!=0){
-						int t_enemyRoll=c_Util::m_RndIntRangeFromZero(3,true);
-						int t_114=t_enemyRoll;
-						if(t_114==0){
-							(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+			while(t_enemiesReplaced<(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())/2){
+				c_Enemy* t_enemy=0;
+				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=300 || t_enemy->m_enemyType<200){
+					t_enemy=c_Enemy::m_GetRandomEnemy();
+				}
+				if((dynamic_cast<c_SkeletonKnight*>(t_enemy))!=0){
+					int t_enemyRoll=c_Util::m_RndIntRangeFromZero(3,true);
+					int t_114=t_enemyRoll;
+					if(t_114==0){
+						(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+					}else{
+						if(t_114==1){
+							(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 						}else{
-							if(t_114==1){
-								(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+							if(t_114==2){
+								(new c_ArmoredSkeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 							}else{
-								if(t_114==2){
-									(new c_ArmoredSkeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
-								}else{
-									if(t_114==3){
-										(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
-									}
+								if(t_114==3){
+									(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 								}
 							}
 						}
-					}else{
-						m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
 					}
-					t_enemy->m_coinsToDrop=0;
-					t_enemy->p_Die();
-					t_enemiesReplaced+=1;
-					t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-					t_edx=0;
-					if(t_eax<0){
-						t_edx=3;
-					}
-					t_eax+=t_edx;
-					t_eax=t_eax/4-1;
-				}while(!(t_enemiesReplaced>t_eax));
+				}else{
+					m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
+				}
+				t_enemy->m_coinsToDrop=0;
+				t_enemy->p_Die();
+				t_enemiesReplaced+=1;
 			}
 			c_IntPointList* t_walls=(new c_IntPointList)->m_new();
 			c_NodeEnumerator2* t_2=m_tiles->p_ObjectEnumerator();
@@ -25642,149 +25594,140 @@ void c_Level::m_PlaceEnemiesZone2(){
 	}else{
 		if(c_Util::m_IsCharacterActive(13)){
 			int t_enemiesReplaced=0;
-			int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-			int t_edx=0;
-			if(t_eax<0){
-				t_edx=3;
-			}
-			t_eax+=t_edx;
-			t_eax=t_eax/4-1;
-			if(t_eax>=0){
-				do{
-					c_Enemy* t_enemy=0;
-					while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=200 || t_enemy->m_enemyType<100){
-						t_enemy=c_Enemy::m_GetRandomEnemy();
-					}
-					if(dynamic_cast<c_ArmoredSkeleton*>(t_enemy)!=0){
-						int t_enemyRoll=c_Util::m_RndIntRangeFromZero(3,true);
-						int t_105=t_enemyRoll;
-						if(t_105==0){
-							(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+			while(t_enemiesReplaced<(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())/2){
+				c_Enemy* t_enemy=0;
+				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=200 || t_enemy->m_enemyType<100){
+					t_enemy=c_Enemy::m_GetRandomEnemy();
+				}
+				if(dynamic_cast<c_ArmoredSkeleton*>(t_enemy)!=0){
+					int t_enemyRoll=c_Util::m_RndIntRangeFromZero(3,true);
+					int t_105=t_enemyRoll;
+					if(t_105==0){
+						(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+					}else{
+						if(t_105==1){
+							(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 						}else{
-							if(t_105==1){
-								(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+							if(t_105==2){
+								(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 							}else{
-								if(t_105==2){
-									(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+								if(t_105==3){
+									(new c_SkeletonKnight)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+								}
+							}
+						}
+					}
+				}else{
+					if(dynamic_cast<c_SkeletonMage*>(t_enemy)!=0){
+						int t_enemyRoll2=c_Util::m_RndIntRangeFromZero(3,true);
+						int t_106=t_enemyRoll2;
+						if(t_106==0){
+							int t_level=t_enemy->m_level-1;
+							if(t_level<1){
+								t_level=1;
+							}
+							(new c_Warlock)->m_new(t_enemy->m_x,t_enemy->m_y,t_level);
+						}else{
+							if(t_106==1){
+								(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+							}else{
+								if(t_106==2){
+									(new c_ElectricMage)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 								}else{
-									if(t_105==3){
-										(new c_SkeletonKnight)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+									if(t_106==3){
+										int t_level2=t_enemy->m_level+3;
+										if(t_level2>5){
+											t_level2=5;
+										}
+										(new c_Slime)->m_new(t_enemy->m_x,t_enemy->m_y,t_level2);
 									}
 								}
 							}
 						}
 					}else{
-						if(dynamic_cast<c_SkeletonMage*>(t_enemy)!=0){
-							int t_enemyRoll2=c_Util::m_RndIntRangeFromZero(3,true);
-							int t_106=t_enemyRoll2;
-							if(t_106==0){
-								int t_level=t_enemy->m_level-1;
-								if(t_level<1){
-									t_level=1;
-								}
-								(new c_Warlock)->m_new(t_enemy->m_x,t_enemy->m_y,t_level);
+						if(dynamic_cast<c_Mushroom*>(t_enemy)!=0){
+							int t_enemyRoll3=c_Util::m_RndIntRangeFromZero(2,true);
+							int t_107=t_enemyRoll3;
+							if(t_107==0){
+								(new c_Blademaster)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 							}else{
-								if(t_106==1){
-									(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+								if(t_107==1){
+									(new c_Gorgon)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 								}else{
-									if(t_106==2){
-										(new c_ElectricMage)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
-									}else{
-										if(t_106==3){
-											int t_level2=t_enemy->m_level+3;
-											if(t_level2>5){
-												t_level2=5;
-											}
-											(new c_Slime)->m_new(t_enemy->m_x,t_enemy->m_y,t_level2);
+									if(t_107==2){
+										if(t_enemy->m_level==1){
+											(new c_IceElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+										}else{
+											(new c_FireElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 										}
 									}
 								}
 							}
 						}else{
-							if(dynamic_cast<c_Mushroom*>(t_enemy)!=0){
-								int t_enemyRoll3=c_Util::m_RndIntRangeFromZero(2,true);
-								int t_107=t_enemyRoll3;
-								if(t_107==0){
-									(new c_Blademaster)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+							if(dynamic_cast<c_Armadillo*>(t_enemy)!=0){
+								int t_enemyRoll4=c_Util::m_RndIntRangeFromZero(2,true);
+								int t_108=t_enemyRoll4;
+								if(t_108==0){
+									(new c_Armadillo)->m_new(t_enemy->m_x,t_enemy->m_y,3);
 								}else{
-									if(t_107==1){
-										(new c_Gorgon)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+									if(t_108==1){
+										(new c_Zombie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 									}else{
-										if(t_107==2){
-											if(t_enemy->m_level==1){
-												(new c_IceElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-											}else{
-												(new c_FireElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-											}
+										if(t_108==2){
+											(new c_Goblin)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 										}
 									}
 								}
 							}else{
-								if(dynamic_cast<c_Armadillo*>(t_enemy)!=0){
-									int t_enemyRoll4=c_Util::m_RndIntRangeFromZero(2,true);
-									int t_108=t_enemyRoll4;
-									if(t_108==0){
-										(new c_Armadillo)->m_new(t_enemy->m_x,t_enemy->m_y,3);
+								if(dynamic_cast<c_Golem*>(t_enemy)!=0){
+									int t_enemyRoll5=c_Util::m_RndIntRangeFromZero(2,true);
+									int t_109=t_enemyRoll5;
+									if(t_109==0){
+										(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,3);
 									}else{
-										if(t_108==1){
-											(new c_Zombie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+										if(t_109==1){
+											(new c_Orc)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 										}else{
-											if(t_108==2){
-												(new c_Goblin)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+											if(t_109==2){
+												(new c_Yeti)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 											}
 										}
 									}
 								}else{
-									if(dynamic_cast<c_Golem*>(t_enemy)!=0){
-										int t_enemyRoll5=c_Util::m_RndIntRangeFromZero(2,true);
-										int t_109=t_enemyRoll5;
-										if(t_109==0){
-											(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,3);
-										}else{
-											if(t_109==1){
-												(new c_Orc)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
-											}else{
-												if(t_109==2){
-													(new c_Yeti)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-												}
-											}
-										}
+									int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(10,true);
+									int t_110=t_enemyRoll6;
+									if(t_110==0){
+										(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 									}else{
-										int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(10,true);
-										int t_110=t_enemyRoll6;
-										if(t_110==0){
-											(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+										if(t_110==1){
+											(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 										}else{
-											if(t_110==1){
-												(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+											if(t_110==2){
+												(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 											}else{
-												if(t_110==2){
-													(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+												if(t_110==3){
+													(new c_GoblinBomber)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 												}else{
-													if(t_110==3){
-														(new c_GoblinBomber)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+													if(t_110==4){
+														(new c_SleepingGoblin)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 													}else{
-														if(t_110==4){
-															(new c_SleepingGoblin)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+														if(t_110==5){
+															(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(3,4,true,-1));
 														}else{
-															if(t_110==5){
-																(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(3,4,true,-1));
+															if(t_110==6){
+																(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,3,true,-1));
 															}else{
-																if(t_110==6){
-																	(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,3,true,-1));
+																if(t_110==7){
+																	(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,3,true,-1));
 																}else{
-																	if(t_110==7){
-																		(new c_Skeleton)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,3,true,-1));
+																	if(t_110==8){
+																		(new c_Devil)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 																	}else{
-																		if(t_110==8){
-																			(new c_Devil)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+																		if(t_110==9){
+																			(new c_WaterBall)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																		}else{
-																			if(t_110==9){
-																				(new c_WaterBall)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-																			}else{
-																				if(t_110==10){
-																					(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-																				}
+																			if(t_110==10){
+																				(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																			}
 																		}
 																	}
@@ -25800,17 +25743,10 @@ void c_Level::m_PlaceEnemiesZone2(){
 							}
 						}
 					}
-					t_enemy->m_coinsToDrop=0;
-					t_enemy->p_Die();
-					t_enemiesReplaced+=1;
-					t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-					t_edx=0;
-					if(t_eax<0){
-						t_edx=3;
-					}
-					t_eax+=t_edx;
-					t_eax=t_eax/4-1;
-				}while(!(t_enemiesReplaced>t_eax));
+				}
+				t_enemy->m_coinsToDrop=0;
+				t_enemy->p_Die();
+				t_enemiesReplaced+=1;
 			}
 			c_IntPointList* t_walls=(new c_IntPointList)->m_new();
 			c_NodeEnumerator2* t_2=m_tiles->p_ObjectEnumerator();
@@ -26254,168 +26190,159 @@ void c_Level::m_PlaceEnemiesZone1(){
 	}else{
 		if(c_Util::m_IsCharacterActive(13)){
 			int t_enemiesReplaced=0;
-			int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-			int t_edx=0;
-			if(t_eax<0){
-				t_edx=3;
-			}
-			t_eax+=t_edx;
-			t_eax=t_eax/4-1;
-			if(t_eax>=0){
-				do{
-					c_Enemy* t_enemy=0;
-					while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=100){
-						t_enemy=c_Enemy::m_GetRandomEnemy();
-					}
-					if(dynamic_cast<c_Skeleton*>(t_enemy)!=0){
-						int t_enemyRoll3=c_Util::m_RndIntRangeFromZero(4,true);
-						int t_97=t_enemyRoll3;
-						if(t_97==0){
-							(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+			while(t_enemiesReplaced<(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())/2){
+				c_Enemy* t_enemy=0;
+				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType>=100){
+					t_enemy=c_Enemy::m_GetRandomEnemy();
+				}
+				if(dynamic_cast<c_Skeleton*>(t_enemy)!=0){
+					int t_enemyRoll3=c_Util::m_RndIntRangeFromZero(4,true);
+					int t_97=t_enemyRoll3;
+					if(t_97==0){
+						(new c_Lich)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+					}else{
+						if(t_97==1){
+							(new c_SkeletonKnight)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 						}else{
-							if(t_97==1){
-								(new c_SkeletonKnight)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+							if(t_97==2){
+								(new c_ArmoredSkeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 							}else{
-								if(t_97==2){
-									(new c_ArmoredSkeleton)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+								if(t_97==3){
+									(new c_SkeletonMage)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
 								}else{
-									if(t_97==3){
-										(new c_SkeletonMage)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+									if(t_97==4){
+										(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+									}
+								}
+							}
+						}
+					}
+				}else{
+					if(dynamic_cast<c_Slime*>(t_enemy)!=0){
+						int t_enemyRoll4=c_Util::m_RndIntRangeFromZero(5,true);
+						int t_98=t_enemyRoll4;
+						if(t_98==0){
+							int t_level=t_enemy->m_level-1;
+							if(t_level<1){
+								t_level=1;
+							}
+							(new c_Warlock)->m_new(t_enemy->m_x,t_enemy->m_y,t_level);
+						}else{
+							if(t_98==1){
+								int t_level2=t_enemy->m_level-1;
+								if(t_level2<1){
+									t_level2=1;
+								}
+								(new c_Blademaster)->m_new(t_enemy->m_x,t_enemy->m_y,t_level2);
+							}else{
+								if(t_98==2){
+									(new c_Clone)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+								}else{
+									if(t_98==3){
+										int t_level3=t_enemy->m_level-1;
+										if(t_level3<1){
+											t_level3=1;
+										}
+										(new c_Mushroom)->m_new(t_enemy->m_x,t_enemy->m_y,t_level3);
 									}else{
-										if(t_97==4){
-											(new c_Skull)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+										if(t_98==4){
+											int t_level4=t_enemy->m_level-1;
+											if(t_level4<1){
+												t_level4=1;
+											}
+											(new c_Goblin)->m_new(t_enemy->m_x,t_enemy->m_y,t_level4);
+										}else{
+											if(t_98==5){
+												(new c_Slime)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level+3);
+											}
 										}
 									}
 								}
 							}
 						}
 					}else{
-						if(dynamic_cast<c_Slime*>(t_enemy)!=0){
-							int t_enemyRoll4=c_Util::m_RndIntRangeFromZero(5,true);
-							int t_98=t_enemyRoll4;
-							if(t_98==0){
-								int t_level=t_enemy->m_level-1;
-								if(t_level<1){
-									t_level=1;
-								}
-								(new c_Warlock)->m_new(t_enemy->m_x,t_enemy->m_y,t_level);
+						if(dynamic_cast<c_Monkey*>(t_enemy)!=0){
+							int t_enemyRoll5=c_Util::m_RndIntRangeFromZero(4,true);
+							int t_99=t_enemyRoll5;
+							if(t_99==0){
+								(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level+2);
 							}else{
-								if(t_98==1){
-									int t_level2=t_enemy->m_level-1;
-									if(t_level2<1){
-										t_level2=1;
-									}
-									(new c_Blademaster)->m_new(t_enemy->m_x,t_enemy->m_y,t_level2);
+								if(t_99==1){
+									(new c_GoblinBomber)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 								}else{
-									if(t_98==2){
-										(new c_Clone)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-									}else{
-										if(t_98==3){
-											int t_level3=t_enemy->m_level-1;
-											if(t_level3<1){
-												t_level3=1;
-											}
-											(new c_Mushroom)->m_new(t_enemy->m_x,t_enemy->m_y,t_level3);
+									if(t_99==2){
+										if(t_enemy->m_level==1){
+											(new c_IceElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 										}else{
-											if(t_98==4){
-												int t_level4=t_enemy->m_level-1;
-												if(t_level4<1){
-													t_level4=1;
-												}
-												(new c_Goblin)->m_new(t_enemy->m_x,t_enemy->m_y,t_level4);
-											}else{
-												if(t_98==5){
-													(new c_Slime)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level+3);
-												}
+											(new c_FireElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+										}
+									}else{
+										if(t_99==3){
+											(new c_Armadillo)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
+										}else{
+											if(t_99==4){
+												(new c_WaterBall)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 											}
 										}
 									}
 								}
 							}
 						}else{
-							if(dynamic_cast<c_Monkey*>(t_enemy)!=0){
-								int t_enemyRoll5=c_Util::m_RndIntRangeFromZero(4,true);
-								int t_99=t_enemyRoll5;
-								if(t_99==0){
-									(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level+2);
+							if(dynamic_cast<c_Wraith*>(t_enemy)!=0){
+								int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(2,true);
+								int t_100=t_enemyRoll6;
+								if(t_100==0){
+									(new c_Wight)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 								}else{
-									if(t_99==1){
-										(new c_GoblinBomber)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+									if(t_100==1){
+										(new c_Ghast)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 									}else{
-										if(t_99==2){
-											if(t_enemy->m_level==1){
-												(new c_IceElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-											}else{
-												(new c_FireElemental)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-											}
-										}else{
-											if(t_99==3){
-												(new c_Armadillo)->m_new(t_enemy->m_x,t_enemy->m_y,t_enemy->m_level);
-											}else{
-												if(t_99==4){
-													(new c_WaterBall)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-												}
-											}
+										if(t_100==2){
+											(new c_Wraith)->m_new(t_enemy->m_x,t_enemy->m_y,2);
 										}
 									}
 								}
 							}else{
-								if(dynamic_cast<c_Wraith*>(t_enemy)!=0){
-									int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(2,true);
-									int t_100=t_enemyRoll6;
-									if(t_100==0){
-										(new c_Wight)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-									}else{
-										if(t_100==1){
-											(new c_Ghast)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-										}else{
-											if(t_100==2){
-												(new c_Wraith)->m_new(t_enemy->m_x,t_enemy->m_y,2);
-											}
-										}
-									}
+								int t_enemyRoll7=c_Util::m_RndIntRangeFromZero(12,true);
+								int t_101=t_enemyRoll7;
+								if(t_101==0){
+									(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 								}else{
-									int t_enemyRoll7=c_Util::m_RndIntRangeFromZero(12,true);
-									int t_101=t_enemyRoll7;
-									if(t_101==0){
-										(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+									if(t_101==1){
+										(new c_Mole)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 									}else{
-										if(t_101==1){
-											(new c_Mole)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+										if(t_101==2){
+											(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 										}else{
-											if(t_101==2){
-												(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+											if(t_101==3){
+												(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,2);
 											}else{
-												if(t_101==3){
-													(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,2);
+												if(t_101==4){
+													(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 												}else{
-													if(t_101==4){
-														(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+													if(t_101==5){
+														(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 													}else{
-														if(t_101==5){
-															(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+														if(t_101==6){
+															(new c_Yeti)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 														}else{
-															if(t_101==6){
-																(new c_Yeti)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+															if(t_101==7){
+																(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 															}else{
-																if(t_101==7){
-																	(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+																if(t_101==8){
+																	(new c_Harpy)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																}else{
-																	if(t_101==8){
-																		(new c_Harpy)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+																	if(t_101==9){
+																		(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																	}else{
-																		if(t_101==9){
-																			(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+																		if(t_101==10){
+																			(new c_EvilEye)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																		}else{
-																			if(t_101==10){
-																				(new c_EvilEye)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+																			if(t_101==11){
+																				(new c_Orc)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																			}else{
-																				if(t_101==11){
-																					(new c_Orc)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-																				}else{
-																					if(t_101==12){
-																						(new c_Devil)->m_new(t_enemy->m_x,t_enemy->m_y,1);
-																					}
+																				if(t_101==12){
+																					(new c_Devil)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 																				}
 																			}
 																		}
@@ -26432,17 +26359,10 @@ void c_Level::m_PlaceEnemiesZone1(){
 							}
 						}
 					}
-					t_enemy->m_coinsToDrop=0;
-					t_enemy->p_Die();
-					t_enemiesReplaced+=1;
-					t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
-					t_edx=0;
-					if(t_eax<0){
-						t_edx=3;
-					}
-					t_eax+=t_edx;
-					t_eax=t_eax/4-1;
-				}while(!(t_enemiesReplaced>t_eax));
+				}
+				t_enemy->m_coinsToDrop=0;
+				t_enemy->p_Die();
+				t_enemiesReplaced+=1;
 			}
 			c_IntPointList* t_walls=(new c_IntPointList)->m_new();
 			c_NodeEnumerator2* t_2=m_tiles->p_ObjectEnumerator();
