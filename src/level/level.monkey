@@ -11091,7 +11091,47 @@ Class Level
     End Function
 
     Function PlaceRandomEnemyForTempo: Void(xVal: Int, yVal: Int)
-        Debug.TraceNotImplemented("Level.PlaceRandomEnemyForTempo(Int, Int)")
+        Local enemyRoll = Util.RndIntRangeFromZero(18, True)
+        Select enemyRoll
+            Case 0
+                New Skeleton(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 1
+                New Slime(xVal, yVal, Util.RndIntRange(1, 6, True, -1))
+            Case 2
+                New ArmoredSkeleton(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 3
+                New Goblin(xVal, yVal, Util.RndIntRange(1, 2, True, -1))
+            Case 4
+                New Ghost(xVal, yVal, 1)
+            Case 5
+                New Pixie(xVal, yVal, 1)
+            Case 6
+                New Armadillo(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 7
+                New Blademaster(xVal, yVal, Util.RndIntRange(1, 2, True, -1))
+            Case 8
+                New ElectricMage(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 9
+                New EvilEye(xVal, yVal, Util.RndIntRange(1, 2, True, -1))
+            Case 10
+                New Golem(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 11
+                New Harpy(xVal, yVal, 1)
+            Case 12
+                New Yeti(xVal, yVal, 1)
+            Case 13
+                New Lich(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 14
+                New Mushroom(xVal, yVal, Util.RndIntRange(1, 2, True, -1))
+            Case 15
+                New Orc(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Case 16
+                New Warlock(xVal, yVal, Util.RndIntRange(1, 2, True, -1))
+            Case 17
+                New Skull(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+            Default
+                New ElectricMage(xVal, yVal, Util.RndIntRange(1, 3, True, -1))
+        End Select
     End Function
 
     Function PlaceRareEnemies: Void(room: RoomBase, hasExit: Bool)
