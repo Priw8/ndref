@@ -9966,6 +9966,9 @@ Class Level
                     Else
                         Local mushroomRoll := Util.RndBool(True)
                         If mushroomRoll
+                            point = Level.GetRandPointInRoomWithOptions(room, False, True, False)
+                            If point = Null Then Continue
+
                             New Mushroom(point.x, point.y, 2)
                         End If
                     End If
@@ -9998,11 +10001,149 @@ Class Level
 
         If Util.IsCharacterActive(Character.Aria)
             Debug.TraceNotImplemented("Level.PlaceEnemiesZone2() (Aria)")
+        Else If Util.IsCharacterActive(Character.Tempo)
+            Local enemiesReplaced := 0
+            'TODO: figure out what in the world this actually is
+            Local eax := (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
+            Local edx := 0
+            If eax < 0 Then edx = 3
+            eax += edx
+            eax = eax / 4 - 1
+            If eax >= 0
+                Repeat
+                    Local enemy: Enemy = Null
+                    While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 200 Or enemy.enemyType < 100
+                        enemy = Enemy.GetRandomEnemy()
+                    End
+                    
+                    If ArmoredSkeleton(enemy) <> Null
+                        Local enemyRoll := Util.RndIntRangeFromZero(3, True)
+                        Select enemyRoll
+                            Case 0
+                                New Lich(enemy.x, enemy.y, enemy.level)
+                            Case 1
+                                New Skeleton(enemy.x, enemy.y, enemy.level)
+                            Case 2
+                                New Skull(enemy.x, enemy.y, enemy.level)
+                            Case 3
+                                New SkeletonKnight(enemy.x, enemy.y, enemy.level)
+                        End Select
+                    Else If SkeletonMage(enemy) <> Null
+                        Local enemyRoll := Util.RndIntRangeFromZero(3, True)
+                        Select enemyRoll
+                            Case 0
+                                Local level := enemy.level - 1
+                                If level < 1 Then level = 1
+                                New Warlock(enemy.x, enemy.y, level)
+                            Case 1
+                                New Monkey(enemy.x, enemy.y, enemy.level)
+                            Case 2
+                                New ElectricMage(enemy.x, enemy.y, enemy.level)
+                            Case 3
+                                Local level := enemy.level + 3
+                                If level > 5 Then level = 5
+                                New Slime(enemy.x, enemy.y, level)
+                        End Select
+                    Else If Mushroom(enemy) <> Null
+                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                        Select enemyRoll
+                            Case 0
+                                New Blademaster(enemy.x, enemy.y, enemy.level)
+                            Case 1
+                                New Gorgon(enemy.x, enemy.y, 1)
+                            Case 2
+                                If enemy.level = 1
+                                    New IceElemental(enemy.x, enemy.y, 1)
+                                Else
+                                    New FireElemental(enemy.x, enemy.y, 1)
+                                End If
+                        End Select
+                    Else If Armadillo(enemy) <> Null
+                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                        Select enemyRoll
+                            Case 0
+                                New Armadillo(enemy.x, enemy.y, 3)
+                            Case 1
+                                New Zombie(enemy.x, enemy.y, 1)
+                            Case 2
+                                New Goblin(enemy.x, enemy.y, enemy.level)
+                        End Select
+                    Else If Golem(enemy) <> Null
+                        Local enemyRoll := Util.RndIntRangeFromZero(2, True)
+                        Select enemyRoll
+                            Case 0
+                                New Golem(enemy.x, enemy.y, 3)
+                            Case 1
+                                New Orc(enemy.x, enemy.y, enemy.level)
+                            Case 2
+                                New Yeti(enemy.x, enemy.y, 1)
+                        End Select
+                    Else
+                        Local enemyRoll := Util.RndIntRangeFromZero(10, True)
+                        Select enemyRoll
+                            Case 0
+                                New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 1
+                                New Hellhound(enemy.x, enemy.y, 1)
+                            Case 2
+                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 3
+                                New GoblinBomber(enemy.x, enemy.y, 1)
+                            Case 4
+                                New SleepingGoblin(enemy.x, enemy.y, 1)
+                            Case 5
+                                New Monkey(enemy.x, enemy.y, Util.RndIntRange(3, 4, True, -1))
+                            Case 6
+                                New Skull(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
+                            Case 7
+                                New Skeleton(enemy.x, enemy.y, Util.RndIntRange(1, 3, True, -1))
+                            Case 8
+                                New Devil(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 9
+                                New WaterBall(enemy.x, enemy.y, 1)
+                            Case 10
+                                New Pixie(enemy.x, enemy.y, 1)
+                        End
+                    End
+
+                    enemy.coinsToDrop = 0
+                    enemy.Die()
+                    enemiesReplaced += 1
+
+                    'TODO: figure out what in the world this actually is
+                    eax = (Enemy.enemyList.Count() - Crate.crateList.Count()) * 2
+                    edx = 0
+                    If eax < 0 Then edx = 3
+                    eax += edx
+                    eax = eax / 4 - 1
+                Until enemiesReplaced > eax
+            End If
+
+            Local walls := New IntPointList()
+
+            For Local tilesOnXNode := EachIn Level.tiles
+                For Local tileNode := EachIn tilesOnXNode.Value()
+                    Local tile := tileNode.Value()
+
+                    If Not tile.IsWall(False, True, False, False) Then Continue
+                    If tile.health >= 3 Then Continue
+
+                    walls.AddLast(New Point(tile.x, tile.y))
+                End For
+            End For
+
+            For Local numSpiders := 2 Until 0 Step -1
+                Local wallsIndex := Util.RndIntRangeFromZero(walls.Count() - 1, True)
+                Local wallsArray := walls.ToArray()
+                Local wall := wallsArray[wallsIndex]
+
+                If Enemy.GetEnemyAt(wall.x, wall.y, True) <> Null Then Continue
+                If Trap.GetTrapAt(wall.x, wall.y) <> Null Then Continue
+
+                New Spider(wall.x, wall.y, 1)
+            End For
         End If
 
-        If Util.IsCharacterActive(Character.Tempo)
-            Debug.TraceNotImplemented("Level.PlaceEnemiesZone2() (Tempo)")
-        End If
     End Function
 
     Function PlaceEnemiesZone3: Void()
