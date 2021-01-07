@@ -7001,11 +7001,11 @@ class c_Level : public Object{
 	static void m_PutVariedEnemiesZone5(c_StackEx2*);
 	static void m_PutEnemyZone5(int,int);
 	static void m_PutRoomEnemiesZone5(c_RoomBase*,bool);
+	static void m_PlaceRandomEnemyForTempo(int,int);
 	static void m_PlaceEnemiesZone5();
 	static bool m_IsWaterOrTarAt(int,int);
 	static c_Gargoyle* m_PlaceGargoyle(int,int,int);
 	static c_Gargoyle* m_PlaceGargoyle2(int,int);
-	static void m_PlaceRandomEnemyForTempo(int,int);
 	static void m_PlaceEnemiesZone4();
 	static c_Enemy* m_PlaceZone3Cauldron(int,int);
 	static bool m_IsInZone3Hot(int,int);
@@ -24386,64 +24386,6 @@ void c_Level::m_PutRoomEnemiesZone5(c_RoomBase* t_room,bool t_hasExit){
 		(new c_EvilEye)->m_new(t_point->m_x,t_point->m_y,t_evilEyeLevel2);
 	}
 }
-void c_Level::m_PlaceEnemiesZone5(){
-	bb_logger_Debug->p_Log(String(L"PLACEENEMIES: Placing zone 5 enemies",36));
-	c_StackEx5* t_wraithRooms=(new c_StackEx5)->m_new();
-	c_Enumerator27* t_=m_rooms->p_ObjectEnumerator();
-	while(t_->p_HasNext()){
-		c_RoomData* t_roomData=t_->p_NextObject();
-		int t_117=t_roomData->m_type;
-		if(t_117==3 || t_117==4 || t_117==5 || t_117==7){
-			continue;
-		}
-		c_RectRoom* t_room=(new c_RectRoom)->m_new(t_roomData);
-		m_PutRoomEnemiesZone5((t_room),t_roomData->m_hasExit);
-		t_wraithRooms->p_Push28(t_room);
-	}
-	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
-	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
-	t_wraithRooms->p_Push28(m_hallwayZone5);
-	if(m_AllowSpirit()){
-		c_RoomBase* t_room2=t_wraithRooms->p_ChooseRandom(true);
-		c_Point* t_point=m_GetRandPointInRoomWithOptions(t_room2,true,true,true,false,true,false);
-		if(t_point==0){
-			return;
-		}
-		(new c_Wraith)->m_new(t_point->m_x,t_point->m_y,2);
-	}
-	if(!m_isHardcoreMode){
-		bb_logger_Debug->p_TraceNotImplemented(String(L"Level.PlaceEnemiesZone5() (Non-Hardcore Mode)",45));
-	}
-	if(c_Util::m_IsCharacterActive(13)){
-		bb_logger_Debug->p_TraceNotImplemented(String(L"Level.PlaceEnemiesZone5() (Tempo)",33));
-	}
-}
-bool c_Level::m_IsWaterOrTarAt(int t_xVal,int t_yVal){
-	int t_60=m_GetTileTypeAt(t_xVal,t_yVal);
-	if(t_60==4 || t_60==8 || t_60==5){
-		return true;
-	}
-	return false;
-}
-c_Gargoyle* c_Level::m_PlaceGargoyle(int t_xVal,int t_yVal,int t_l){
-	if(c_Util::m_IsGlobalCollisionAt2(t_xVal,t_yVal,false,false,false,false)){
-		return 0;
-	}
-	if(m_IsExit(t_xVal,t_yVal)){
-		return 0;
-	}
-	if(c_Trap::m_GetTrapAt(t_xVal,t_yVal)!=0){
-		return 0;
-	}
-	if(m_IsWaterOrTarAt(t_xVal,t_yVal)){
-		return 0;
-	}
-	return (new c_Gargoyle)->m_new(t_xVal,t_yVal,t_l);
-}
-c_Gargoyle* c_Level::m_PlaceGargoyle2(int t_xVal,int t_yVal){
-	int t_level=c_Util::m_RndIntRange(1,5,true,-1);
-	return m_PlaceGargoyle(t_xVal,t_yVal,t_level);
-}
 void c_Level::m_PlaceRandomEnemyForTempo(int t_xVal,int t_yVal){
 	int t_enemyRoll=c_Util::m_RndIntRangeFromZero(18,true);
 	int t_129=t_enemyRoll;
@@ -24501,7 +24443,7 @@ void c_Level::m_PlaceRandomEnemyForTempo(int t_xVal,int t_yVal){
 																		if(t_129==17){
 																			(new c_Skull)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
 																		}else{
-																			(new c_ElectricMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
+																			(new c_SkeletonMage)->m_new(t_xVal,t_yVal,c_Util::m_RndIntRange(1,3,true,-1));
 																		}
 																	}
 																}
@@ -24520,6 +24462,90 @@ void c_Level::m_PlaceRandomEnemyForTempo(int t_xVal,int t_yVal){
 			}
 		}
 	}
+}
+void c_Level::m_PlaceEnemiesZone5(){
+	bb_logger_Debug->p_Log(String(L"PLACEENEMIES: Placing zone 5 enemies",36));
+	c_StackEx5* t_wraithRooms=(new c_StackEx5)->m_new();
+	c_Enumerator27* t_=m_rooms->p_ObjectEnumerator();
+	while(t_->p_HasNext()){
+		c_RoomData* t_roomData=t_->p_NextObject();
+		int t_117=t_roomData->m_type;
+		if(t_117==3 || t_117==4 || t_117==5 || t_117==7){
+			continue;
+		}
+		c_RectRoom* t_room=(new c_RectRoom)->m_new(t_roomData);
+		m_PutRoomEnemiesZone5((t_room),t_roomData->m_hasExit);
+		t_wraithRooms->p_Push28(t_room);
+	}
+	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
+	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
+	t_wraithRooms->p_Push28(m_hallwayZone5);
+	if(m_AllowSpirit()){
+		c_RoomBase* t_room2=t_wraithRooms->p_ChooseRandom(true);
+		c_Point* t_point=m_GetRandPointInRoomWithOptions(t_room2,true,true,true,false,true,false);
+		if(t_point==0){
+			return;
+		}
+		(new c_Wraith)->m_new(t_point->m_x,t_point->m_y,2);
+	}
+	if(!m_isHardcoreMode){
+		bb_logger_Debug->p_TraceNotImplemented(String(L"Level.PlaceEnemiesZone5() (Non-Hardcore Mode)",45));
+	}
+	if(c_Util::m_IsCharacterActive(13)){
+		int t_enemiesReplaced=0;
+		int t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
+		int t_edx=0;
+		if(t_eax<0){
+			t_edx=3;
+		}
+		t_eax+=t_edx;
+		t_eax=t_eax/4-1;
+		if(t_eax>=0){
+			do{
+				c_Enemy* t_enemy=0;
+				while(t_enemy==0 || t_enemy->m_isCrate || t_enemy->m_isMiniboss || dynamic_cast<c_NPC*>(t_enemy)!=0 || dynamic_cast<c_TrapChest*>(t_enemy)!=0 || t_enemy->m_enemyType<700){
+					t_enemy=c_Enemy::m_GetRandomEnemy();
+				}
+				m_PlaceRandomEnemyForTempo(t_enemy->m_x,t_enemy->m_y);
+				t_enemy->m_coinsToDrop=0;
+				t_enemy->p_Die();
+				t_enemiesReplaced+=1;
+				t_eax=(c_Enemy::m_enemyList->p_Count()-c_Crate::m_crateList->p_Count())*2;
+				t_edx=0;
+				if(t_eax<0){
+					t_edx=3;
+				}
+				t_eax+=t_edx;
+				t_eax=t_eax/4-1;
+			}while(!(t_enemiesReplaced>t_eax));
+		}
+	}
+}
+bool c_Level::m_IsWaterOrTarAt(int t_xVal,int t_yVal){
+	int t_60=m_GetTileTypeAt(t_xVal,t_yVal);
+	if(t_60==4 || t_60==8 || t_60==5){
+		return true;
+	}
+	return false;
+}
+c_Gargoyle* c_Level::m_PlaceGargoyle(int t_xVal,int t_yVal,int t_l){
+	if(c_Util::m_IsGlobalCollisionAt2(t_xVal,t_yVal,false,false,false,false)){
+		return 0;
+	}
+	if(m_IsExit(t_xVal,t_yVal)){
+		return 0;
+	}
+	if(c_Trap::m_GetTrapAt(t_xVal,t_yVal)!=0){
+		return 0;
+	}
+	if(m_IsWaterOrTarAt(t_xVal,t_yVal)){
+		return 0;
+	}
+	return (new c_Gargoyle)->m_new(t_xVal,t_yVal,t_l);
+}
+c_Gargoyle* c_Level::m_PlaceGargoyle2(int t_xVal,int t_yVal){
+	int t_level=c_Util::m_RndIntRange(1,5,true,-1);
+	return m_PlaceGargoyle(t_xVal,t_yVal,t_level);
 }
 void c_Level::m_PlaceEnemiesZone4(){
 	bb_logger_Debug->p_Log(String(L"PLACEENEMIES: Placing zone 4 enemies",36));
