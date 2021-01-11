@@ -753,7 +753,7 @@ Class Tile Extends RenderableObject
             Case 2
                 Return TilesetType.Zone2
             Case 3
-                If ((Self.x * Level.zone3DividingLineX) - (Self.y * Level.zone3DividingLineY) > 0)
+                If Not Level.IsInZone3Hot(Self.x, Self.y)
                     Return TilesetType.Zone3Cold
                 End If
 

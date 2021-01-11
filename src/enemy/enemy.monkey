@@ -3066,8 +3066,7 @@ Class Enemy Extends MobileEntity Abstract
     End Method
 
     Method IsCullable: Bool()
-        'TODO: I don't know what field_0x3c is; it being False is a part of the condition
-        return Not (Self.inSecretRoom Or Self.dead Or Self.isMiniboss Or Self.containsItem Or Self.isNPC Or Self.inArena or Self.isSarcophagus)
+        return Not (Self.inSecretRoom Or Self.dead Or Self.isCrate Or Self.isMiniboss Or Self.containsItem Or Self.isNPC Or Self.inArena or Self.isSarcophagus)
     End Method
 
     Method IsDoubleHit: Bool(damageSource: Int, hitter: Object)

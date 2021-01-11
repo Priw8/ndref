@@ -10164,8 +10164,10 @@ Class Level
                     Case 0
                         Level.PlaceZone3YetiHellhound(point.x, point.y)
                     Case 1
-                        ' NOTE: This value is not used.
+                        'Note: ghidra is confused and sad here, but it does spawn a Yeti or Hellhound as far as I can tell from assembly
                         point = Level.GetRandPointInRoomWithOptions(room, False, False, False)
+                        if point = null Then Continue
+                        Level.PlaceZone3YetiHellhound(point.x, point.y)
                     Case 2
                         Local skeletonKnightLevel := Util.RndIntRange(2, 3, True, -1)
                         New SkeletonKnight(point.x, point.y, skeletonKnightLevel)
@@ -10382,16 +10384,16 @@ Class Level
                         point = Level.GetRandPointInRoomWithOptions(room, False, True, False)
                         If point = null Then Continue
 
-                        Local goblinLevel := Util.RndIntRange(1, 2, True, -1)
-                        New Goblin(point.x, point.y, goblinLevel)
-                    Else
-                        point = Level.GetRandPointInRoomWithOptions(room, False, True, False)
-                        If point = null Then Continue
-
                         ' NOTE: The value for this roll is not checked.
                         Util.RndBool(True)
 
                         Level.PlaceZone3Elemental(point.x, point.y)
+                    Else
+                        point = Level.GetRandPointInRoomWithOptions(room, False, True, False)
+                        If point = null Then Continue
+
+                        Local goblinLevel := Util.RndIntRange(1, 2, True, -1)
+                        New Goblin(point.x, point.y, goblinLevel)
                     End If
 
                     If room.hasExit
@@ -10434,7 +10436,77 @@ Class Level
         End For
 
         If Util.IsCharacterActive(Character.Aria)
-            Debug.TraceNotImplemented("Level.PlaceEnemiesZone3() (Aria section)")
+            Local enemiesReplaced := 0
+            While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 4
+                Local enemy: Enemy = Null
+                While enemy = Null Or enemy.isCrate Or enemy.isMiniboss Or NPC(enemy) <> Null Or TrapChest(enemy) <> Null Or enemy.enemyType >= 300
+                    enemy = Enemy.GetRandomEnemy()
+                End
+
+                If SkeletonKnight(enemy)
+                    New Lich(enemy.x, enemy.y, enemy.level)
+                Else If Slime(enemy)
+                    New Warlock(enemy.x, enemy.y, enemy.level - 3)
+                Else If FireElemental(enemy)
+                    New Blademaster(enemy.x, enemy.y, 2)
+                Else If IceElemental(enemy)
+                    New Blademaster(enemy.x, enemy.y, 1)
+                Else If Goblin(enemy)
+                    New GoblinBomber(enemy.x, enemy.y, 1)
+                Else If Beetle(enemy)
+                    New Monkey(enemy.x, enemy.y, enemy.level + 2)
+                Else If Not Ghast(enemy)
+                    If Bat(enemy)
+                        'Spawns with level 1 anyway, because of Aria check in the bat code
+                        New Bat(enemy.x, enemy.y, 4)
+                    Else
+                        Local enemyRoll = Util.RndIntRangeFromZero(4, true)
+                        Select enemyRoll
+                            Case 0
+                                New Armadillo(enemy.x, enemy.y, 3)
+                            Case 1
+                                New Pixie(enemy.x, enemy.y, 1)
+                            Case 2
+                                'Spawns with level 1 anyway, because of Aria check in the bat code
+                                New Bat(enemy.x, enemy.y, 4)
+                            Case 3
+                                New Harpy(enemy.x, enemy.y, 1)
+                            Case 4
+                                New Golem(enemy.x, enemy.y, 3)
+                        End Select
+                    End
+                End
+
+                enemy.coinsToDrop = 0
+                enemy.Die()
+
+                enemiesReplaced += 1
+            End While
+
+            'It still tries to spawn spiders, which then refuse to spawn because of the check in spider code... *what*
+            Local walls := New IntPointList()
+
+            For Local tilesOnXNode := EachIn Level.tiles
+                For Local tileNode := EachIn tilesOnXNode.Value()
+                    Local tile := tileNode.Value()
+
+                    If Not tile.IsWall(False, True, False, False) Then Continue
+                    If tile.health >= 3 Then Continue
+
+                    walls.AddLast(New Point(tile.x, tile.y))
+                End For
+            End For
+
+            For Local numSpiders := 2 Until 0 Step -1
+                Local wallsIndex := Util.RndIntRangeFromZero(walls.Count() - 1, True)
+                Local wallsArray := walls.ToArray()
+                Local wall := wallsArray[wallsIndex]
+
+                If Enemy.GetEnemyAt(wall.x, wall.y, True) <> Null Then Continue
+                If Trap.GetTrapAt(wall.x, wall.y) <> Null Then Continue
+
+                New Spider(wall.x, wall.y, 1)
+            End For
         Else If Util.IsCharacterActive(Character.Tempo)
             Local enemiesReplaced := 0
             While enemiesReplaced < (Enemy.enemyList.Count() - Crate.crateList.Count()) / 2
@@ -10862,13 +10934,16 @@ Class Level
             Case TileType.Ice
                 Level.PlaceTileRemovingExistingTiles(xVal, yVal, TileType.Water)
                 ' SKIPPING: Audio part
+            Case TileType.Water,
+                 TileType.DeepWater
+                Level.PlaceTileRemovingExistingTiles(xVal, yVal, TileType.Floor)
             Default
                 Local trap := Trap.GetTrapAt(xVal, yVal)
                 If trap <> Null
                     trap.Die()
                 End If
 
-                Level.PlaceTileRemovingExistingTiles(xVal, yVal, TileType.Ice)
+                Level.PlaceTileRemovingExistingTiles(xVal, yVal, TileType.HotCoal)
         End Select
     End Function
 
