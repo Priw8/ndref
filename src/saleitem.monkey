@@ -174,7 +174,7 @@ Class SaleItem Extends Item
     End Method
 
     Method GetCost: Float()
-        Debug.TraceNotImplemented("SaleItem.GetCost()")
+        return Ceil(Self.cost)
     End Method
 
     Method Pickup: String(player: Player)

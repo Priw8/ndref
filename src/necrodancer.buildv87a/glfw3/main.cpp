@@ -37880,8 +37880,7 @@ void c_SaleItem::p_Die(){
 	c_Item::p_Die();
 }
 Float c_SaleItem::p_GetCost(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"SaleItem.GetCost()",18));
-	return 0;
+	return (Float)ceil(this->m_cost);
 }
 int c_SaleItem::m_GetMinCost(){
 	int t_minCost=999999;
