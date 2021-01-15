@@ -2120,10 +2120,10 @@ Class Level
         Local point: Point
 
         point = Level.GetRandomOffsetPoint()
-        Local enemy1 := Enemy.MakeEnemy(point.x, point.y, enemyType1)
+        Local enemy1 := Enemy.MakeEnemy(point.x - 4, point.y - 9, enemyType1)
         enemy1.ActivateLight(0.01, 1.5)
         point = Level.GetRandomOffsetPoint()
-        Local enemy2 := Enemy.MakeEnemy(point.x, point.y, enemyType2)
+        Local enemy2 := Enemy.MakeEnemy(point.x + 4, point.y - 9, enemyType2)
         enemy2.ActivateLight(0.01, 1.5)
 
         Local enemyType3 := EnemyType.GreenSlime
@@ -2150,10 +2150,10 @@ Class Level
         End Select
 
         point = Level.GetRandomOffsetPoint()
-        Local enemy3 := Enemy.MakeEnemy(point.x, point.y, enemyType3)
+        Local enemy3 := Enemy.MakeEnemy(point.x - 5, point.y - 13, enemyType3)
         enemy3.ActivateLight(0.01, 1.5)
         point = Level.GetRandomOffsetPoint()
-        Local enemy4 := Enemy.MakeEnemy(point.x, point.y, enemyType4)
+        Local enemy4 := Enemy.MakeEnemy(point.x + 5, point.y - 13, enemyType4)
         enemy4.ActivateLight(0.01, 1.5)
 
         Level.BossMaybeMinibossesAt(-5, 0, 4, 0)

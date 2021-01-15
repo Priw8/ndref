@@ -20516,10 +20516,10 @@ void c_Level::m_CreateBossBattle9(){
 	}
 	c_Point* t_point=0;
 	t_point=m_GetRandomOffsetPoint();
-	c_Enemy* t_enemy1=c_Enemy::m_MakeEnemy(t_point->m_x,t_point->m_y,t_enemyType1);
+	c_Enemy* t_enemy1=c_Enemy::m_MakeEnemy(t_point->m_x-4,t_point->m_y-9,t_enemyType1);
 	t_enemy1->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	t_point=m_GetRandomOffsetPoint();
-	c_Enemy* t_enemy2=c_Enemy::m_MakeEnemy(t_point->m_x,t_point->m_y,t_enemyType2);
+	c_Enemy* t_enemy2=c_Enemy::m_MakeEnemy(t_point->m_x+4,t_point->m_y-9,t_enemyType2);
 	t_enemy2->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	int t_enemyType3=0;
 	int t_enemyType4=0;
@@ -20549,10 +20549,10 @@ void c_Level::m_CreateBossBattle9(){
 		}
 	}
 	t_point=m_GetRandomOffsetPoint();
-	c_Enemy* t_enemy3=c_Enemy::m_MakeEnemy(t_point->m_x,t_point->m_y,t_enemyType3);
+	c_Enemy* t_enemy3=c_Enemy::m_MakeEnemy(t_point->m_x-5,t_point->m_y-13,t_enemyType3);
 	t_enemy3->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	t_point=m_GetRandomOffsetPoint();
-	c_Enemy* t_enemy4=c_Enemy::m_MakeEnemy(t_point->m_x,t_point->m_y,t_enemyType4);
+	c_Enemy* t_enemy4=c_Enemy::m_MakeEnemy(t_point->m_x+5,t_point->m_y-13,t_enemyType4);
 	t_enemy4->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	m_BossMaybeMinibossesAt(-5,0,4,0);
 	c_Enemy::m_enemiesPaused=true;
