@@ -19923,6 +19923,7 @@ void c_Level::m_CreateBossBattle1(){
 	t_kingConga->p_AddZombieFriend(t_zombieLeftTop2);
 	t_kingConga->p_AddZombieFriend(t_zombieLeftTop3);
 	t_kingConga->p_AddZombieFriend(t_zombieLeftTop4);
+	t_zombieBasePoint->m_x=-t_zombieBasePoint->m_x;
 	c_ZombieSnake* t_zombieRightBottom1=(new c_ZombieSnake)->m_new(t_zombieBasePoint->m_x+3,t_zombieBasePoint->m_y-15,1);
 	c_ZombieSnake* t_zombieRightBottom2=(new c_ZombieSnake)->m_new(t_zombieBasePoint->m_x+4,t_zombieBasePoint->m_y-15,1);
 	c_ZombieSnake* t_zombieRightBottom3=(new c_ZombieSnake)->m_new(t_zombieBasePoint->m_x+5,t_zombieBasePoint->m_y-15,1);

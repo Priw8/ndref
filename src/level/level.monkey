@@ -1467,6 +1467,8 @@ Class Level
         kingConga.AddZombieFriend(zombieLeftTop3)
         kingConga.AddZombieFriend(zombieLeftTop4)
 
+        zombieBasePoint.x = -zombieBasePoint.x
+
         Local zombieRightBottom1 := New ZombieSnake(zombieBasePoint.x + 3, zombieBasePoint.y - 15, 1)
         Local zombieRightBottom2 := New ZombieSnake(zombieBasePoint.x + 4, zombieBasePoint.y - 15, 1)
         Local zombieRightBottom3 := New ZombieSnake(zombieBasePoint.x + 5, zombieBasePoint.y - 15, 1)
