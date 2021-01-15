@@ -190,8 +190,7 @@ Class Crate Extends Enemy
         If Level.creatingMap Then replayConsistencyChannel = -1
 
         Local itemRoll := Util.RndIntRange(0, 100, False, replayConsistencyChannel)
-        If (Self.crateType = Crate.TYPE_BARREL And itemRoll <= 30) Or
-           itemRoll <= 40
+        If itemRoll <= 30 Or (Self.crateType <> Crate.TYPE_BARREL And itemRoll <= 40)
             Self.beEmpty = True
         Else If Not Self.beEmpty
             Self.contents = Crate.SelectItem(controller_game.currentLevel)

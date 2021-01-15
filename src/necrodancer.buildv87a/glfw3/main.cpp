@@ -42516,7 +42516,7 @@ void c_Crate::p_DecideIfStayingEmpty(){
 		t_replayConsistencyChannel=-1;
 	}
 	int t_itemRoll=c_Util::m_RndIntRange(0,100,false,t_replayConsistencyChannel);
-	if(this->m_crateType==1 && t_itemRoll<=30 || t_itemRoll<=40){
+	if(t_itemRoll<=30 || this->m_crateType!=1 && t_itemRoll<=40){
 		this->m_beEmpty=true;
 	}else{
 		if(!this->m_beEmpty){
