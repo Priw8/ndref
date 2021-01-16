@@ -237,12 +237,16 @@ Class Crate Extends Enemy
             Return
         End If
 
-        If coinsRoll > 98
+        If coinsRoll < 99
             Self.emptyCoins = 30
             If Player.DoesAnyPlayerHaveItemOfType(ItemType.RingOfLuck)
                 Self.emptyCoins = 50
             End If
+
+            Return
         End If
+        
+        Self.emptyCoins = 50
     End Method
 
     Method DetermineContents: Void()

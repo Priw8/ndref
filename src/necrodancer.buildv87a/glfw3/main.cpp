@@ -42553,12 +42553,14 @@ void c_Crate::p_DecideIfStayingEmpty(){
 		}
 		return;
 	}
-	if(t_coinsRoll>98){
+	if(t_coinsRoll<99){
 		this->m_emptyCoins=30;
 		if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"ring_luck",9),false)){
 			this->m_emptyCoins=50;
 		}
+		return;
 	}
+	this->m_emptyCoins=50;
 }
 void c_Crate::p_DetermineContents(){
 	int t_2=this->m_crateType;
