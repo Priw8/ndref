@@ -17,6 +17,7 @@ Class MotherSlime Extends Enemy
     Field rapierPoint: Point
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("MotherSlime.Die()")
     End Method
 

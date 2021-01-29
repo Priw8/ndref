@@ -61,6 +61,7 @@ Class Bomb Extends Item
     Field explosionFrame: Int
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("Bomb.Die()")
     End Method
 

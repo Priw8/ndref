@@ -66,6 +66,7 @@ Class ConductorBattery Extends Enemy
     End Method
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("ConductorBattery.Die()")
     End Method
 

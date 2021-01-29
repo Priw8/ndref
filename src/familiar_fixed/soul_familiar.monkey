@@ -39,6 +39,7 @@ Class SoulFamiliar Extends FamiliarFixed
     Field spawnedOnBeat: Int
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("SoulFamiliar.Die()")
     End Method
 

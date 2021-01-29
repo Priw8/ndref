@@ -34,6 +34,7 @@ Class LuteHead Extends Enemy
     End Method
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("LuteHead.Die()")
     End Method
 

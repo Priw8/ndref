@@ -33,6 +33,7 @@ Class CrystalShards Extends Entity
     Field fadeBeats: Int = 2
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("CrystalShards.Die()")
     End Method
 

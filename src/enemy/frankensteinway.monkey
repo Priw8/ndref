@@ -45,6 +45,7 @@ Class Frankensteinway Extends Enemy
     End Method
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("Frankensteinway.Die()")
     End Method
 

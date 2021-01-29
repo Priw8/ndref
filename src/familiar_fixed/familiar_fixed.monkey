@@ -41,6 +41,7 @@ Class FamiliarFixed Extends Entity Abstract
     End Method
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("FamiliarFixed.Die()")
     End Method
 

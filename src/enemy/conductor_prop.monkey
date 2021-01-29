@@ -29,6 +29,7 @@ Class ConductorProp Extends Enemy
     End Method
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("ConductorProp.Die()")
     End Method
 

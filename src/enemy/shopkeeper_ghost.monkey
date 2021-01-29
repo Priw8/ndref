@@ -14,6 +14,7 @@ Class ShopkeeperGhost Extends Enemy
     Field soundPlaying: Bool
 
     Method Die: Void()
+        Super.Die()
         Debug.TraceNotImplemented("ShopkeeperGhost.Die()")
     End Method
 
