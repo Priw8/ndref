@@ -20723,19 +20723,24 @@ void c_Level::m_AddMinibossWall(int t_xVal,int t_yVal,int t_wallType){
 	m_wasMinibossLockedInBattle=true;
 }
 void c_Level::m_CreateBossBattle(){
+	bool t_selectedFinalBoss=false;
 	if(m_IsFinalBossZone()){
 		if(c_Util::m_IsCharacterActive(2)){
-			m_bossNumber=7;
+			m_bossNumber=8;
+			t_selectedFinalBoss=true;
 		}else{
 			if(c_Util::m_IsCharacterActive(10)){
 				m_bossNumber=10;
+				t_selectedFinalBoss=true;
 			}else{
 				if(c_Util::m_IsCharacterActive(0)){
 					m_bossNumber=5;
+					t_selectedFinalBoss=true;
 				}
 			}
 		}
-	}else{
+	}
+	if(!t_selectedFinalBoss){
 		c_IntStack* t_bossNumbers=(new c_IntStack)->m_new2();
 		t_bossNumbers->p_Push4(1);
 		t_bossNumbers->p_Push4(2);
@@ -56902,7 +56907,7 @@ c_ShopkeeperGhost* c_ShopkeeperGhost::m_new(int t_xVal,int t_yVal,int t_l){
 	if(!c_GameData::m_GetDaoustVocals()){
 		this->p_Init3(t_xVal,t_yVal,1,String(L"shopkeeper_ghost",16),String(),-1,-1);
 	}else{
-		this->p_Init3(t_xVal,t_yVal,1,String(L"shopkeeper_ghost",16),String(),-1,-1);
+		this->p_Init3(t_xVal,t_yVal,2,String(L"shopkeeper_ghost",16),String(),-1,-1);
 	}
 	this->m_level=1;
 	this->m_movesRegardlessOfDistance=true;

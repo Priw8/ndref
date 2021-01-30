@@ -1257,16 +1257,20 @@ Class Level
     End Function
 
     Function CreateBossBattle: Void()
+        Local selectedFinalBoss: Bool = False
         If Level.IsFinalBossZone()
-            ' TODO: Verify boss numbers.
             If Util.IsCharacterActive(Character.Aria)
-                Level.bossNumber = 7
+                Level.bossNumber = 8
+                selectedFinalBoss = True
             Else If Util.IsCharacterActive(Character.Nocturna)
                 Level.bossNumber = 10
+                selectedFinalBoss = True
             Else If Util.IsCharacterActive(Character.Cadence)
                 Level.bossNumber = 5
+                selectedFinalBoss = True
             End If
-        Else
+        End
+        If Not selectedFinalBoss Then
             Local bossNumbers := New IntStack()
             bossNumbers.Push(1)
             bossNumbers.Push(2)
