@@ -2,13 +2,22 @@
 
 Import enemy
 Import logger
+Import gamedata
 
 Class ShopkeeperGhost Extends Enemy
 
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int, l: Int)
-        Debug.TraceNotImplemented("ShopkeeperGhost.New(Int, Int, Int)")
+        If Not GameData.GetDaoustVocals()
+            Self.Init(xVal, yVal, 1, "shopkeeper_ghost")
+        Else
+            Self.Init(xVal, yVal, 2, "shopkeeper_ghost")
+        End
+        Self.level = 1
+        Self.movesRegardlessOfDistance = True
+        Self.overrideDeathSound = "shopkeeperGhostDeath"
+        Debug.TraceNotImplemented("ShopkeeperGhost.New() (some vtable calls and fields)")
     End Method
 
     Field soundPlaying: Bool

@@ -36621,6 +36621,7 @@ c_FamiliarFixed::c_FamiliarFixed(){
 	m_offsetY=0;
 }
 void c_FamiliarFixed::p_Die(){
+	c_Entity::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"FamiliarFixed.Die()",19));
 }
 c_List4* c_FamiliarFixed::m_familiarList;
@@ -48616,6 +48617,7 @@ c_SoulFamiliar* c_SoulFamiliar::m_new2(){
 }
 c_List20* c_SoulFamiliar::m_allSouls;
 void c_SoulFamiliar::p_Die(){
+	c_FamiliarFixed::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"SoulFamiliar.Die()",18));
 }
 bool c_SoulFamiliar::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
@@ -53757,6 +53759,7 @@ c_Bomb* c_Bomb::m_new2(){
 	return this;
 }
 void c_Bomb::p_Die(){
+	c_Item::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Die()",10));
 }
 bool c_Bomb::p_IsVisible(){
@@ -55709,6 +55712,7 @@ c_Necrodancer* c_Necrodancer::m_new2(){
 	return this;
 }
 void c_Necrodancer::p_Die(){
+	c_Enemy::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Die()",17));
 }
 c_Point* c_Necrodancer::p_GetMovementDirection(){
@@ -56895,7 +56899,15 @@ c_ShopkeeperGhost::c_ShopkeeperGhost(){
 }
 c_ShopkeeperGhost* c_ShopkeeperGhost::m_new(int t_xVal,int t_yVal,int t_l){
 	c_Enemy::m_new();
-	bb_logger_Debug->p_TraceNotImplemented(String(L"ShopkeeperGhost.New(Int, Int, Int)",34));
+	if(!c_GameData::m_GetDaoustVocals()){
+		this->p_Init3(t_xVal,t_yVal,1,String(L"shopkeeper_ghost",16),String(),-1,-1);
+	}else{
+		this->p_Init3(t_xVal,t_yVal,1,String(L"shopkeeper_ghost",16),String(),-1,-1);
+	}
+	this->m_level=1;
+	this->m_movesRegardlessOfDistance=true;
+	this->m_overrideDeathSound=String(L"shopkeeperGhostDeath",20);
+	bb_logger_Debug->p_TraceNotImplemented(String(L"ShopkeeperGhost.New() (some vtable calls and fields)",52));
 	return this;
 }
 c_ShopkeeperGhost* c_ShopkeeperGhost::m_new2(){
@@ -56903,6 +56915,7 @@ c_ShopkeeperGhost* c_ShopkeeperGhost::m_new2(){
 	return this;
 }
 void c_ShopkeeperGhost::p_Die(){
+	c_Enemy::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"ShopkeeperGhost.Die()",21));
 }
 bool c_ShopkeeperGhost::p_IsVisible(){
@@ -63094,6 +63107,7 @@ c_CrystalShards* c_CrystalShards::m_new2(){
 	return this;
 }
 void c_CrystalShards::p_Die(){
+	c_Entity::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"CrystalShards.Die()",19));
 }
 bool c_CrystalShards::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
@@ -63235,6 +63249,7 @@ void c_ConductorBattery::m_WaterBallDeath(c_WaterBall* t_enemy){
 	}
 }
 void c_ConductorBattery::p_Die(){
+	c_Enemy::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"ConductorBattery.Die()",22));
 }
 bool c_ConductorBattery::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
