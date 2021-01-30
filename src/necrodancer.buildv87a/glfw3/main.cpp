@@ -19693,7 +19693,7 @@ void c_Level::m_PlaceFirstBossRoom(String t_bossTrainingName,int t_tilesetOverri
 		m_PlaceTileRemovingExistingTiles(2,0,2,false,-1,false);
 	}
 	if(c_Util::m_IsCharacterActive(13)){
-		if(m_WantPenaltyBox()){
+		if(!m_WantPenaltyBox()){
 			c_Sarcophagus* t_sarcophagus=(new c_Sarcophagus)->m_new(-2,2,1);
 			t_sarcophagus->m_exemptFromPause=true;
 			t_sarcophagus->m_hasBeenVisible=true;
