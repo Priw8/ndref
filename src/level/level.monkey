@@ -737,7 +737,7 @@ Class Level
                 Level.specialRoomEntranceX = entranceX
                 Level.specialRoomEntranceY = entranceY
 
-                New TravelRune(entranceX, entranceY + 1, Level.secretAtX, Level.secretAtY, TravelRuneType.Transmogrifier)
+                New TravelRune(entranceX, entranceY, Level.secretAtX, Level.secretAtY, TravelRuneType.Transmogrifier)
 
                 Level.transmogrifier = New Transmogrifier(entranceX, entranceY - 3, 1, False)
 
