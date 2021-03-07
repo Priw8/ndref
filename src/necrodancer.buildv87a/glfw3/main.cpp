@@ -21170,7 +21170,7 @@ void c_Level::m_AddSpecialRoom(int t_roomType,bool t_addCrack){
 						int t_entranceY5=-193;
 						m_specialRoomEntranceX=t_entranceX5;
 						m_specialRoomEntranceY=t_entranceY5;
-						(new c_TravelRune)->m_new(t_entranceX5,t_entranceY5+1,m_secretAtX,m_secretAtY,1);
+						(new c_TravelRune)->m_new(t_entranceX5,t_entranceY5,m_secretAtX,m_secretAtY,1);
 						gc_assign(m_transmogrifier,(new c_Transmogrifier)->m_new(t_entranceX5,t_entranceY5-3,1,false));
 						c_Tile* t_headTile=m_GetTileAt(t_entranceX5-1,t_entranceY5-4);
 						t_headTile->p_AddFloorOverlayImage(String(L"level/tile_transmogrify_head.png",32));
@@ -55718,6 +55718,7 @@ c_Necrodancer* c_Necrodancer::m_new2(){
 }
 void c_Necrodancer::p_Die(){
 	c_Enemy::p_Die();
+	m_necrodancer=0;
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Die()",17));
 }
 c_Point* c_Necrodancer::p_GetMovementDirection(){

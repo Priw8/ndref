@@ -83,6 +83,7 @@ Class Necrodancer Extends Enemy
 
     Method Die: Void()
         Super.Die()
+        Necrodancer.necrodancer = Null
         Debug.TraceNotImplemented("Necrodancer.Die()")
     End Method
 
