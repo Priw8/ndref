@@ -2948,24 +2948,24 @@ Class Level
         For Local i := 500 Until 0 Step -1
             trap = Trap.FindRandomTrap()
             If trap <> Null
-                If trap.canBeReplacedByTempoTrap And
-                   trap.trapType = TrapType.BounceTrap
+                If trap.canBeReplacedByTempoTrap And trap.trapType = TrapType.BounceTrap Then
+                    Local trapX := trap.x
+                    Local trapY := trap.y
+
+                    trap.Die()
+
+                    If Util.RndBool(True)
+                        New SpeedUpTrap(trapX, trapY)
+                        Debug.Log("CREATEMAP ZONE1: Speedup trap placed at " + trapX + ", " + trapY)
+                    Else
+                        New SlowDownTrap(trap.x, trap.y)
+                        Debug.Log("CREATEMAP ZONE1: Slowdown trap placed at " + trapX + ", " + trapY)
+                    End If
+
                     Exit
                 End If
             End If
         End For
-
-        If trap <> Null
-            trap.Die()
-
-            If Util.RndBool(True)
-                New SpeedUpTrap(trap.x, trap.y)
-                Debug.Log("CREATEMAP ZONE1: Speedup trap placed at " + trap.x + ", " + trap.y)
-            Else
-                New SlowDownTrap(trap.x, trap.y)
-                Debug.Log("CREATEMAP ZONE1: Slowdown trap placed at " + trap.x + ", " + trap.y)
-            End If
-        End If
 
         Debug.Log("CREATEMAP ZONE1: Placing torches")
         Local minTorch := 4
@@ -3275,27 +3275,24 @@ Class Level
         For Local i := 500 Until 0 Step -1
             trap = Trap.FindRandomTrap()
             If trap <> Null
-                If trap.canBeReplacedByTempoTrap And
-                   trap.trapType = TrapType.BounceTrap
+                If trap.canBeReplacedByTempoTrap And trap.trapType = TrapType.BounceTrap Then
+                    Local trapX := trap.x
+                    Local trapY := trap.y
+
+                    trap.Die()
+
+                    If Util.RndBool(True)
+                        New SpeedUpTrap(trapX, trapY)
+                        Debug.Log("CREATEMAP ZONE2: Speedup trap placed at " + trapX + "/" + trap.y)
+                    Else
+                        New SlowDownTrap(trapX, trapY)
+                        Debug.Log("CREATEMAP ZONE2: Slowdown trap placed at " + trapX + "/" + trap.y)
+                    End If
+
                     Exit
                 End If
             End If
         End For
-
-        If trap <> Null
-            Local trapX := trap.x
-            Local trapY := trap.y
-
-            trap.Die()
-
-            If Util.RndBool(True)
-                New SpeedUpTrap(trapX, trapY)
-                Debug.Log("CREATEMAP ZONE2: Speedup trap placed at " + trapX + "/" + trap.y)
-            Else
-                New SlowDownTrap(trapX, trapY)
-                Debug.Log("CREATEMAP ZONE2: Slowdown trap placed at " + trapX + "/" + trap.y)
-            End If
-        End If
 
         Debug.Log("CREATEMAP ZONE2: Placing glowing mushrooms")
         Local anotherRooms := New List<RoomData>()
@@ -3648,27 +3645,24 @@ Class Level
         For Local i := 500 Until 0 Step -1
             trap = Trap.FindRandomTrap()
             If trap <> Null
-                If trap.canBeReplacedByTempoTrap And
-                   trap.trapType = TrapType.BounceTrap
+                If trap.canBeReplacedByTempoTrap And trap.trapType = TrapType.BounceTrap Then
+                    Local trapX := trap.x
+                    Local trapY := trap.y
+
+                    trap.Die()
+
+                    If Util.RndBool(True)
+                        New SpeedUpTrap(trapX, trapY)
+                        Debug.Log("CREATEMAP ZONE3: Speedup trap placed at " + trapX + "/" + trap.y)
+                    Else
+                        New SlowDownTrap(trapX, trapY)
+                        Debug.Log("CREATEMAP ZONE3: Slowdown trap placed at " + trapX + "/" + trap.y)
+                    End If
+
                     Exit
                 End If
             End If
         End For
-
-        If trap <> Null
-            Local trapX := trap.x
-            Local trapY := trap.y
-
-            trap.Die()
-
-            If Util.RndBool(True)
-                New SpeedUpTrap(trapX, trapY)
-                Debug.Log("CREATEMAP ZONE3: Speedup trap placed at " + trapX + "/" + trap.y)
-            Else
-                New SlowDownTrap(trapX, trapY)
-                Debug.Log("CREATEMAP ZONE3: Slowdown trap placed at " + trapX + "/" + trap.y)
-            End If
-        End If
 
         Debug.Log("CREATEMAP ZONE3: Placing torches")
         Local minTorch := 3

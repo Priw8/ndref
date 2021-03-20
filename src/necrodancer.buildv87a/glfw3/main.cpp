@@ -28790,20 +28790,18 @@ bool c_Level::m_CreateMapZone3(){
 		t_trap=c_Trap::m_FindRandomTrap();
 		if(t_trap!=0){
 			if(t_trap->m_canBeReplacedByTempoTrap && t_trap->m_trapType==1){
+				int t_trapX=t_trap->m_x;
+				int t_trapY=t_trap->m_y;
+				t_trap->p_Die();
+				if(c_Util::m_RndBool(true)){
+					(new c_SpeedUpTrap)->m_new(t_trapX,t_trapY);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE3: Speedup trap placed at ",40)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
+				}else{
+					(new c_SlowDownTrap)->m_new(t_trapX,t_trapY);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE3: Slowdown trap placed at ",41)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
+				}
 				break;
 			}
-		}
-	}
-	if(t_trap!=0){
-		int t_trapX=t_trap->m_x;
-		int t_trapY=t_trap->m_y;
-		t_trap->p_Die();
-		if(c_Util::m_RndBool(true)){
-			(new c_SpeedUpTrap)->m_new(t_trapX,t_trapY);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE3: Speedup trap placed at ",40)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
-		}else{
-			(new c_SlowDownTrap)->m_new(t_trapX,t_trapY);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE3: Slowdown trap placed at ",41)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
 		}
 	}
 	bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE3: Placing torches",32));
@@ -29338,20 +29336,18 @@ bool c_Level::m_CreateMapZone2(){
 		t_trap=c_Trap::m_FindRandomTrap();
 		if(t_trap!=0){
 			if(t_trap->m_canBeReplacedByTempoTrap && t_trap->m_trapType==1){
+				int t_trapX=t_trap->m_x;
+				int t_trapY=t_trap->m_y;
+				t_trap->p_Die();
+				if(c_Util::m_RndBool(true)){
+					(new c_SpeedUpTrap)->m_new(t_trapX,t_trapY);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE2: Speedup trap placed at ",40)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
+				}else{
+					(new c_SlowDownTrap)->m_new(t_trapX,t_trapY);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE2: Slowdown trap placed at ",41)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
+				}
 				break;
 			}
-		}
-	}
-	if(t_trap!=0){
-		int t_trapX=t_trap->m_x;
-		int t_trapY=t_trap->m_y;
-		t_trap->p_Die();
-		if(c_Util::m_RndBool(true)){
-			(new c_SpeedUpTrap)->m_new(t_trapX,t_trapY);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE2: Speedup trap placed at ",40)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
-		}else{
-			(new c_SlowDownTrap)->m_new(t_trapX,t_trapY);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE2: Slowdown trap placed at ",41)+String(t_trapX)+String(L"/",1)+String(t_trap->m_y));
 		}
 	}
 	bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE2: Placing glowing mushrooms",42));
@@ -29978,18 +29974,18 @@ bool c_Level::m_CreateMapZone1(){
 		t_trap=c_Trap::m_FindRandomTrap();
 		if(t_trap!=0){
 			if(t_trap->m_canBeReplacedByTempoTrap && t_trap->m_trapType==1){
+				int t_trapX=t_trap->m_x;
+				int t_trapY=t_trap->m_y;
+				t_trap->p_Die();
+				if(c_Util::m_RndBool(true)){
+					(new c_SpeedUpTrap)->m_new(t_trapX,t_trapY);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE1: Speedup trap placed at ",40)+String(t_trapX)+String(L", ",2)+String(t_trapY));
+				}else{
+					(new c_SlowDownTrap)->m_new(t_trap->m_x,t_trap->m_y);
+					bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE1: Slowdown trap placed at ",41)+String(t_trapX)+String(L", ",2)+String(t_trapY));
+				}
 				break;
 			}
-		}
-	}
-	if(t_trap!=0){
-		t_trap->p_Die();
-		if(c_Util::m_RndBool(true)){
-			(new c_SpeedUpTrap)->m_new(t_trap->m_x,t_trap->m_y);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE1: Speedup trap placed at ",40)+String(t_trap->m_x)+String(L", ",2)+String(t_trap->m_y));
-		}else{
-			(new c_SlowDownTrap)->m_new(t_trap->m_x,t_trap->m_y);
-			bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE1: Slowdown trap placed at ",41)+String(t_trap->m_x)+String(L", ",2)+String(t_trap->m_y));
 		}
 	}
 	bb_logger_Debug->p_Log(String(L"CREATEMAP ZONE1: Placing torches",32));
