@@ -2372,7 +2372,84 @@ Class Level
     End Function
 
     Function CreateFinalBossBattle2: Void()
-        Debug.TraceNotImplemented("Level.CreateFinalBossBattle2()")
+        Debug.Log("CREATEFINALBOSSBATTLE2: Creating Necrodancer (Melody) battle.")
+
+        Level.InitNewMap(True)
+        Level.outsideBossChamber = True
+        Level.DisableLevelConstraints()
+
+        Level.CreateRoom(-3, -3, 6, 6, False, RoomType.Boss)
+
+        If Level.isTrainingMode Then
+            'TODO: there's some more code in this...
+            Level.AddExit(2, 0, LevelType.Lobby, 1)
+            Level.PlaceTileRemovingExistingTiles(2, 0, TileType.Stairs)
+        End
+
+        Level.GetTileAt(-3, 0).AddTorch()
+        Level.GetTileAt(3, 0).AddTorch()
+        Level.GetTileAt(0, 3).AddTorch()
+
+        'Likely a loop that got unrolled by MSVC (I hope it wasn't written like this... right?)
+        Level.PlaceTileRemovingExistingTiles(-1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -5, TileType.BossFloor)
+
+        Level.PlaceTileRemovingExistingTiles(-2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(-2, -5, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -5, TileType.BossWall)
+
+        Level.CreateRoom(-9, -17, 18, 11, False, RoomType.Boss)
+
+        For Local x := -1 To 1
+            Level.PlaceTileRemovingExistingTiles(x, -6, TileType.Door)
+            Level.GetTileAt(x, -6).SetDoorTrigger(2)
+        End For
+        
+        Level.GetTileAt(-6, -6).AddTorch2()
+        Level.GetTileAt(-2, -6).AddTorch2()
+        Level.GetTileAt(2, -6).AddTorch2()
+        Level.GetTileAt(2, -6).AddTorch2() 'This is not an error, it's actually placed twice here
+
+        Level.GetTileAt(-6, -17).AddTorch2()
+        Level.GetTileAt(-2, -17).AddTorch2()
+        Level.GetTileAt(2, -17).AddTorch2()
+        Level.GetTileAt(6, -17).AddTorch2()
+
+        Level.GetTileAt(-9, -14).AddTorch2()
+        Level.GetTileAt(-9, -10).AddTorch2()
+        Level.GetTileAt(9, -14).AddTorch2()
+        Level.GetTileAt(9, -10).AddTorch2()
+        
+        Level.SetMagicBarrier(True)
+        Level.PaintTriggerInterior(-9, -17, 16, 11, 1)
+
+        Local necrodancer := New Necrodancer(0, -15, 2)
+        necrodancer.ActivateLight(0.01, 1.5)
+
+        For Local sarcX := -6 To 6 Step 2
+            New Sarcophagus(sarcX, -16, 1)
+        End For
+
+        New Sarcophagus(-6, -7, 1)
+        New Sarcophagus( 6, -7, 1)
+
+        Enemy.enemiesPaused = True
+
+        If GameData.GetNPCUnlock("bossmaster") And
+           Not GameData.HasFoughtNecrodancer() And
+           Not Level.isReplaying
+            Level.charactersJustUnlocked.AddLast(507)
+        End If
+
+        GameData.SetFoughtNecrodancer2()
     End Function
 
     Function CreateFinalBossBattle3: Void()

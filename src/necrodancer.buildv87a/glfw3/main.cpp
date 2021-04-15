@@ -5359,8 +5359,6 @@ class c_HeadNode12;
 class c_Stack2;
 class c_StackEx;
 class c_Enumerator5;
-class c_IntStack;
-class c_Enumerator6;
 class c_ControllerGame;
 class c_Map14;
 class c_IntMap6;
@@ -5395,26 +5393,29 @@ class c_Transmogrifier;
 class c_Conjurer;
 class c_Shriner;
 class c_Pawnbroker;
-class c_TilesetType;
 class c_RoomType;
 class c_TileType;
 class c_TileData;
 class c_List18;
 class c_Node34;
 class c_HeadNode18;
+class c_TilesetType;
+class c_Enumerator6;
 class c_Enumerator7;
-class c_Enumerator8;
 class c_Stack3;
 class c_StringStack;
-class c_Sarcophagus;
+class c_Necrodancer;
 class c_BeatAnimationData;
 class c_Map16;
 class c_IntMap8;
 class c_Node35;
 class c_MovementType;
+class c_Sarcophagus;
 class c_List19;
 class c_Node36;
 class c_HeadNode19;
+class c_IntStack;
+class c_Enumerator8;
 class c_KingConga;
 class c_ZombieSnake;
 class c_Ghost;
@@ -5484,7 +5485,6 @@ class c_Lich;
 class c_Pixie;
 class c_Spider;
 class c_Mummy;
-class c_Necrodancer;
 class c_BatMiniboss;
 class c_Dragon;
 class c_Banshee;
@@ -6034,6 +6034,9 @@ class c_GameData : public Object{
 	static void m_SetDLCPlayed();
 	static int m_GetPlayerDiamonds();
 	static bool m_GetLobbyMove();
+	static bool m_GetNPCUnlock(String);
+	static bool m_HasFoughtNecrodancer();
+	static void m_SetFoughtNecrodancer2();
 	static bool m_cachedAudioLatency;
 	static int m_cachedAudioLatencyVal;
 	static int m_GetAudioLatency();
@@ -6042,13 +6045,11 @@ class c_GameData : public Object{
 	static int m_GetAutocalibration();
 	static int m_GetVideoLatency();
 	static bool m_GetDaoustVocals();
-	static bool m_GetNPCUnlock(String);
 	static bool m_HasFoughtDeadRinger();
 	static void m_SetFoughtDeadRinger();
 	static bool m_GetItemUnlocked(String,bool);
 	static int m_GetPendingSpawnItem(int);
 	static void m_SetHavePlayedHardcore(bool);
-	static bool m_HasFoughtNecrodancer();
 	static void m_SetFoughtNecrodancer();
 	static bool m_GetZone3Unlocked(int);
 	static bool m_GetZone2UnlockedCurrentCharacters();
@@ -6417,9 +6418,9 @@ class c_Sprite : public c_Tweenable{
 	Float m_zOff;
 	bool m_cutoffYSet;
 	Float m_alpha;
-	int m_flipXOff;
 	bool m_flipX;
 	bool m_flipXWithOffset;
+	int m_flipXOff;
 	Float m_renderX;
 	Float m_renderLastX;
 	Float m_renderY;
@@ -6442,10 +6443,10 @@ class c_Sprite : public c_Tweenable{
 	void p_DiscardTempImage();
 	void p_SetFrame(int);
 	void p_SetAlphaValue(Float);
-	void p_SetFlipXOff(int);
 	void p_FlipX(bool,bool);
-	void p_SetAlphaTweenFromCurrent(Float,int);
+	void p_SetFlipXOff(int);
 	void p_UnSetZ();
+	void p_SetAlphaTweenFromCurrent(Float,int);
 	Float p_GetAlphaValue();
 	void p_SetCutoffY(int);
 	int p_GetFrame();
@@ -6711,13 +6712,13 @@ class c_Audio : public Object{
 	static int m_GetNextBeatDuration();
 	static void m_IncrementFixedBeat();
 	static Float m_musicSpeed;
+	static void m_StartNecrodancerTransition(Object*);
 	static int m_TimeUntilBeat(int);
 	static Float m_GetPercentDistanceFromNextBeat();
 	static int m_GetBeatAnimFrame4();
 	static bool m_CloserToPreviousBeatThanNext();
 	static bool m_IsBeatAnimTime(bool,bool);
 	static bool m_songPaused;
-	static void m_StartNecrodancerTransition(Object*);
 	static int m_GetBeatAnimFrame2();
 	static int m_songShopkeeper;
 	static void m_ModifyMusicSpeed(Float);
@@ -6822,7 +6823,6 @@ class c_Level : public Object{
 	static void m_CreateAllCharsDLCSelect();
 	static int m_bossNumber;
 	static void m_CreateFinalBossBattle3();
-	static void m_CreateFinalBossBattle2();
 	static c_IntMap7* m_tiles;
 	static c_List14* m_minibossFormerWall;
 	static c_List15* m_rooms;
@@ -6879,16 +6879,18 @@ class c_Level : public Object{
 	static bool m_CreateRoom(int,int,int,int,bool,int,int,int,int,int,bool,int,bool,bool);
 	static bool m_CreateRoom2(int,int,int,int,bool,int,bool);
 	static bool m_CreateRoom3(int,int,int,int,bool,int);
-	static void m_EnsureBossTraining(String);
 	static void m_AddExit(int,int,int,int);
+	static void m_SetMagicBarrierAt(int,int,bool);
+	static void m_SetMagicBarrier(bool);
+	static void m_PaintTriggerInterior(int,int,int,int,int);
+	static c_List12* m_charactersJustUnlocked;
+	static void m_CreateFinalBossBattle2();
+	static void m_EnsureBossTraining(String);
 	static bool m_skipNextPenaltyBox;
 	static bool m_WantPenaltyBox();
 	static void m_PlaceFirstBossRoom(String,int);
 	static void m_PlaceFirstBossRoom2(String);
 	static void m_PlaceFirstBossRoom3();
-	static void m_SetMagicBarrierAt(int,int,bool);
-	static void m_SetMagicBarrier(bool);
-	static void m_PaintTriggerInterior(int,int,int,int,int);
 	static c_Point* m_GetRandomOffsetPoint();
 	static bool m_isHardMode;
 	static c_XMLNode* m_GetHardModeXML();
@@ -6902,7 +6904,6 @@ class c_Level : public Object{
 	static void m_CreateBossBattle2();
 	static void m_CreateBossBattle3();
 	static void m_CreateBossBattle4();
-	static c_List12* m_charactersJustUnlocked;
 	static void m_CreateBossBattle5();
 	static void m_FillTiles(c_Rect*,int,int);
 	static void m_CreateBossBattle9();
@@ -7294,8 +7295,8 @@ class c_RenderableObject : public Object{
 	Float m_constLightSourceMax;
 	bool m_lightSource;
 	bool m_collides;
-	bool m_isEnemy;
 	Float m_lightSourceBrightness;
+	bool m_isEnemy;
 	bool m_playerOverrideCollide;
 	int m_width;
 	int m_height;
@@ -7350,8 +7351,8 @@ class c_Entity : public c_RenderableObject{
 	bool m_isMysteried;
 	int m_damagePerHit;
 	bool m_ignoreWalls;
-	bool m_hasBeenVisible;
 	String m_overrideAttackSound;
+	bool m_hasBeenVisible;
 	bool m_isGentle;
 	bool m_flaggedForDeath;
 	bool m_invisible;
@@ -8118,6 +8119,8 @@ class c_Enemy : public c_MobileEntity{
 	c_Sprite* m_attackSwipeImage;
 	c_Sprite* m_jumpDirt;
 	int m_jumpDirtTimer;
+	bool m_isNecroDancer;
+	bool m_isDancer;
 	String m_overrideHitSound;
 	String m_overrideDeathSound;
 	bool m_exemptFromPause;
@@ -8153,8 +8156,6 @@ class c_Enemy : public c_MobileEntity{
 	bool m_inArena;
 	bool m_enableDeathEffects;
 	int m_minEnemyMoveDistance;
-	bool m_isNecroDancer;
-	bool m_isDancer;
 	bool m_movedThisFrame;
 	bool m_attemptedMoveThisFrame;
 	bool m_changedTilePositionThisFrame;
@@ -8198,6 +8199,7 @@ class c_Enemy : public c_MobileEntity{
 	static c_Sprite* m_heartSmall;
 	static c_Sprite* m_heartEmptySmall;
 	void p_Init3(int,int,int,String,String,int,int);
+	void p_MakeDancer();
 	static int m_GetNumStairLockingMinibosses();
 	static bool m_killingAllEnemies;
 	static int m_GetNumPenaltyBoxMinibosses();
@@ -8220,7 +8222,6 @@ class c_Enemy : public c_MobileEntity{
 	static void m_MoveSwarmEnemiesAwayFromStartLocation();
 	static void m_SetAllEnemiesMinimumMoveDistance(int);
 	static void m_StartRandomizerRun();
-	void p_MakeDancer();
 	bool p_Hit(String,int,int,c_Entity*,bool,int);
 	static String m_GetEnemyNameHelper1(int);
 	static String m_GetEnemyNameHelper2(int);
@@ -8269,9 +8270,9 @@ class c_Enemy : public c_MobileEntity{
 	bool p_IsBetweenFraction(Float,Float);
 	void p_AnimateToTheBeat();
 	void p_Update();
+	static void m_SetAllNonNecroDancerEnemyMoveDelays(int);
 	static void m_SetEnemiesToDropNoCoinsOverride();
 	static void m_KillAllEnemies();
-	static void m_SetAllNonNecroDancerEnemyMoveDelays(int);
 	static int m_GetNumEnemies();
 	void p_Fall(bool);
 	void mark();
@@ -9034,9 +9035,10 @@ class c_Tile : public c_RenderableObject{
 	c_Tile* m_new(int,int,int,bool,int);
 	c_Tile* m_new2();
 	void p_AddTorch();
-	void p_AddTextLabel(String,int,int,Float,bool,bool);
 	void p_SetDoorTrigger(int);
+	void p_AddTorch2();
 	void p_SetTrigger(int);
+	void p_AddTextLabel(String,int,int,Float,bool,bool);
 	void p_SetDigTrigger(int);
 	bool p_IsExit();
 	Float p_GetCurrentAlpha();
@@ -9049,7 +9051,6 @@ class c_Tile : public c_RenderableObject{
 	c_Sprite* p_LoadDiamond();
 	void p_BecomeDiamond();
 	static void m_CleanUpPendingTiles();
-	void p_AddTorch2();
 	bool p_IsNormalFloor();
 	static int m_anyPlayerHaveRingOfShadowsCachedFrame;
 	static int m_anyPlayerHaveCompassCachedFrame;
@@ -9411,7 +9412,7 @@ class c_Stack2 : public Object{
 	void p_Push4(int);
 	void p_Push5(Array<int >,int,int);
 	void p_Push6(Array<int >,int);
-	c_Enumerator6* p_ObjectEnumerator();
+	c_Enumerator8* p_ObjectEnumerator();
 	void p_Length2(int);
 	int p_Length();
 	int p_Get2(int);
@@ -9440,25 +9441,6 @@ class c_Enumerator5 : public Object{
 	c_Enumerator5* m_new2();
 	bool p_HasNext();
 	c_RenderableObject* p_NextObject();
-	void mark();
-};
-class c_IntStack : public c_Stack2{
-	public:
-	c_IntStack();
-	c_IntStack* m_new(Array<int >);
-	c_IntStack* m_new2();
-	bool p_Equals9(int,int);
-	void mark();
-};
-class c_Enumerator6 : public Object{
-	public:
-	c_Stack2* m_stack;
-	int m_index;
-	c_Enumerator6();
-	c_Enumerator6* m_new(c_Stack2*);
-	c_Enumerator6* m_new2();
-	bool p_HasNext();
-	int p_NextObject();
 	void mark();
 };
 extern int bb_controller_game_lastEnemyMoveBeat;
@@ -9755,7 +9737,7 @@ class c_List16 : public Object{
 	c_Node32* p_AddLast16(c_Trap*);
 	c_List16* m_new2(Array<c_Trap* >);
 	int p_Clear();
-	c_Enumerator7* p_ObjectEnumerator();
+	c_Enumerator6* p_ObjectEnumerator();
 	int p_Count();
 	Array<c_Trap* > p_ToArray();
 	bool p_Equals12(c_Trap*,c_Trap*);
@@ -9903,11 +9885,6 @@ class c_Pawnbroker : public c_NPC{
 	bool p_Hit(String,int,int,c_Entity*,bool,int);
 	void mark();
 };
-class c_TilesetType : public Object{
-	public:
-	c_TilesetType();
-	void mark();
-};
 class c_RoomType : public Object{
 	public:
 	c_RoomType();
@@ -9935,7 +9912,7 @@ class c_List18 : public Object{
 	c_List18* m_new();
 	c_Node34* p_AddLast18(c_TileData*);
 	c_List18* m_new2(Array<c_TileData* >);
-	c_Enumerator8* p_ObjectEnumerator();
+	c_Enumerator7* p_ObjectEnumerator();
 	void mark();
 };
 class c_Node34 : public Object{
@@ -9954,24 +9931,29 @@ class c_HeadNode18 : public c_Node34{
 	c_HeadNode18* m_new();
 	void mark();
 };
-class c_Enumerator7 : public Object{
+class c_TilesetType : public Object{
+	public:
+	c_TilesetType();
+	void mark();
+};
+class c_Enumerator6 : public Object{
 	public:
 	c_List16* m__list;
 	c_Node32* m__curr;
-	c_Enumerator7();
-	c_Enumerator7* m_new(c_List16*);
-	c_Enumerator7* m_new2();
+	c_Enumerator6();
+	c_Enumerator6* m_new(c_List16*);
+	c_Enumerator6* m_new2();
 	bool p_HasNext();
 	c_Trap* p_NextObject();
 	void mark();
 };
-class c_Enumerator8 : public Object{
+class c_Enumerator7 : public Object{
 	public:
 	c_List18* m__list;
 	c_Node34* m__curr;
-	c_Enumerator8();
-	c_Enumerator8* m_new(c_List18*);
-	c_Enumerator8* m_new2();
+	c_Enumerator7();
+	c_Enumerator7* m_new(c_List18*);
+	c_Enumerator7* m_new2();
 	bool p_HasNext();
 	c_TileData* p_NextObject();
 	void mark();
@@ -10003,25 +9985,39 @@ class c_StringStack : public c_Stack3{
 	c_StringStack* m_new2();
 	void mark();
 };
-class c_Sarcophagus : public c_Enemy{
+class c_Necrodancer : public c_Enemy{
 	public:
-	int m_numEnemiesSpawned;
+	c_Sprite* m_iceBlast;
+	c_Sprite* m_shieldImage;
+	int m_origXOff;
+	int m_actionTime;
+	c_Item* m_theLute;
+	bool m_saidLutePhrase;
+	int m_phase;
+	int m_actionDelay;
+	int m_lastAction;
+	bool m_didCry;
+	int m_actionDelayTime;
+	int m_spellNum;
 	int m_vibrateCounter;
 	Float m_vibrateOffset;
-	c_Sarcophagus();
-	static c_List19* m_sarcophagi;
-	c_Sarcophagus* m_new(int,int,int);
-	c_Sarcophagus* m_new2();
-	bool p_CanBeLord();
-	void p_Delete();
+	int m_lastSpell;
+	c_Necrodancer();
+	static c_Necrodancer* m_necrodancer;
+	static int m_wallsStep;
+	c_Necrodancer* m_new(int,int,int);
+	c_Necrodancer* m_new2();
 	void p_Die();
 	c_Point* p_GetMovementDirection();
-	bool p_ImmuneToFear();
+	bool p_Hit(String,int,int,c_Entity*,bool,int);
 	void p_MoveFail();
 	void p_MoveSucceed(bool,bool);
-	int p_PerformMovement(int,int);
+	void p_TriggeredWalls();
+	void p_Teleport();
+	void p_TakeAction();
+	void p_ChooseSpell();
+	void p_SummonMiniboss();
 	void p_Update();
-	static int m_GetNumSarcophagi();
 	void mark();
 };
 class c_BeatAnimationData : public Object{
@@ -10077,6 +10073,27 @@ class c_MovementType : public Object{
 	c_MovementType();
 	void mark();
 };
+class c_Sarcophagus : public c_Enemy{
+	public:
+	int m_numEnemiesSpawned;
+	int m_vibrateCounter;
+	Float m_vibrateOffset;
+	c_Sarcophagus();
+	static c_List19* m_sarcophagi;
+	c_Sarcophagus* m_new(int,int,int);
+	c_Sarcophagus* m_new2();
+	static int m_GetNumSarcophagi();
+	bool p_CanBeLord();
+	void p_Delete();
+	void p_Die();
+	c_Point* p_GetMovementDirection();
+	bool p_ImmuneToFear();
+	void p_MoveFail();
+	void p_MoveSucceed(bool,bool);
+	int p_PerformMovement(int,int);
+	void p_Update();
+	void mark();
+};
 class c_List19 : public Object{
 	public:
 	c_Node36* m__head;
@@ -10104,6 +10121,25 @@ class c_HeadNode19 : public c_Node36{
 	public:
 	c_HeadNode19();
 	c_HeadNode19* m_new();
+	void mark();
+};
+class c_IntStack : public c_Stack2{
+	public:
+	c_IntStack();
+	c_IntStack* m_new(Array<int >);
+	c_IntStack* m_new2();
+	bool p_Equals9(int,int);
+	void mark();
+};
+class c_Enumerator8 : public Object{
+	public:
+	c_Stack2* m_stack;
+	int m_index;
+	c_Enumerator8();
+	c_Enumerator8* m_new(c_Stack2*);
+	c_Enumerator8* m_new2();
+	bool p_HasNext();
+	int p_NextObject();
 	void mark();
 };
 class c_KingConga : public c_Enemy{
@@ -10943,41 +10979,6 @@ class c_Mummy : public c_Enemy{
 	c_Mummy* m_new2();
 	c_Point* p_GetMovementDirection();
 	void p_MoveSucceed(bool,bool);
-	void p_Update();
-	void mark();
-};
-class c_Necrodancer : public c_Enemy{
-	public:
-	c_Sprite* m_iceBlast;
-	c_Sprite* m_shieldImage;
-	int m_origXOff;
-	int m_actionTime;
-	c_Item* m_theLute;
-	bool m_saidLutePhrase;
-	int m_phase;
-	int m_actionDelay;
-	int m_lastAction;
-	bool m_didCry;
-	int m_actionDelayTime;
-	int m_spellNum;
-	int m_vibrateCounter;
-	Float m_vibrateOffset;
-	int m_lastSpell;
-	c_Necrodancer();
-	static c_Necrodancer* m_necrodancer;
-	static int m_wallsStep;
-	c_Necrodancer* m_new(int,int,int);
-	c_Necrodancer* m_new2();
-	void p_Die();
-	c_Point* p_GetMovementDirection();
-	bool p_Hit(String,int,int,c_Entity*,bool,int);
-	void p_MoveFail();
-	void p_MoveSucceed(bool,bool);
-	void p_TriggeredWalls();
-	void p_Teleport();
-	void p_TakeAction();
-	void p_ChooseSpell();
-	void p_SummonMiniboss();
 	void p_Update();
 	void mark();
 };
@@ -14990,6 +14991,23 @@ bool c_GameData::m_GetLobbyMove(){
 	c_XMLNode* t_gameNode=m_xmlSaveData->p_GetChild2(String(L"game",4),false);
 	return t_gameNode->p_GetAttribute2(String(L"lobbyMove",9),false);
 }
+bool c_GameData::m_GetNPCUnlock(String t_npcName){
+	c_XMLDoc* t_saveData=0;
+	if(c_Level::m_isReplaying && m_replaySaveData!=0){
+		t_saveData=m_replaySaveData;
+	}else{
+		t_saveData=m_xmlSaveData;
+	}
+	c_XMLNode* t_npcNode=t_saveData->p_GetChild2(String(L"npc",3),false);
+	return t_npcNode->p_GetAttribute2(t_npcName,false);
+}
+bool c_GameData::m_HasFoughtNecrodancer(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer()",31));
+	return false;
+}
+void c_GameData::m_SetFoughtNecrodancer2(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtNecrodancer2()",32));
+}
 bool c_GameData::m_cachedAudioLatency;
 int c_GameData::m_cachedAudioLatencyVal;
 int c_GameData::m_GetAudioLatency(){
@@ -15024,16 +15042,6 @@ bool c_GameData::m_GetDaoustVocals(){
 	c_XMLNode* t_gameNode=m_xmlSaveData->p_GetChild2(String(L"game",4),false);
 	return t_gameNode->p_GetAttribute2(String(L"daoustVocals",12),false);
 }
-bool c_GameData::m_GetNPCUnlock(String t_npcName){
-	c_XMLDoc* t_saveData=0;
-	if(c_Level::m_isReplaying && m_replaySaveData!=0){
-		t_saveData=m_replaySaveData;
-	}else{
-		t_saveData=m_xmlSaveData;
-	}
-	c_XMLNode* t_npcNode=t_saveData->p_GetChild2(String(L"npc",3),false);
-	return t_npcNode->p_GetAttribute2(t_npcName,false);
-}
 bool c_GameData::m_HasFoughtDeadRinger(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtDeadRinger()",30));
 	return false;
@@ -15051,10 +15059,6 @@ int c_GameData::m_GetPendingSpawnItem(int t_num){
 }
 void c_GameData::m_SetHavePlayedHardcore(bool t_val){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetHavePlayedHardcore(Bool)",36));
-}
-bool c_GameData::m_HasFoughtNecrodancer(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer()",31));
-	return false;
 }
 void c_GameData::m_SetFoughtNecrodancer(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtNecrodancer()",31));
@@ -17106,9 +17110,9 @@ c_Sprite::c_Sprite(){
 	m_zOff=FLOAT(.0);
 	m_cutoffYSet=false;
 	m_alpha=FLOAT(1.0);
-	m_flipXOff=0;
 	m_flipX=false;
 	m_flipXWithOffset=true;
+	m_flipXOff=0;
 	m_renderX=FLOAT(.0);
 	m_renderLastX=FLOAT(.0);
 	m_renderY=FLOAT(.0);
@@ -17167,19 +17171,19 @@ void c_Sprite::p_SetFrame(int t_f){
 void c_Sprite::p_SetAlphaValue(Float t_a){
 	this->m_alpha=bb_math_Clamp2(t_a,FLOAT(0.0),FLOAT(1.0));
 }
-void c_Sprite::p_SetFlipXOff(int t_x){
-	this->m_flipXOff=t_x;
-}
 void c_Sprite::p_FlipX(bool t_f,bool t_withOffset){
 	this->m_flipX=t_f;
 	this->m_flipXWithOffset=t_withOffset;
 }
-void c_Sprite::p_SetAlphaTweenFromCurrent(Float t_finalVal,int t_duration){
-	this->p_SetAlphaTween(this->m_alpha,t_finalVal,t_duration);
+void c_Sprite::p_SetFlipXOff(int t_x){
+	this->m_flipXOff=t_x;
 }
 void c_Sprite::p_UnSetZ(){
 	this->m_zSet=false;
 	this->m_z=FLOAT(0.0);
+}
+void c_Sprite::p_SetAlphaTweenFromCurrent(Float t_finalVal,int t_duration){
+	this->p_SetAlphaTween(this->m_alpha,t_finalVal,t_duration);
 }
 Float c_Sprite::p_GetAlphaValue(){
 	return this->m_alpha;
@@ -18629,6 +18633,9 @@ void c_Audio::m_IncrementFixedBeat(){
 	}
 }
 Float c_Audio::m_musicSpeed;
+void c_Audio::m_StartNecrodancerTransition(Object* t_necrodancer){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Audio.StartNecrodancerTransition(Object)",40));
+}
 int c_Audio::m_TimeUntilBeat(int t_beatOffset){
 	int t_beatNumber=m_GetCurrentBeatNumberIncludingLoops(t_beatOffset,false);
 	return m_TimeUntilSpecificBeat(t_beatNumber);
@@ -18668,9 +18675,6 @@ bool c_Audio::m_IsBeatAnimTime(bool t_a1,bool t_a2){
 	return false;
 }
 bool c_Audio::m_songPaused;
-void c_Audio::m_StartNecrodancerTransition(Object* t_necrodancer){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Audio.StartNecrodancerTransition(Object)",40));
-}
 int c_Audio::m_GetBeatAnimFrame2(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Audio.GetBeatAnimFrame2()",25));
 	return 0;
@@ -18978,9 +18982,6 @@ void c_Level::m_CreateAllCharsDLCSelect(){
 int c_Level::m_bossNumber;
 void c_Level::m_CreateFinalBossBattle3(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.CreateFinalBossBattle3()",30));
-}
-void c_Level::m_CreateFinalBossBattle2(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.CreateFinalBossBattle2()",30));
 }
 c_IntMap7* c_Level::m_tiles;
 c_List14* c_Level::m_minibossFormerWall;
@@ -19590,7 +19591,7 @@ bool c_Level::m_CreateRoom(int t_xVal,int t_yVal,int t_wVal,int t_hVal,bool t_pe
 		}
 		if(t_placeLiquid){
 			int t_numLiquid=0;
-			c_Enumerator8* t_=t_tiles->p_ObjectEnumerator();
+			c_Enumerator7* t_=t_tiles->p_ObjectEnumerator();
 			while(t_->p_HasNext()){
 				c_TileData* t_tile=t_->p_NextObject();
 				if(t_tile->m_type==0){
@@ -19604,7 +19605,7 @@ bool c_Level::m_CreateRoom(int t_xVal,int t_yVal,int t_wVal,int t_hVal,bool t_pe
 			int t_lastLiquidY=0;
 			int t_i=1000;
 			for(t_i=t_i-1;t_i>0;t_i=t_i+-1){
-				c_Enumerator8* t_2=t_tiles->p_ObjectEnumerator();
+				c_Enumerator7* t_2=t_tiles->p_ObjectEnumerator();
 				while(t_2->p_HasNext()){
 					c_TileData* t_tile2=t_2->p_NextObject();
 					if(t_tile2->m_type==0){
@@ -19643,7 +19644,7 @@ bool c_Level::m_CreateRoom(int t_xVal,int t_yVal,int t_wVal,int t_hVal,bool t_pe
 			}
 		}
 	}
-	c_Enumerator8* t_3=t_tiles->p_ObjectEnumerator();
+	c_Enumerator7* t_3=t_tiles->p_ObjectEnumerator();
 	while(t_3->p_HasNext()){
 		c_TileData* t_tile3=t_3->p_NextObject();
 		int t_tileX=t_tile3->m_x;
@@ -19671,13 +19672,90 @@ bool c_Level::m_CreateRoom2(int t_xVal,int t_yVal,int t_wVal,int t_hVal,bool t_p
 bool c_Level::m_CreateRoom3(int t_xVal,int t_yVal,int t_wVal,int t_hVal,bool t_pending,int t_roomType){
 	return m_CreateRoom2(t_xVal,t_yVal,t_wVal,t_hVal,t_pending,t_roomType,true);
 }
-void c_Level::m_EnsureBossTraining(String t_name){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.EnsureBossTraining(String)",32));
-}
 void c_Level::m_AddExit(int t_xVal,int t_yVal,int t_levelPointer,int t_zonePointer){
 	c_Point* t_location=(new c_Point)->m_new(t_xVal,t_yVal);
 	c_Point* t_floor=(new c_Point)->m_new(t_levelPointer,t_zonePointer);
 	m_exits->p_Set13(t_location,t_floor);
+}
+void c_Level::m_SetMagicBarrierAt(int t_xVal,int t_yVal,bool t_on){
+	c_Tile* t_tile=m_GetTileAt(t_xVal,t_yVal);
+	if(t_tile!=0){
+		t_tile->m_magicBarrier=t_on;
+	}
+}
+void c_Level::m_SetMagicBarrier(bool t_on){
+	for(int t_x=-2;t_x<=3;t_x=t_x+1){
+		m_SetMagicBarrierAt(t_x,-7,t_on);
+	}
+}
+void c_Level::m_PaintTriggerInterior(int t_x,int t_y,int t_w,int t_h,int t_trigger){
+	for(int t_a=t_x+1;t_a<=t_x+t_w-1;t_a=t_a+1){
+		for(int t_b=t_y+1;t_b<=t_y+t_h-1;t_b=t_b+1){
+			m_GetTileAt(t_a,t_b)->p_SetTrigger(t_trigger);
+		}
+	}
+}
+c_List12* c_Level::m_charactersJustUnlocked;
+void c_Level::m_CreateFinalBossBattle2(){
+	bb_logger_Debug->p_Log(String(L"CREATEFINALBOSSBATTLE2: Creating Necrodancer (Melody) battle.",61));
+	m_InitNewMap(true);
+	m_outsideBossChamber=true;
+	m_DisableLevelConstraints();
+	m_CreateRoom3(-3,-3,6,6,false,6);
+	if(m_isTrainingMode){
+		m_AddExit(2,0,-2,1);
+		m_PlaceTileRemovingExistingTiles(2,0,2,false,-1,false);
+	}
+	m_GetTileAt(-3,0)->p_AddTorch();
+	m_GetTileAt(3,0)->p_AddTorch();
+	m_GetTileAt(0,3)->p_AddTorch();
+	m_PlaceTileRemovingExistingTiles(-1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-5,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-5,109,false,-1,false);
+	m_CreateRoom3(-9,-17,18,11,false,6);
+	for(int t_x=-1;t_x<=1;t_x=t_x+1){
+		m_PlaceTileRemovingExistingTiles(t_x,-6,103,false,-1,false);
+		m_GetTileAt(t_x,-6)->p_SetDoorTrigger(2);
+	}
+	m_GetTileAt(-6,-6)->p_AddTorch2();
+	m_GetTileAt(-2,-6)->p_AddTorch2();
+	m_GetTileAt(2,-6)->p_AddTorch2();
+	m_GetTileAt(2,-6)->p_AddTorch2();
+	m_GetTileAt(-6,-17)->p_AddTorch2();
+	m_GetTileAt(-2,-17)->p_AddTorch2();
+	m_GetTileAt(2,-17)->p_AddTorch2();
+	m_GetTileAt(6,-17)->p_AddTorch2();
+	m_GetTileAt(-9,-14)->p_AddTorch2();
+	m_GetTileAt(-9,-10)->p_AddTorch2();
+	m_GetTileAt(9,-14)->p_AddTorch2();
+	m_GetTileAt(9,-10)->p_AddTorch2();
+	m_SetMagicBarrier(true);
+	m_PaintTriggerInterior(-9,-17,16,11,1);
+	c_Necrodancer* t_necrodancer=(new c_Necrodancer)->m_new(0,-15,2);
+	t_necrodancer->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
+	for(int t_sarcX=-6;t_sarcX<=6;t_sarcX=t_sarcX+2){
+		(new c_Sarcophagus)->m_new(t_sarcX,-16,1);
+	}
+	(new c_Sarcophagus)->m_new(-6,-7,1);
+	(new c_Sarcophagus)->m_new(6,-7,1);
+	c_Enemy::m_enemiesPaused=true;
+	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtNecrodancer() && !m_isReplaying){
+		m_charactersJustUnlocked->p_AddLast12(507);
+	}
+	c_GameData::m_SetFoughtNecrodancer2();
+}
+void c_Level::m_EnsureBossTraining(String t_name){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.EnsureBossTraining(String)",32));
 }
 bool c_Level::m_skipNextPenaltyBox;
 bool c_Level::m_WantPenaltyBox(){
@@ -19727,24 +19805,6 @@ void c_Level::m_PlaceFirstBossRoom2(String t_bossTrainingName){
 }
 void c_Level::m_PlaceFirstBossRoom3(){
 	m_PlaceFirstBossRoom2(String());
-}
-void c_Level::m_SetMagicBarrierAt(int t_xVal,int t_yVal,bool t_on){
-	c_Tile* t_tile=m_GetTileAt(t_xVal,t_yVal);
-	if(t_tile!=0){
-		t_tile->m_magicBarrier=t_on;
-	}
-}
-void c_Level::m_SetMagicBarrier(bool t_on){
-	for(int t_x=-2;t_x<=3;t_x=t_x+1){
-		m_SetMagicBarrierAt(t_x,-7,t_on);
-	}
-}
-void c_Level::m_PaintTriggerInterior(int t_x,int t_y,int t_w,int t_h,int t_trigger){
-	for(int t_a=t_x+1;t_a<=t_x+t_w-1;t_a=t_a+1){
-		for(int t_b=t_y+1;t_b<=t_y+t_h-1;t_b=t_b+1){
-			m_GetTileAt(t_a,t_b)->p_SetTrigger(t_trigger);
-		}
-	}
 }
 c_Point* c_Level::m_GetRandomOffsetPoint(){
 	int t_x=0;
@@ -20383,7 +20443,6 @@ void c_Level::m_CreateBossBattle4(){
 	m_BossMaybeMinibossesAt(-5,0,4,0);
 	c_Enemy::m_enemiesPaused=true;
 }
-c_List12* c_Level::m_charactersJustUnlocked;
 void c_Level::m_CreateBossBattle5(){
 	bb_logger_Debug->p_Log(String(L"CREATEBOSSBATTLE5: Creating dead ringer boss battle.",52));
 	m_InitNewMap(true);
@@ -20751,7 +20810,7 @@ void c_Level::m_CreateBossBattle(){
 		}
 		bb_logger_Debug->p_Log(String(L"CREATEBOSSBATTLE Selecting randomly from eligible bosses:",57));
 		c_StackEx* t_eligibleBossNumbers=(new c_StackEx)->m_new();
-		c_Enumerator6* t_=t_bossNumbers->p_ObjectEnumerator();
+		c_Enumerator8* t_=t_bossNumbers->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			int t_bossNumber=t_->p_NextObject();
 			if(m_usedBosses->p_Contains(t_bossNumber)){
@@ -21358,7 +21417,7 @@ void c_Level::m_CreateIndestructibleBorder(){
 			}
 		}
 	}
-	c_Enumerator8* t_3=t_borderTiles->p_ObjectEnumerator();
+	c_Enumerator7* t_3=t_borderTiles->p_ObjectEnumerator();
 	while(t_3->p_HasNext()){
 		c_TileData* t_borderTile=t_3->p_NextObject();
 		(new c_Tile)->m_new(t_borderTile->m_x,t_borderTile->m_y,t_borderTile->m_type,false,-1);
@@ -23880,18 +23939,18 @@ void c_Level::m_PlaceAppropriateMinibosses(c_RoomBase* t_room){
 		}
 		c_IntStack* t_minibossesPlacedFlags=(new c_IntStack)->m_new2();
 		int t_minibossPlacedFlagsMin=999999;
-		c_Enumerator6* t_=t_minibossTypes->p_ObjectEnumerator();
+		c_Enumerator8* t_=t_minibossTypes->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			int t_minibossType=t_->p_NextObject();
 			int t_minibossPlacedFlags=0;
-			c_Enumerator6* t_2=m_previousLevelMinibosses->p_ObjectEnumerator();
+			c_Enumerator8* t_2=m_previousLevelMinibosses->p_ObjectEnumerator();
 			while(t_2->p_HasNext()){
 				int t_previousLevelMiniboss=t_2->p_NextObject();
 				if(t_minibossType==c_Enemy::m_GetBaseType(t_previousLevelMiniboss)){
 					t_minibossPlacedFlags+=1;
 				}
 			}
-			c_Enumerator6* t_3=t_placedMinibossTypes->p_ObjectEnumerator();
+			c_Enumerator8* t_3=t_placedMinibossTypes->p_ObjectEnumerator();
 			while(t_3->p_HasNext()){
 				int t_placedMinibossType=t_3->p_NextObject();
 				if(t_minibossType==t_placedMinibossType){
@@ -27812,7 +27871,7 @@ void c_Level::m_AddHarderStone(){
 }
 void c_Level::m_CheckMapConsistency(){
 	bb_logger_Debug->p_Log(String(L"Checking map consistency for seed ",34)+String(m_randSeed)+String(L" z ",3)+String(bb_controller_game_currentZone)+String(L" l ",3)+String(bb_controller_game_currentLevel));
-	c_Enumerator7* t_=c_Trap::m_trapList->p_ObjectEnumerator();
+	c_Enumerator6* t_=c_Trap::m_trapList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Trap* t_trap=t_->p_NextObject();
 		int t_6=t_trap->m_trapType;
@@ -30241,7 +30300,7 @@ bool c_Level::m_CreateMap(c_LevelObject* t_levelObj){
 		}
 	}
 	if(bb_controller_game_currentZone==4){
-		c_Enumerator7* t_=c_Trap::m_trapList->p_ObjectEnumerator();
+		c_Enumerator6* t_=c_Trap::m_trapList->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			c_Trap* t_trap=t_->p_NextObject();
 			if(t_trap->m_trapType==3){
@@ -30255,7 +30314,7 @@ bool c_Level::m_CreateMap(c_LevelObject* t_levelObj){
 		return m__FailMap();
 	}
 	if(m_pacifismModeOn || m_isHardMode && m_GetHardModeXML()->p_GetAttribute2(String(L"disableTrapdoors",16),false)){
-		c_Enumerator7* t_2=c_Trap::m_trapList->p_ObjectEnumerator();
+		c_Enumerator6* t_2=c_Trap::m_trapList->p_ObjectEnumerator();
 		while(t_2->p_HasNext()){
 			c_Trap* t_trap2=t_2->p_NextObject();
 			if(t_trap2->m_trapType==3){
@@ -30338,7 +30397,7 @@ void c_Level::m_GenerateHardcoreZoneOrder(){
 	t_zones->p_Push4(4);
 	t_zones->p_Push4(5);
 	gc_assign(m_zoneOrder,(new c_Stack2)->m_new());
-	c_Enumerator6* t_=t_zones->p_ObjectEnumerator();
+	c_Enumerator8* t_=t_zones->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		int t_zone=t_->p_NextObject();
 		if(t_randomZones->p_Contains(t_zone)){
@@ -32839,8 +32898,8 @@ c_RenderableObject::c_RenderableObject(){
 	m_constLightSourceMax=FLOAT(.0);
 	m_lightSource=false;
 	m_collides=false;
-	m_isEnemy=false;
 	m_lightSourceBrightness=FLOAT(1.0);
+	m_isEnemy=false;
 	m_playerOverrideCollide=false;
 	m_width=1;
 	m_height=1;
@@ -32957,8 +33016,8 @@ c_Entity::c_Entity(){
 	m_isMysteried=false;
 	m_damagePerHit=1;
 	m_ignoreWalls=false;
-	m_hasBeenVisible=false;
 	m_overrideAttackSound=String();
+	m_hasBeenVisible=false;
 	m_isGentle=false;
 	m_flaggedForDeath=false;
 	m_invisible=false;
@@ -37594,7 +37653,7 @@ void c_Item::m_CreateItemPools(){
 				t_itemPoolCandidates->p_Clear();
 				while(!t_unlockedItems->p_IsEmpty()){
 					int t_high=0;
-					c_Enumerator6* t_3=t_unlockedItemsChances->p_ObjectEnumerator();
+					c_Enumerator8* t_3=t_unlockedItemsChances->p_ObjectEnumerator();
 					while(t_3->p_HasNext()){
 						int t_chance2=t_3->p_NextObject();
 						t_high+=t_chance2;
@@ -38499,6 +38558,8 @@ c_Enemy::c_Enemy(){
 	m_attackSwipeImage=0;
 	m_jumpDirt=0;
 	m_jumpDirtTimer=-1;
+	m_isNecroDancer=false;
+	m_isDancer=false;
 	m_overrideHitSound=String();
 	m_overrideDeathSound=String();
 	m_exemptFromPause=false;
@@ -38534,8 +38595,6 @@ c_Enemy::c_Enemy(){
 	m_inArena=false;
 	m_enableDeathEffects=true;
 	m_minEnemyMoveDistance=3;
-	m_isNecroDancer=false;
-	m_isDancer=false;
 	m_movedThisFrame=false;
 	m_attemptedMoveThisFrame=false;
 	m_changedTilePositionThisFrame=false;
@@ -38811,6 +38870,14 @@ void c_Enemy::p_Init3(int t_xVal,int t_yVal,int t_l,String t_name,String t_overr
 	this->p_ApplyMonkeyPaw();
 	String t_displayName=t_enemyNode->p_GetAttribute5(String(L"displayName",11),this->m_friendlyName);
 	bb_logger_Debug->p_WriteLine2(String(L"Placed ",7)+t_displayName+String(L" at ",4)+((new c_Point)->m_new(t_xVal,t_yVal))->p_ToString());
+}
+void c_Enemy::p_MakeDancer(){
+	this->m_isDancer=true;
+	this->m_shadowYOff-=8;
+	this->m_yOff-=FLOAT(8.0);
+	this->m_shadow->p_UnSetZ();
+	this->m_shadow->p_SetZOff(this->m_image->m_zOff+FLOAT(24.0));
+	this->m_image->p_SetZOff(this->m_image->m_zOff+FLOAT(124.0));
 }
 int c_Enemy::m_GetNumStairLockingMinibosses(){
 	int t_numStairLockingMinibosses=0;
@@ -39810,14 +39877,6 @@ void c_Enemy::m_StartRandomizerRun(){
 			}
 		}
 	}
-}
-void c_Enemy::p_MakeDancer(){
-	this->m_isDancer=true;
-	this->m_shadowYOff-=8;
-	this->m_yOff-=FLOAT(8.0);
-	this->m_shadow->p_UnSetZ();
-	this->m_shadow->p_SetZOff(this->m_image->m_zOff+FLOAT(24.0));
-	this->m_image->p_SetZOff(this->m_image->m_zOff+FLOAT(124.0));
 }
 bool c_Enemy::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Enemy.Hit(String, Int, Int, Entity, Bool, Int)",46));
@@ -42765,6 +42824,9 @@ void c_Enemy::p_Update(){
 	this->m_justSpawned=false;
 	this->m_wasFrozen=this->p_IsFrozen(false);
 }
+void c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(int t_cmd){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Enemy.SetAllNonNecroDancerEnemyMoveDelays(Int)",46));
+}
 void c_Enemy::m_SetEnemiesToDropNoCoinsOverride(){
 	c_Enumerator4* t_=m_enemyList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
@@ -42780,9 +42842,6 @@ void c_Enemy::m_KillAllEnemies(){
 		t_enemy->p_Die();
 	}
 	m_killingAllEnemies=false;
-}
-void c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(int t_cmd){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Enemy.SetAllNonNecroDancerEnemyMoveDelays(Int)",46));
 }
 int c_Enemy::m_GetNumEnemies(){
 	return m_enemyList->p_Count()-c_Crate::m_GetNumCrates();
@@ -46939,14 +46998,18 @@ void c_Tile::p_AddTorch(){
 	this->m_torchImage->p_SetAlphaValue(FLOAT(0.0));
 	this->m_torchImage->p_SetZOff(FLOAT(24.0));
 }
-void c_Tile::p_AddTextLabel(String t_filename,int t_tmpXOff,int t_tmpYOff,Float t_displayD,bool t_flash,bool t_textString){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Tile.AddTextLabel(String, Int, Int, Float, Bool, Bool)",54));
-}
 void c_Tile::p_SetDoorTrigger(int t_triggerVal){
 	this->m_triggerDoor=t_triggerVal;
 }
+void c_Tile::p_AddTorch2(){
+	this->m_TORCH_LIGHT_MAX=int(Float(this->m_TORCH_LIGHT_MAX)*FLOAT(1.6));
+	this->p_AddTorch();
+}
 void c_Tile::p_SetTrigger(int t_triggerVal){
 	this->m_trigger=t_triggerVal;
+}
+void c_Tile::p_AddTextLabel(String t_filename,int t_tmpXOff,int t_tmpYOff,Float t_displayD,bool t_flash,bool t_textString){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Tile.AddTextLabel(String, Int, Int, Float, Bool, Bool)",54));
 }
 void c_Tile::p_SetDigTrigger(int t_triggerVal){
 	this->m_triggerDig=t_triggerVal;
@@ -47153,10 +47216,6 @@ void c_Tile::m_CleanUpPendingTiles(){
 	while(m_pendingTilesList->p_Count()>0){
 		m_pendingTilesList->p_RemoveFirst()->p_Die();
 	}
-}
-void c_Tile::p_AddTorch2(){
-	this->m_TORCH_LIGHT_MAX=int(Float(this->m_TORCH_LIGHT_MAX)*FLOAT(1.6));
-	this->p_AddTorch();
 }
 bool c_Tile::p_IsNormalFloor(){
 	int t_24=this->m_type;
@@ -49034,8 +49093,8 @@ void c_Stack2::p_Push5(Array<int > t_values,int t_offset,int t_count){
 void c_Stack2::p_Push6(Array<int > t_values,int t_offset){
 	p_Push5(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_Enumerator6* c_Stack2::p_ObjectEnumerator(){
-	return (new c_Enumerator6)->m_new(this);
+c_Enumerator8* c_Stack2::p_ObjectEnumerator(){
+	return (new c_Enumerator8)->m_new(this);
 }
 void c_Stack2::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
@@ -49140,44 +49199,6 @@ void c_Enumerator5::mark(){
 	Object::mark();
 	gc_mark_q(m__list);
 	gc_mark_q(m__curr);
-}
-c_IntStack::c_IntStack(){
-}
-c_IntStack* c_IntStack::m_new(Array<int > t_data){
-	c_Stack2::m_new2(t_data);
-	return this;
-}
-c_IntStack* c_IntStack::m_new2(){
-	c_Stack2::m_new();
-	return this;
-}
-bool c_IntStack::p_Equals9(int t_lhs,int t_rhs){
-	return t_lhs==t_rhs;
-}
-void c_IntStack::mark(){
-	c_Stack2::mark();
-}
-c_Enumerator6::c_Enumerator6(){
-	m_stack=0;
-	m_index=0;
-}
-c_Enumerator6* c_Enumerator6::m_new(c_Stack2* t_stack){
-	gc_assign(this->m_stack,t_stack);
-	return this;
-}
-c_Enumerator6* c_Enumerator6::m_new2(){
-	return this;
-}
-bool c_Enumerator6::p_HasNext(){
-	return m_index<m_stack->p_Length();
-}
-int c_Enumerator6::p_NextObject(){
-	m_index+=1;
-	return m_stack->m_data[m_index-1];
-}
-void c_Enumerator6::mark(){
-	Object::mark();
-	gc_mark_q(m_stack);
 }
 int bb_controller_game_lastEnemyMoveBeat;
 c_ControllerGame::c_ControllerGame(){
@@ -50307,7 +50328,7 @@ c_Trap::c_Trap(){
 }
 c_TrapList* c_Trap::m_trapList;
 c_Trap* c_Trap::m_GetTrapAt(int t_xVal,int t_yVal){
-	c_Enumerator7* t_=m_trapList->p_ObjectEnumerator();
+	c_Enumerator6* t_=m_trapList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Trap* t_trap=t_->p_NextObject();
 		if(t_trap->m_x==t_xVal && t_trap->m_y==t_yVal){
@@ -50398,7 +50419,7 @@ void c_Trap::p_Move(){
 }
 void c_Trap::m_MoveAll(){
 	m_trapList->p_Sort(1);
-	c_Enumerator7* t_=m_trapList->p_ObjectEnumerator();
+	c_Enumerator6* t_=m_trapList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Trap* t_trap=t_->p_NextObject();
 		t_trap->p_Move();
@@ -50466,8 +50487,8 @@ int c_List16::p_Clear(){
 	gc_assign(m__head->m__pred,m__head);
 	return 0;
 }
-c_Enumerator7* c_List16::p_ObjectEnumerator(){
-	return (new c_Enumerator7)->m_new(this);
+c_Enumerator6* c_List16::p_ObjectEnumerator(){
+	return (new c_Enumerator6)->m_new(this);
 }
 int c_List16::p_Count(){
 	int t_n=0;
@@ -50481,7 +50502,7 @@ int c_List16::p_Count(){
 Array<c_Trap* > c_List16::p_ToArray(){
 	Array<c_Trap* > t_arr=Array<c_Trap* >(p_Count());
 	int t_i=0;
-	c_Enumerator7* t_=this->p_ObjectEnumerator();
+	c_Enumerator6* t_=this->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Trap* t_t=t_->p_NextObject();
 		gc_assign(t_arr[t_i],t_t);
@@ -51054,11 +51075,6 @@ bool c_Pawnbroker::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* 
 void c_Pawnbroker::mark(){
 	c_NPC::mark();
 }
-c_TilesetType::c_TilesetType(){
-}
-void c_TilesetType::mark(){
-	Object::mark();
-}
 c_RoomType::c_RoomType(){
 }
 void c_RoomType::mark(){
@@ -51105,8 +51121,8 @@ c_List18* c_List18::m_new2(Array<c_TileData* > t_data){
 	}
 	return this;
 }
-c_Enumerator8* c_List18::p_ObjectEnumerator(){
-	return (new c_Enumerator8)->m_new(this);
+c_Enumerator7* c_List18::p_ObjectEnumerator(){
+	return (new c_Enumerator7)->m_new(this);
 }
 void c_List18::mark(){
 	Object::mark();
@@ -51145,11 +51161,44 @@ c_HeadNode18* c_HeadNode18::m_new(){
 void c_HeadNode18::mark(){
 	c_Node34::mark();
 }
+c_TilesetType::c_TilesetType(){
+}
+void c_TilesetType::mark(){
+	Object::mark();
+}
+c_Enumerator6::c_Enumerator6(){
+	m__list=0;
+	m__curr=0;
+}
+c_Enumerator6* c_Enumerator6::m_new(c_List16* t_list){
+	gc_assign(m__list,t_list);
+	gc_assign(m__curr,t_list->m__head->m__succ);
+	return this;
+}
+c_Enumerator6* c_Enumerator6::m_new2(){
+	return this;
+}
+bool c_Enumerator6::p_HasNext(){
+	while(m__curr->m__succ->m__pred!=m__curr){
+		gc_assign(m__curr,m__curr->m__succ);
+	}
+	return m__curr!=m__list->m__head;
+}
+c_Trap* c_Enumerator6::p_NextObject(){
+	c_Trap* t_data=m__curr->m__data;
+	gc_assign(m__curr,m__curr->m__succ);
+	return t_data;
+}
+void c_Enumerator6::mark(){
+	Object::mark();
+	gc_mark_q(m__list);
+	gc_mark_q(m__curr);
+}
 c_Enumerator7::c_Enumerator7(){
 	m__list=0;
 	m__curr=0;
 }
-c_Enumerator7* c_Enumerator7::m_new(c_List16* t_list){
+c_Enumerator7* c_Enumerator7::m_new(c_List18* t_list){
 	gc_assign(m__list,t_list);
 	gc_assign(m__curr,t_list->m__head->m__succ);
 	return this;
@@ -51163,40 +51212,12 @@ bool c_Enumerator7::p_HasNext(){
 	}
 	return m__curr!=m__list->m__head;
 }
-c_Trap* c_Enumerator7::p_NextObject(){
-	c_Trap* t_data=m__curr->m__data;
-	gc_assign(m__curr,m__curr->m__succ);
-	return t_data;
-}
-void c_Enumerator7::mark(){
-	Object::mark();
-	gc_mark_q(m__list);
-	gc_mark_q(m__curr);
-}
-c_Enumerator8::c_Enumerator8(){
-	m__list=0;
-	m__curr=0;
-}
-c_Enumerator8* c_Enumerator8::m_new(c_List18* t_list){
-	gc_assign(m__list,t_list);
-	gc_assign(m__curr,t_list->m__head->m__succ);
-	return this;
-}
-c_Enumerator8* c_Enumerator8::m_new2(){
-	return this;
-}
-bool c_Enumerator8::p_HasNext(){
-	while(m__curr->m__succ->m__pred!=m__curr){
-		gc_assign(m__curr,m__curr->m__succ);
-	}
-	return m__curr!=m__list->m__head;
-}
-c_TileData* c_Enumerator8::p_NextObject(){
+c_TileData* c_Enumerator7::p_NextObject(){
 	c_TileData* t_data=m__curr->m__data;
 	gc_assign(m__curr,m__curr->m__succ);
 	return t_data;
 }
-void c_Enumerator8::mark(){
+void c_Enumerator7::mark(){
 	Object::mark();
 	gc_mark_q(m__list);
 	gc_mark_q(m__curr);
@@ -51286,87 +51307,214 @@ c_StringStack* c_StringStack::m_new2(){
 void c_StringStack::mark(){
 	c_Stack3::mark();
 }
-c_Sarcophagus::c_Sarcophagus(){
-	m_numEnemiesSpawned=0;
+c_Necrodancer::c_Necrodancer(){
+	m_iceBlast=0;
+	m_shieldImage=0;
+	m_origXOff=-1;
+	m_actionTime=12;
+	m_theLute=0;
+	m_saidLutePhrase=false;
+	m_phase=0;
+	m_actionDelay=-1;
+	m_lastAction=0;
+	m_didCry=false;
+	m_actionDelayTime=3;
+	m_spellNum=0;
 	m_vibrateCounter=3;
-	m_vibrateOffset=FLOAT(0.7);
+	m_vibrateOffset=FLOAT(1.0);
+	m_lastSpell=-1;
 }
-c_List19* c_Sarcophagus::m_sarcophagi;
-c_Sarcophagus* c_Sarcophagus::m_new(int t_xVal,int t_yVal,int t_l){
+c_Necrodancer* c_Necrodancer::m_necrodancer;
+int c_Necrodancer::m_wallsStep;
+c_Necrodancer* c_Necrodancer::m_new(int t_xVal,int t_yVal,int t_l){
 	c_Enemy::m_new();
-	if(c_Shrine::m_warShrineActive){
-		t_l=3;
+	this->p_Init3(t_xVal,t_yVal,t_l,String(L"necrodancer",11),String(),-1,-1);
+	this->m_isNecroDancer=true;
+	gc_assign(m_necrodancer,this);
+	gc_assign(this->m_iceBlast,(new c_Sprite)->m_new2(String(L"spells/ice_blast.png",20),8,1));
+	this->m_iceBlast->p_SetHandle2(-2,59);
+	this->m_iceBlast->p_SetZOff(FLOAT(1000.0));
+	gc_assign(this->m_shieldImage,(new c_Sprite)->m_new2(String(L"entities/necroshield.png",24),1,c_Image::m_DefaultFlags));
+	this->m_shieldImage->p_SetZOff(Float(this->m_storedZOff+10));
+	m_wallsStep=0;
+	this->m_origXOff=int(this->m_xOff);
+	int t_1=this->m_level;
+	if(t_1==1){
+		this->p_MakeDancer();
+	}else{
+		if(t_1==2){
+			this->m_actionTime=10;
+		}
 	}
-	this->p_Init3(t_xVal,t_yVal,t_l,String(L"sarcophagus",11),String(),-1,-1);
-	m_sarcophagi->p_AddLast19(this);
-	this->m_overrideHitSound=String(L"sarcophagusHit",14);
-	this->m_overrideDeathSound=String(L"sarcophagusDeath",16);
+	this->m_overrideHitSound=String(L"necrodancerHit",14);
+	this->m_overrideDeathSound=String(L"necrodancerDeath",16);
+	this->m_overrideAttackSound=String(L"necrodancerAttack",17);
 	return this;
 }
-c_Sarcophagus* c_Sarcophagus::m_new2(){
+c_Necrodancer* c_Necrodancer::m_new2(){
 	c_Enemy::m_new();
 	return this;
 }
-bool c_Sarcophagus::p_CanBeLord(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.CanBeLord()",23));
+void c_Necrodancer::p_Die(){
+	c_Enemy::p_Die();
+	m_necrodancer=0;
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Die()",17));
+}
+c_Point* c_Necrodancer::p_GetMovementDirection(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.GetMovementDirection()",34));
+	return 0;
+}
+bool c_Necrodancer::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Hit(String, Int, Int, Entity, Bool, Int)",52));
 	return false;
 }
-void c_Sarcophagus::p_Delete(){
-	m_sarcophagi->p_RemoveEach9(this);
-	c_Enemy::p_Delete();
+void c_Necrodancer::p_MoveFail(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.MoveFail()",22));
 }
-void c_Sarcophagus::p_Die(){
-	if(this->m_coinsToDrop>0){
-		if(this->m_numEnemiesSpawned<=1){
-			this->m_coinsToDrop=5*this->m_level+15;
+void c_Necrodancer::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.MoveSucceed(Bool, Bool)",35));
+}
+void c_Necrodancer::p_TriggeredWalls(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.TriggeredWalls()",28));
+}
+void c_Necrodancer::p_Teleport(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Teleport()",22));
+}
+void c_Necrodancer::p_TakeAction(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.TakeAction()",24));
+}
+void c_Necrodancer::p_ChooseSpell(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.ChooseSpell()",25));
+}
+void c_Necrodancer::p_SummonMiniboss(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.SummonMiniboss()",28));
+}
+void c_Necrodancer::p_Update(){
+	this->m_frozenDuration=0;
+	if(this->m_level==2 && this->m_phase==2){
+		if(this->m_currentMoveDelay<=1){
+			c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(1);
 		}else{
-			if(this->m_numEnemiesSpawned==2){
-				this->m_coinsToDrop=2*this->m_level+6;
+			c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(999);
+		}
+	}
+	if(c_Enemy::m_enemiesPaused){
+		this->m_actionDelay=-1;
+		this->m_lastAction=c_Audio::m_GetClosestBeatNum(true);
+	}
+	if(this->m_level==2 && !this->m_didCry && !c_Enemy::m_enemiesPaused){
+		this->m_didCry=true;
+		c_Audio::m_PlayGameSound(String(L"necrodancerLuteIsMine",21),5,FLOAT(1.0));
+	}
+	if(c_Player::m_AllPlayersPerished()){
+		return;
+	}
+	if(this->m_level==2){
+		if(this->m_health==1 && this->m_phase<=1){
+			this->p_TriggeredWalls();
+		}
+		if(c_Level::m_IsWallAt2(this->m_x,this->m_y)){
+			this->p_Teleport();
+		}
+	}
+	if(c_Audio::m_GetClosestBeatNum(true)-this->m_actionDelay>=this->m_actionDelayTime){
+		if(this->m_actionDelay>0){
+			this->p_TakeAction();
+		}
+	}
+	if(c_Audio::m_GetClosestBeatNum(true)-this->m_lastAction>=this->m_actionTime){
+		this->m_lastAction=c_Audio::m_GetClosestBeatNum(true);
+		this->m_actionDelay=c_Audio::m_GetClosestBeatNum(true);
+		this->m_actionDelayTime=2;
+		this->p_ChooseSpell();
+		if(this->m_spellNum==1){
+			if(this->m_health>=4){
+				this->m_actionDelayTime=5;
 			}else{
-				this->m_coinsToDrop=1*this->m_level+4;
+				this->m_actionDelayTime=4;
 			}
 		}
 	}
-	m_sarcophagi->p_RemoveEach9(this);
-	c_Enemy::p_Die();
-}
-c_Point* c_Sarcophagus::p_GetMovementDirection(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetMovementDirection()",34));
-	return 0;
-}
-bool c_Sarcophagus::p_ImmuneToFear(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.ImmuneToFear()",26));
-	return false;
-}
-void c_Sarcophagus::p_MoveFail(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveFail()",22));
-}
-void c_Sarcophagus::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveSucceed(Bool, Bool)",35));
-}
-int c_Sarcophagus::p_PerformMovement(int t_xVal,int t_yVal){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.PerformMovement(Int, Int)",37));
-	return 0;
-}
-void c_Sarcophagus::p_Update(){
-	if(this->m_currentMoveDelay>1){
-		this->m_xOff=FLOAT(0.0);
+	if(this->m_actionDelay<0){
+		this->m_animOverride=-1;
 	}else{
+		int t_2=this->m_level;
+		if(t_2==1){
+			if(this->m_phase!=0){
+				int t_3=this->m_spellNum;
+				if(t_3==0){
+					this->m_animOverride=5;
+				}else{
+					if(t_3==1){
+						this->m_animOverride=6;
+					}else{
+						if(t_3==2){
+							this->m_animOverride=7;
+						}else{
+							if(t_3==3){
+								this->m_animOverride=4;
+							}
+						}
+					}
+				}
+			}
+		}else{
+			this->m_animOverride=7;
+			int t_4=this->m_phase;
+			if(t_4==0){
+				if(c_Sarcophagus::m_GetNumSarcophagi()>5){
+					this->m_animOverride=4;
+				}
+			}else{
+				if(t_4==1){
+					if(c_Sarcophagus::m_GetNumSarcophagi()>3){
+						this->m_animOverride=6;
+					}
+				}
+			}
+		}
+	}
+	if(this->m_spellNum==1 && this->m_actionDelay>0 && c_Audio::m_GetClosestBeatNum(true)-this->m_actionDelay>=this->m_actionDelayTime-2){
 		this->m_vibrateCounter-=1;
 		if(this->m_vibrateCounter==0){
-			this->m_xOff=this->m_vibrateOffset;
-			this->m_vibrateOffset=-this->m_vibrateOffset;
 			this->m_vibrateCounter=3;
+			this->m_xOff=Float(this->m_origXOff)+this->m_vibrateOffset;
+			this->m_vibrateOffset=-this->m_vibrateOffset;
+		}
+	}else{
+		this->m_xOff=Float(this->m_origXOff);
+	}
+	int t_5=this->m_level;
+	if(t_5==1){
+		int t_6=this->m_phase;
+		if(t_6==0){
+			if(!c_Level::m_IsWallAt2(this->m_x,this->m_y)){
+				this->m_actionTime=8;
+				this->m_phase=1;
+				this->m_spellNum=0;
+				c_Audio::m_StartNecrodancerTransition(this);
+				c_Audio::m_PlayGameSound(String(L"necrodancerCurseYou",19),5,FLOAT(1.0));
+				this->p_SummonMiniboss();
+				this->m_lastSpell=2;
+			}
+		}else{
+			if(t_6==1){
+				if(this->m_theLute!=0){
+					if(this->m_theLute->m_dead || !c_Level::m_IsWallAt2(this->m_x,this->m_y)){
+						c_Trap::m_RemoveAll();
+					}
+				}
+			}
 		}
 	}
 	c_Enemy::p_Update();
+	this->m_frozenDuration=0;
 }
-int c_Sarcophagus::m_GetNumSarcophagi(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetNumSarcophagi()",30));
-	return 0;
-}
-void c_Sarcophagus::mark(){
+void c_Necrodancer::mark(){
 	c_Enemy::mark();
+	gc_mark_q(m_iceBlast);
+	gc_mark_q(m_shieldImage);
+	gc_mark_q(m_theLute);
 }
 c_BeatAnimationData::c_BeatAnimationData(){
 	m_frame=0;
@@ -51582,6 +51730,88 @@ c_MovementType::c_MovementType(){
 void c_MovementType::mark(){
 	Object::mark();
 }
+c_Sarcophagus::c_Sarcophagus(){
+	m_numEnemiesSpawned=0;
+	m_vibrateCounter=3;
+	m_vibrateOffset=FLOAT(0.7);
+}
+c_List19* c_Sarcophagus::m_sarcophagi;
+c_Sarcophagus* c_Sarcophagus::m_new(int t_xVal,int t_yVal,int t_l){
+	c_Enemy::m_new();
+	if(c_Shrine::m_warShrineActive){
+		t_l=3;
+	}
+	this->p_Init3(t_xVal,t_yVal,t_l,String(L"sarcophagus",11),String(),-1,-1);
+	m_sarcophagi->p_AddLast19(this);
+	this->m_overrideHitSound=String(L"sarcophagusHit",14);
+	this->m_overrideDeathSound=String(L"sarcophagusDeath",16);
+	return this;
+}
+c_Sarcophagus* c_Sarcophagus::m_new2(){
+	c_Enemy::m_new();
+	return this;
+}
+int c_Sarcophagus::m_GetNumSarcophagi(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetNumSarcophagi()",30));
+	return 0;
+}
+bool c_Sarcophagus::p_CanBeLord(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.CanBeLord()",23));
+	return false;
+}
+void c_Sarcophagus::p_Delete(){
+	m_sarcophagi->p_RemoveEach9(this);
+	c_Enemy::p_Delete();
+}
+void c_Sarcophagus::p_Die(){
+	if(this->m_coinsToDrop>0){
+		if(this->m_numEnemiesSpawned<=1){
+			this->m_coinsToDrop=5*this->m_level+15;
+		}else{
+			if(this->m_numEnemiesSpawned==2){
+				this->m_coinsToDrop=2*this->m_level+6;
+			}else{
+				this->m_coinsToDrop=1*this->m_level+4;
+			}
+		}
+	}
+	m_sarcophagi->p_RemoveEach9(this);
+	c_Enemy::p_Die();
+}
+c_Point* c_Sarcophagus::p_GetMovementDirection(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetMovementDirection()",34));
+	return 0;
+}
+bool c_Sarcophagus::p_ImmuneToFear(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.ImmuneToFear()",26));
+	return false;
+}
+void c_Sarcophagus::p_MoveFail(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveFail()",22));
+}
+void c_Sarcophagus::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveSucceed(Bool, Bool)",35));
+}
+int c_Sarcophagus::p_PerformMovement(int t_xVal,int t_yVal){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.PerformMovement(Int, Int)",37));
+	return 0;
+}
+void c_Sarcophagus::p_Update(){
+	if(this->m_currentMoveDelay>1){
+		this->m_xOff=FLOAT(0.0);
+	}else{
+		this->m_vibrateCounter-=1;
+		if(this->m_vibrateCounter==0){
+			this->m_xOff=this->m_vibrateOffset;
+			this->m_vibrateOffset=-this->m_vibrateOffset;
+			this->m_vibrateCounter=3;
+		}
+	}
+	c_Enemy::p_Update();
+}
+void c_Sarcophagus::mark(){
+	c_Enemy::mark();
+}
 c_List19::c_List19(){
 	m__head=((new c_HeadNode19)->m_new());
 }
@@ -51665,6 +51895,44 @@ c_HeadNode19* c_HeadNode19::m_new(){
 }
 void c_HeadNode19::mark(){
 	c_Node36::mark();
+}
+c_IntStack::c_IntStack(){
+}
+c_IntStack* c_IntStack::m_new(Array<int > t_data){
+	c_Stack2::m_new2(t_data);
+	return this;
+}
+c_IntStack* c_IntStack::m_new2(){
+	c_Stack2::m_new();
+	return this;
+}
+bool c_IntStack::p_Equals9(int t_lhs,int t_rhs){
+	return t_lhs==t_rhs;
+}
+void c_IntStack::mark(){
+	c_Stack2::mark();
+}
+c_Enumerator8::c_Enumerator8(){
+	m_stack=0;
+	m_index=0;
+}
+c_Enumerator8* c_Enumerator8::m_new(c_Stack2* t_stack){
+	gc_assign(this->m_stack,t_stack);
+	return this;
+}
+c_Enumerator8* c_Enumerator8::m_new2(){
+	return this;
+}
+bool c_Enumerator8::p_HasNext(){
+	return m_index<m_stack->p_Length();
+}
+int c_Enumerator8::p_NextObject(){
+	m_index+=1;
+	return m_stack->m_data[m_index-1];
+}
+void c_Enumerator8::mark(){
+	Object::mark();
+	gc_mark_q(m_stack);
 }
 c_KingConga::c_KingConga(){
 	m_initX=0;
@@ -55663,215 +55931,6 @@ void c_Mummy::p_Update(){
 }
 void c_Mummy::mark(){
 	c_Enemy::mark();
-}
-c_Necrodancer::c_Necrodancer(){
-	m_iceBlast=0;
-	m_shieldImage=0;
-	m_origXOff=-1;
-	m_actionTime=12;
-	m_theLute=0;
-	m_saidLutePhrase=false;
-	m_phase=0;
-	m_actionDelay=-1;
-	m_lastAction=0;
-	m_didCry=false;
-	m_actionDelayTime=3;
-	m_spellNum=0;
-	m_vibrateCounter=3;
-	m_vibrateOffset=FLOAT(1.0);
-	m_lastSpell=-1;
-}
-c_Necrodancer* c_Necrodancer::m_necrodancer;
-int c_Necrodancer::m_wallsStep;
-c_Necrodancer* c_Necrodancer::m_new(int t_xVal,int t_yVal,int t_l){
-	c_Enemy::m_new();
-	this->p_Init3(t_xVal,t_yVal,t_l,String(L"necrodancer",11),String(),-1,-1);
-	this->m_isNecroDancer=true;
-	gc_assign(m_necrodancer,this);
-	gc_assign(this->m_iceBlast,(new c_Sprite)->m_new2(String(L"spells/ice_blast.png",20),8,1));
-	this->m_iceBlast->p_SetHandle2(-2,59);
-	this->m_iceBlast->p_SetZOff(FLOAT(1000.0));
-	gc_assign(this->m_shieldImage,(new c_Sprite)->m_new2(String(L"entities/necroshield.png",24),1,c_Image::m_DefaultFlags));
-	this->m_shieldImage->p_SetZOff(Float(this->m_storedZOff+10));
-	m_wallsStep=0;
-	this->m_origXOff=int(this->m_xOff);
-	int t_1=this->m_level;
-	if(t_1==1){
-		this->p_MakeDancer();
-	}else{
-		if(t_1==2){
-			this->m_actionTime=10;
-		}
-	}
-	this->m_overrideHitSound=String(L"necrodancerHit",14);
-	this->m_overrideDeathSound=String(L"necrodancerDeath",16);
-	this->m_overrideAttackSound=String(L"necrodancerAttack",17);
-	return this;
-}
-c_Necrodancer* c_Necrodancer::m_new2(){
-	c_Enemy::m_new();
-	return this;
-}
-void c_Necrodancer::p_Die(){
-	c_Enemy::p_Die();
-	m_necrodancer=0;
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Die()",17));
-}
-c_Point* c_Necrodancer::p_GetMovementDirection(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.GetMovementDirection()",34));
-	return 0;
-}
-bool c_Necrodancer::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Hit(String, Int, Int, Entity, Bool, Int)",52));
-	return false;
-}
-void c_Necrodancer::p_MoveFail(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.MoveFail()",22));
-}
-void c_Necrodancer::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.MoveSucceed(Bool, Bool)",35));
-}
-void c_Necrodancer::p_TriggeredWalls(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.TriggeredWalls()",28));
-}
-void c_Necrodancer::p_Teleport(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.Teleport()",22));
-}
-void c_Necrodancer::p_TakeAction(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.TakeAction()",24));
-}
-void c_Necrodancer::p_ChooseSpell(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.ChooseSpell()",25));
-}
-void c_Necrodancer::p_SummonMiniboss(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Necrodancer.SummonMiniboss()",28));
-}
-void c_Necrodancer::p_Update(){
-	this->m_frozenDuration=0;
-	if(this->m_level==2 && this->m_phase==2){
-		if(this->m_currentMoveDelay<=1){
-			c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(1);
-		}else{
-			c_Enemy::m_SetAllNonNecroDancerEnemyMoveDelays(999);
-		}
-	}
-	if(c_Enemy::m_enemiesPaused){
-		this->m_actionDelay=-1;
-		this->m_lastAction=c_Audio::m_GetClosestBeatNum(true);
-	}
-	if(this->m_level==2 && !this->m_didCry && !c_Enemy::m_enemiesPaused){
-		this->m_didCry=true;
-		c_Audio::m_PlayGameSound(String(L"necrodancerLuteIsMine",21),5,FLOAT(1.0));
-	}
-	if(c_Player::m_AllPlayersPerished()){
-		return;
-	}
-	if(this->m_level==2){
-		if(this->m_health==1 && this->m_phase<=1){
-			this->p_TriggeredWalls();
-		}
-		if(c_Level::m_IsWallAt2(this->m_x,this->m_y)){
-			this->p_Teleport();
-		}
-	}
-	if(c_Audio::m_GetClosestBeatNum(true)-this->m_actionDelay>=this->m_actionDelayTime){
-		if(this->m_actionDelay>0){
-			this->p_TakeAction();
-		}
-	}
-	if(c_Audio::m_GetClosestBeatNum(true)-this->m_lastAction>=this->m_actionTime){
-		this->m_lastAction=c_Audio::m_GetClosestBeatNum(true);
-		this->m_actionDelay=c_Audio::m_GetClosestBeatNum(true);
-		this->m_actionDelayTime=2;
-		this->p_ChooseSpell();
-		if(this->m_spellNum==1){
-			if(this->m_health>=4){
-				this->m_actionDelayTime=5;
-			}else{
-				this->m_actionDelayTime=4;
-			}
-		}
-	}
-	if(this->m_actionDelay<0){
-		this->m_animOverride=-1;
-	}else{
-		int t_2=this->m_level;
-		if(t_2==1){
-			if(this->m_phase!=0){
-				int t_3=this->m_spellNum;
-				if(t_3==0){
-					this->m_animOverride=5;
-				}else{
-					if(t_3==1){
-						this->m_animOverride=6;
-					}else{
-						if(t_3==2){
-							this->m_animOverride=7;
-						}else{
-							if(t_3==3){
-								this->m_animOverride=4;
-							}
-						}
-					}
-				}
-			}
-		}else{
-			this->m_animOverride=7;
-			int t_4=this->m_phase;
-			if(t_4==0){
-				if(c_Sarcophagus::m_GetNumSarcophagi()>5){
-					this->m_animOverride=4;
-				}
-			}else{
-				if(t_4==1){
-					if(c_Sarcophagus::m_GetNumSarcophagi()>3){
-						this->m_animOverride=6;
-					}
-				}
-			}
-		}
-	}
-	if(this->m_spellNum==1 && this->m_actionDelay>0 && c_Audio::m_GetClosestBeatNum(true)-this->m_actionDelay>=this->m_actionDelayTime-2){
-		this->m_vibrateCounter-=1;
-		if(this->m_vibrateCounter==0){
-			this->m_vibrateCounter=3;
-			this->m_xOff=Float(this->m_origXOff)+this->m_vibrateOffset;
-			this->m_vibrateOffset=-this->m_vibrateOffset;
-		}
-	}else{
-		this->m_xOff=Float(this->m_origXOff);
-	}
-	int t_5=this->m_level;
-	if(t_5==1){
-		int t_6=this->m_phase;
-		if(t_6==0){
-			if(!c_Level::m_IsWallAt2(this->m_x,this->m_y)){
-				this->m_actionTime=8;
-				this->m_phase=1;
-				this->m_spellNum=0;
-				c_Audio::m_StartNecrodancerTransition(this);
-				c_Audio::m_PlayGameSound(String(L"necrodancerCurseYou",19),5,FLOAT(1.0));
-				this->p_SummonMiniboss();
-				this->m_lastSpell=2;
-			}
-		}else{
-			if(t_6==1){
-				if(this->m_theLute!=0){
-					if(this->m_theLute->m_dead || !c_Level::m_IsWallAt2(this->m_x,this->m_y)){
-						c_Trap::m_RemoveAll();
-					}
-				}
-			}
-		}
-	}
-	c_Enemy::p_Update();
-	this->m_frozenDuration=0;
-}
-void c_Necrodancer::mark(){
-	c_Enemy::mark();
-	gc_mark_q(m_iceBlast);
-	gc_mark_q(m_shieldImage);
-	gc_mark_q(m_theLute);
 }
 c_BatMiniboss::c_BatMiniboss(){
 	m_hasRoared=false;
@@ -63651,11 +63710,14 @@ int bbInit(){
 	c_Level::m_pendingTiles=(new c_IntMap7)->m_new();
 	c_Tile::m_pendingTilesList=(new c_List13)->m_new();
 	c_Level::m_lastCreatedRoomType=-1;
-	c_Level::m_skipNextPenaltyBox=false;
 	c_Enemy::m_randomizerXML=0;
 	c_Enemy::m_heartSmall=0;
 	c_Enemy::m_heartEmptySmall=0;
+	c_Necrodancer::m_necrodancer=0;
+	c_Necrodancer::m_wallsStep=0;
 	c_Sarcophagus::m_sarcophagi=(new c_List19)->m_new();
+	c_Level::m_charactersJustUnlocked=(new c_List12)->m_new();
+	c_Level::m_skipNextPenaltyBox=false;
 	c_KingConga::m_theKing=0;
 	c_Level::m_isHardMode=false;
 	bb_controller_game_peaceRingActive=false;
@@ -63692,14 +63754,12 @@ int bbInit(){
 	c_Item::m_itemPoolUrn=Array<c_List* >(7);
 	c_Item::m_itemPoolUrn2=Array<c_List* >(7);
 	c_ParticleSystemData::m_MOLE_DIG=0;
-	c_Necrodancer::m_necrodancer=0;
 	c_Nightmare::m_nightmare=0;
 	c_NPC::m_npcList=(new c_List23)->m_new();
 	c_Shopkeeper::m_shopkeeperStartX=0;
 	c_Shopkeeper::m_shopkeeperStartY=0;
 	c_Shopkeeper::m_isMonstrous=false;
 	c_Bell::m_bells=(new c_List24)->m_new();
-	c_Level::m_charactersJustUnlocked=(new c_List12)->m_new();
 	c_Stack3::m_NIL=String();
 	c_Stack5::m_NIL=0;
 	c_Item::m_debugTrailerMode=false;
@@ -63731,7 +63791,6 @@ int bbInit(){
 	bb_controller_game_subRunPlaytimeMilliseconds=0;
 	c_Level::m_zoneOrder=0;
 	c_Level::m_quickRestart=false;
-	c_Necrodancer::m_wallsStep=0;
 	c_Switch::m_switches=(new c_List37)->m_new();
 	c_Level::m_justUnlocked=String();
 	c_Level::m_popUpController=0;
@@ -63924,7 +63983,9 @@ void gc_mark(){
 	gc_mark_q(c_Enemy::m_randomizerXML);
 	gc_mark_q(c_Enemy::m_heartSmall);
 	gc_mark_q(c_Enemy::m_heartEmptySmall);
+	gc_mark_q(c_Necrodancer::m_necrodancer);
 	gc_mark_q(c_Sarcophagus::m_sarcophagi);
+	gc_mark_q(c_Level::m_charactersJustUnlocked);
 	gc_mark_q(c_KingConga::m_theKing);
 	gc_mark_q(c_Stack4::m_NIL);
 	gc_mark_q(bb_controller_game_beatData);
@@ -63946,11 +64007,9 @@ void gc_mark(){
 	gc_mark_q(c_Item::m_itemPoolUrn);
 	gc_mark_q(c_Item::m_itemPoolUrn2);
 	gc_mark_q(c_ParticleSystemData::m_MOLE_DIG);
-	gc_mark_q(c_Necrodancer::m_necrodancer);
 	gc_mark_q(c_Nightmare::m_nightmare);
 	gc_mark_q(c_NPC::m_npcList);
 	gc_mark_q(c_Bell::m_bells);
-	gc_mark_q(c_Level::m_charactersJustUnlocked);
 	gc_mark_q(c_Stack5::m_NIL);
 	gc_mark_q(c_Level::m_previousLevelMinibosses);
 	gc_mark_q(c_SaleItem::m_currentSaleItems);
