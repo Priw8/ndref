@@ -9,17 +9,24 @@ Import entity
 Import logger
 Import point
 Import sprite
+Import trap.frankensteinway_switch
 
 Class Frankensteinway Extends Enemy
 
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int)
+        'Bare minimum for necrolevel
+        Super.New()
+        Self.Init(xVal, yVal, 1, "frankensteinway")
+
+        Self.props = New Stack<FrankensteinwayProp>
+
         Debug.TraceNotImplemented("Frankensteinway.New(Int, Int)")
     End Method
 
     Field shieldImage: Sprite
-    Field props: Stack<Object>
+    Field props: Stack<FrankensteinwayProp>
     Field didCry: Bool
     Field activeProp: FrankensteinwayProp
     Field moveDir: Int
@@ -33,7 +40,12 @@ Class Frankensteinway Extends Enemy
     Field lastHitBeat: Int
 
     Method AddProp: Void(propX: Int, propY: Int, switchDY: Int)
-        Debug.TraceNotImplemented("Frankensteinway.AddProp(Int, Int, Int)")
+        'Simplified for necrolevel purposes (I think; maybe this is all it does, but not 100% sure on that)
+        Local prop := New FrankensteinwayProp(propX, propY)
+        Self.props.Push(prop)
+
+        Local switch := New FrankensteinwaySwitch(propX, propY + switchDY)
+        switch.parent = prop
     End Method
 
     Method AfterMove: Void()
@@ -130,11 +142,15 @@ Class Frankensteinway Extends Enemy
     End Method
 
     Method SpawnSarcophagi: Void()
-        Debug.TraceNotImplemented("Frankensteinway.SpawnSarcophagi()")
+        Self.SpawnSarcophagus(-7, -13)
+        Self.SpawnSarcophagus(7, -13)
     End Method
 
     Method SpawnSarcophagus: Void(atX: Int, atY: Int)
-        Debug.TraceNotImplemented("Frankensteinway.SpawnSarcophagus(Int, Int)")
+        'This is a VERY simplified version for necrolevel
+        'The actual method checks which tier to spawn, whether there's
+        'anything at the spawn coordinates etc and I don't feel like doing that!
+        New Sarcophagus(atX, atY, 1)
     End Method
 
     Method Update: Void()

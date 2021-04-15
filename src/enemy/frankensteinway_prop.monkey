@@ -10,6 +10,10 @@ Class FrankensteinwayProp Extends Enemy
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int)
+        'Bare minimum for necrolevel
+        Super.New()
+        Self.Init(xVal, yVal, 1, "frankensteinway_prop")
+
         Debug.TraceNotImplemented("FrankensteinwayProp.New(Int, Int)")
     End Method
 

@@ -10,6 +10,9 @@ Class FrankensteinwaySwitch Extends Trap
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int)
+        'Bare minimum for necrolevel
+        Super.New(xVal, yVal, TrapType.Switch)
+
         Debug.TraceNotImplemented("FrankensteinwaySwitch.New(Int, Int)")
     End Method
 

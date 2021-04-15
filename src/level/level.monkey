@@ -39,6 +39,7 @@ Import enemy.dragon
 Import enemy.electric_mage
 Import enemy.evileye
 Import enemy.fakewall
+Import enemy.frankensteinway
 Import enemy.gargoyle
 Import enemy.ghast
 Import enemy.ghost
@@ -2167,7 +2168,90 @@ Class Level
     End Function
 
     Function CreateBossBattleFrankensteinway: Void()
-        Debug.TraceNotImplemented("Level.CreateBossBattleFrankensteinway()")
+        Debug.Log("CREATEBOSSBATTLEFRANKENSTEINWAY: Creating Frankensteinway battle.")
+
+        Level.InitNewMap(True)
+        Level.outsideBossChamber = True
+        Level.DisableLevelConstraints()
+
+        Level.CreateRoom(-3, -3, 6, 6, False, RoomType.Boss)
+
+        If Level.isTrainingMode Then
+            Level.AddExit(2, 0, LevelType.Lobby, 1)
+            Level.PlaceTileRemovingExistingTiles(2, 0, TileType.Stairs)
+        End
+
+        Level.GetTileAt(-3, 0).AddTorch()
+        Level.GetTileAt(3, 0).AddTorch()
+        Level.GetTileAt(0, 3).AddTorch()
+
+        Level.PlaceTileRemovingExistingTiles(-1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -5, TileType.BossFloor)
+
+        Level.PlaceTileRemovingExistingTiles(-2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(-2, -5, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -5, TileType.BossWall)
+
+        Level.CreateRoom(-8, -14, 16, 8, False, RoomType.Boss)
+
+        For Local x := -1 To 1
+            Level.PlaceTileRemovingExistingTiles(x, -6, TileType.Door)
+            Level.GetTileAt(x, -6).SetDoorTrigger(2)
+        End For
+
+        Level.GetTileAt(-5, -6).AddTorch2()
+        Level.GetTileAt(-2, -6).AddTorch2()
+        Level.GetTileAt(2, -6).AddTorch2()
+        Level.GetTileAt(5, -6).AddTorch2()
+
+        Level.GetTileAt(-5, -14).AddTorch2()
+        Level.GetTileAt(-2, -14).AddTorch2()
+        Level.GetTileAt(2, -14).AddTorch2()
+        Level.GetTileAt(5, -14).AddTorch2()
+
+        Level.GetTileAt(-8, -12).AddTorch2()
+        Level.GetTileAt(-8, -8).AddTorch2()
+
+        Level.GetTileAt(8, -12).AddTorch2()
+        Level.GetTileAt(8, -8).AddTorch2()
+
+        Level.SetMagicBarrier(True)
+        Level.PaintTriggerInterior(-8, -14, 16, 8, 1)
+
+        Local frankensteinwayX := -2
+        Local frankensteinwayY := -12
+        If Util.RndIntRangeFromZero(1, True) = 0 Then
+            frankensteinwayX = 1
+        End
+        If Util.RndIntRangeFromZero(1, True) = 0 Then
+            frankensteinwayY = -9
+        End
+
+        Local frankensteinway := New Frankensteinway(frankensteinwayX, frankensteinwayY)
+        frankensteinway.ActivateLight(0.01, 1.5)
+        frankensteinway.SpawnSarcophagi()
+        frankensteinway.AddProp(-6, -11, -1)
+        frankensteinway.AddProp(6, -11, -1)
+        frankensteinway.AddProp(-6, -9, 1)
+        frankensteinway.AddProp(6, -9, 1)
+
+        Enemy.enemiesPaused = True
+
+        If GameData.GetNPCUnlock("bossmaster") And
+           Not GameData.HasFoughtFrankensteinway() And
+           Not Level.isReplaying
+            Level.charactersJustUnlocked.AddLast(509)
+        End If
+
+        GameData.SetFoughtFrankensteinway()
     End Function
 
     Function CreateBossmaster: Void()
@@ -2445,7 +2529,7 @@ Class Level
         Enemy.enemiesPaused = True
 
         If GameData.GetNPCUnlock("bossmaster") And
-           Not GameData.HasFoughtNecrodancer() And
+           Not GameData.HasFoughtNecrodancer2() And
            Not Level.isReplaying
             Level.charactersJustUnlocked.AddLast(507)
         End If
@@ -2520,7 +2604,8 @@ Class Level
             New Item(0, -4, ItemType.GlassArmor, False, -1, False)
         End
 
-        New LuteDragon(-1, -16, 1)
+        Local dragon := New LuteDragon(-1, -16, 1)
+        dragon.ActivateLight(0.01, 1.5)
 
         New BounceTrap(-3, -10, BounceTrapDirection.Right)
         New BounceTrap(3, -10, BounceTrapDirection.Left)
@@ -2529,7 +2614,7 @@ Class Level
         New Sarcophagus(5, -16, 1)
 
         If GameData.GetNPCUnlock("bossmaster") And
-           Not GameData.HasFoughtNecrodancer() And
+           Not GameData.HasFoughtLuteDragon() And
            Not Level.isReplaying
             Level.charactersJustUnlocked.AddLast(508)
         End If

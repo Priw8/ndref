@@ -5526,7 +5526,11 @@ class c_Node41;
 class c_HeadNode24;
 class c_DeadRinger;
 class c_Rect;
+class c_Frankensteinway;
+class c_FrankensteinwayProp;
 class c_Stack5;
+class c_FrankensteinwaySwitch;
+class c_Stack6;
 class c_Enumerator13;
 class c_Enumerator14;
 class c_TileObject;
@@ -5559,7 +5563,7 @@ class c_Node45;
 class c_HeadNode28;
 class c_Thing;
 class c_WeightedPicker;
-class c_Stack6;
+class c_Stack7;
 class c_UncertaintyWeaponPredicate;
 class c_UncertaintyRingPredicate;
 class c_List29;
@@ -5607,19 +5611,19 @@ class c_IntPointMap;
 class c_Node54;
 class c_KeyEnumerator2;
 class c_MapKeys2;
-class c_Stack7;
+class c_Stack8;
 class c_Enumerator23;
 class c_RectRoom;
 class c_PortalSeg;
-class c_Stack8;
+class c_Stack9;
 class c_StackEx3;
 class c_Enumerator24;
 class c_RoomWithDoor;
 class c_Enumerator25;
-class c_Stack9;
+class c_Stack10;
 class c_StackEx4;
 class c_IntPointMap2;
-class c_Stack10;
+class c_Stack11;
 class c_Enumerator26;
 class c_SecretRoomData;
 class c_Enumerator27;
@@ -6036,8 +6040,9 @@ class c_GameData : public Object{
 	static int m_GetPlayerDiamonds();
 	static bool m_GetLobbyMove();
 	static bool m_GetNPCUnlock(String);
-	static bool m_HasFoughtNecrodancer();
+	static bool m_HasFoughtLuteDragon();
 	static void m_SetFoughtLuteDragon();
+	static bool m_HasFoughtNecrodancer2();
 	static void m_SetFoughtNecrodancer2();
 	static bool m_cachedAudioLatency;
 	static int m_cachedAudioLatencyVal;
@@ -6049,9 +6054,12 @@ class c_GameData : public Object{
 	static bool m_GetDaoustVocals();
 	static bool m_HasFoughtDeadRinger();
 	static void m_SetFoughtDeadRinger();
+	static bool m_HasFoughtFrankensteinway();
+	static void m_SetFoughtFrankensteinway();
 	static bool m_GetItemUnlocked(String,bool);
 	static int m_GetPendingSpawnItem(int);
 	static void m_SetHavePlayedHardcore(bool);
+	static bool m_HasFoughtNecrodancer();
 	static void m_SetFoughtNecrodancer();
 	static bool m_GetZone3Unlocked(int);
 	static bool m_GetZone2UnlockedCurrentCharacters();
@@ -11551,18 +11559,66 @@ class c_Rect : public Object{
 	c_Rect* p_Copy();
 	void mark();
 };
+class c_Frankensteinway : public c_Enemy{
+	public:
+	c_Stack5* m_props;
+	c_Frankensteinway();
+	c_Frankensteinway* m_new(int,int);
+	c_Frankensteinway* m_new2();
+	void p_SpawnSarcophagus(int,int);
+	void p_SpawnSarcophagi();
+	void p_AddProp(int,int,int);
+	void p_Die();
+	c_Point* p_GetMovementDirection();
+	bool p_Hit(String,int,int,c_Entity*,bool,int);
+	void p_MoveFail();
+	void p_MoveSucceed(bool,bool);
+	int p_PerformMovement(int,int);
+	void p_Update();
+	void mark();
+};
+class c_FrankensteinwayProp : public c_Enemy{
+	public:
+	c_FrankensteinwayProp();
+	c_FrankensteinwayProp* m_new(int,int);
+	c_FrankensteinwayProp* m_new2();
+	bool p_Hit(String,int,int,c_Entity*,bool,int);
+	void p_Update();
+	void mark();
+};
 class c_Stack5 : public Object{
 	public:
-	Array<c_XMLNode* > m_data;
+	Array<c_FrankensteinwayProp* > m_data;
 	int m_length;
 	c_Stack5();
 	c_Stack5* m_new();
-	c_Stack5* m_new2(Array<c_XMLNode* >);
+	c_Stack5* m_new2(Array<c_FrankensteinwayProp* >);
+	void p_Push13(c_FrankensteinwayProp*);
+	void p_Push14(Array<c_FrankensteinwayProp* >,int,int);
+	void p_Push15(Array<c_FrankensteinwayProp* >,int);
+	void mark();
+};
+class c_FrankensteinwaySwitch : public c_Trap{
+	public:
+	c_FrankensteinwayProp* m_parent;
+	c_FrankensteinwaySwitch();
+	c_FrankensteinwaySwitch* m_new(int,int);
+	c_FrankensteinwaySwitch* m_new2();
+	void p_Trigger(c_Entity*);
+	void mark();
+};
+class c_Stack6 : public Object{
+	public:
+	Array<c_XMLNode* > m_data;
+	int m_length;
+	c_Stack6();
+	c_Stack6* m_new();
+	c_Stack6* m_new2(Array<c_XMLNode* >);
 	static c_XMLNode* m_NIL;
 	void p_Clear();
-	void p_Push13(c_XMLNode*);
-	void p_Push14(Array<c_XMLNode* >,int,int);
-	void p_Push15(Array<c_XMLNode* >,int);
+	void p_Push16(c_XMLNode*);
+	void p_Push17(Array<c_XMLNode* >,int,int);
+	void p_Push18(Array<c_XMLNode* >,int);
 	bool p_IsEmpty();
 	c_XMLNode* p_Get2(int);
 	void p_Remove4(int);
@@ -11584,10 +11640,10 @@ class c_Enumerator13 : public Object{
 };
 class c_Enumerator14 : public Object{
 	public:
-	c_Stack5* m_stack;
+	c_Stack6* m_stack;
 	int m_index;
 	c_Enumerator14();
-	c_Enumerator14* m_new(c_Stack5*);
+	c_Enumerator14* m_new(c_Stack6*);
 	c_Enumerator14* m_new2();
 	bool p_HasNext();
 	c_XMLNode* p_NextObject();
@@ -11883,7 +11939,7 @@ class c_Thing : public c_Entity{
 class c_WeightedPicker : public Object{
 	public:
 	c_Stack2* m_weights;
-	c_Stack6* m_enabled;
+	c_Stack7* m_enabled;
 	c_WeightedPicker();
 	c_WeightedPicker* m_new();
 	void p_Push4(int);
@@ -11893,16 +11949,16 @@ class c_WeightedPicker : public Object{
 	void p_SetEnabled(int,bool);
 	void mark();
 };
-class c_Stack6 : public Object{
+class c_Stack7 : public Object{
 	public:
 	Array<bool > m_data;
 	int m_length;
-	c_Stack6();
-	c_Stack6* m_new();
-	c_Stack6* m_new2(Array<bool >);
-	void p_Push16(bool);
-	void p_Push17(Array<bool >,int,int);
-	void p_Push18(Array<bool >,int);
+	c_Stack7();
+	c_Stack7* m_new();
+	c_Stack7* m_new2(Array<bool >);
+	void p_Push19(bool);
+	void p_Push20(Array<bool >,int,int);
+	void p_Push21(Array<bool >,int);
 	static bool m_NIL;
 	void p_Length2(int);
 	int p_Length();
@@ -12289,7 +12345,7 @@ class c_BlobRoom : public c_RoomBase{
 	bool p_IsOutside(int,int);
 	bool p_IsWall3(int,int);
 	bool p_IsWallPoint(c_Point*);
-	c_Stack7* p_MakeTiles();
+	c_Stack8* p_MakeTiles();
 	c_Rect* p_GetBounds();
 	bool p_IsFloorPoint(c_Point*);
 	bool p_IsFloor2(int,int);
@@ -12369,16 +12425,16 @@ class c_MapKeys2 : public Object{
 	c_KeyEnumerator2* p_ObjectEnumerator();
 	void mark();
 };
-class c_Stack7 : public Object{
+class c_Stack8 : public Object{
 	public:
 	Array<c_TileData* > m_data;
 	int m_length;
-	c_Stack7();
-	c_Stack7* m_new();
-	c_Stack7* m_new2(Array<c_TileData* >);
-	void p_Push19(c_TileData*);
-	void p_Push20(Array<c_TileData* >,int,int);
-	void p_Push21(Array<c_TileData* >,int);
+	c_Stack8();
+	c_Stack8* m_new();
+	c_Stack8* m_new2(Array<c_TileData* >);
+	void p_Push22(c_TileData*);
+	void p_Push23(Array<c_TileData* >,int,int);
+	void p_Push24(Array<c_TileData* >,int);
 	c_Enumerator23* p_ObjectEnumerator();
 	static c_TileData* m_NIL;
 	void p_Length2(int);
@@ -12387,10 +12443,10 @@ class c_Stack7 : public Object{
 };
 class c_Enumerator23 : public Object{
 	public:
-	c_Stack7* m_stack;
+	c_Stack8* m_stack;
 	int m_index;
 	c_Enumerator23();
-	c_Enumerator23* m_new(c_Stack7*);
+	c_Enumerator23* m_new(c_Stack8*);
 	c_Enumerator23* m_new2();
 	bool p_HasNext();
 	c_TileData* p_NextObject();
@@ -12429,16 +12485,16 @@ class c_PortalSeg : public Object{
 	int p_GetLength();
 	void mark();
 };
-class c_Stack8 : public Object{
+class c_Stack9 : public Object{
 	public:
 	Array<c_PortalSeg* > m_data;
 	int m_length;
-	c_Stack8();
-	c_Stack8* m_new();
-	c_Stack8* m_new2(Array<c_PortalSeg* >);
-	void p_Push22(c_PortalSeg*);
-	void p_Push23(Array<c_PortalSeg* >,int,int);
-	void p_Push24(Array<c_PortalSeg* >,int);
+	c_Stack9();
+	c_Stack9* m_new();
+	c_Stack9* m_new2(Array<c_PortalSeg* >);
+	void p_Push25(c_PortalSeg*);
+	void p_Push26(Array<c_PortalSeg* >,int,int);
+	void p_Push27(Array<c_PortalSeg* >,int);
 	c_Enumerator24* p_ObjectEnumerator();
 	static c_PortalSeg* m_NIL;
 	void p_Length2(int);
@@ -12447,7 +12503,7 @@ class c_Stack8 : public Object{
 	void p_Set20(int,c_PortalSeg*);
 	void mark();
 };
-class c_StackEx3 : public c_Stack8{
+class c_StackEx3 : public c_Stack9{
 	public:
 	c_StackEx3();
 	c_StackEx3* m_new();
@@ -12457,10 +12513,10 @@ class c_StackEx3 : public c_Stack8{
 };
 class c_Enumerator24 : public Object{
 	public:
-	c_Stack8* m_stack;
+	c_Stack9* m_stack;
 	int m_index;
 	c_Enumerator24();
-	c_Enumerator24* m_new(c_Stack8*);
+	c_Enumerator24* m_new(c_Stack9*);
 	c_Enumerator24* m_new2();
 	bool p_HasNext();
 	c_PortalSeg* p_NextObject();
@@ -12486,23 +12542,23 @@ class c_Enumerator25 : public Object{
 	c_Point* p_NextObject();
 	void mark();
 };
-class c_Stack9 : public Object{
+class c_Stack10 : public Object{
 	public:
 	Array<c_RoomWithDoor* > m_data;
 	int m_length;
-	c_Stack9();
-	c_Stack9* m_new();
-	c_Stack9* m_new2(Array<c_RoomWithDoor* >);
-	void p_Push25(c_RoomWithDoor*);
-	void p_Push26(Array<c_RoomWithDoor* >,int,int);
-	void p_Push27(Array<c_RoomWithDoor* >,int);
+	c_Stack10();
+	c_Stack10* m_new();
+	c_Stack10* m_new2(Array<c_RoomWithDoor* >);
+	void p_Push28(c_RoomWithDoor*);
+	void p_Push29(Array<c_RoomWithDoor* >,int,int);
+	void p_Push30(Array<c_RoomWithDoor* >,int);
 	static c_RoomWithDoor* m_NIL;
 	void p_Length2(int);
 	int p_Length();
 	c_RoomWithDoor* p_Get2(int);
 	void mark();
 };
-class c_StackEx4 : public c_Stack9{
+class c_StackEx4 : public c_Stack10{
 	public:
 	c_StackEx4();
 	c_StackEx4* m_new();
@@ -12516,16 +12572,16 @@ class c_IntPointMap2 : public c_Map13{
 	int p_Compare3(c_Point*,c_Point*);
 	void mark();
 };
-class c_Stack10 : public Object{
+class c_Stack11 : public Object{
 	public:
 	Array<c_RoomBase* > m_data;
 	int m_length;
-	c_Stack10();
-	c_Stack10* m_new();
-	c_Stack10* m_new2(Array<c_RoomBase* >);
-	void p_Push28(c_RoomBase*);
-	void p_Push29(Array<c_RoomBase* >,int,int);
-	void p_Push30(Array<c_RoomBase* >,int);
+	c_Stack11();
+	c_Stack11* m_new();
+	c_Stack11* m_new2(Array<c_RoomBase* >);
+	void p_Push31(c_RoomBase*);
+	void p_Push32(Array<c_RoomBase* >,int,int);
+	void p_Push33(Array<c_RoomBase* >,int);
 	c_Enumerator26* p_ObjectEnumerator();
 	static c_RoomBase* m_NIL;
 	void p_Length2(int);
@@ -12535,10 +12591,10 @@ class c_Stack10 : public Object{
 };
 class c_Enumerator26 : public Object{
 	public:
-	c_Stack10* m_stack;
+	c_Stack11* m_stack;
 	int m_index;
 	c_Enumerator26();
-	c_Enumerator26* m_new(c_Stack10*);
+	c_Enumerator26* m_new(c_Stack11*);
 	c_Enumerator26* m_new2();
 	bool p_HasNext();
 	c_RoomBase* p_NextObject();
@@ -12596,7 +12652,7 @@ class c_ABTeleportTrap : public c_Trap{
 	c_ABTeleportTrap* m_new2();
 	void mark();
 };
-class c_StackEx5 : public c_Stack10{
+class c_StackEx5 : public c_Stack11{
 	public:
 	c_StackEx5();
 	c_StackEx5* m_new();
@@ -15016,12 +15072,16 @@ bool c_GameData::m_GetNPCUnlock(String t_npcName){
 	c_XMLNode* t_npcNode=t_saveData->p_GetChild2(String(L"npc",3),false);
 	return t_npcNode->p_GetAttribute2(t_npcName,false);
 }
-bool c_GameData::m_HasFoughtNecrodancer(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer()",31));
+bool c_GameData::m_HasFoughtLuteDragon(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtLuteDragon()",30));
 	return false;
 }
 void c_GameData::m_SetFoughtLuteDragon(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtLuteDragon()",30));
+}
+bool c_GameData::m_HasFoughtNecrodancer2(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer2()",32));
+	return false;
 }
 void c_GameData::m_SetFoughtNecrodancer2(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtNecrodancer2()",32));
@@ -15067,6 +15127,13 @@ bool c_GameData::m_HasFoughtDeadRinger(){
 void c_GameData::m_SetFoughtDeadRinger(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtDeadRinger()",30));
 }
+bool c_GameData::m_HasFoughtFrankensteinway(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtFrankensteinway()",35));
+	return false;
+}
+void c_GameData::m_SetFoughtFrankensteinway(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtFrankensteinway()",35));
+}
 bool c_GameData::m_GetItemUnlocked(String t_itemName,bool t_includeClean){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.GetItemUnlocked(String, Bool)",38));
 	return false;
@@ -15077,6 +15144,10 @@ int c_GameData::m_GetPendingSpawnItem(int t_num){
 }
 void c_GameData::m_SetHavePlayedHardcore(bool t_val){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetHavePlayedHardcore(Bool)",36));
+}
+bool c_GameData::m_HasFoughtNecrodancer(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer()",31));
+	return false;
 }
 void c_GameData::m_SetFoughtNecrodancer(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtNecrodancer()",31));
@@ -19762,12 +19833,13 @@ void c_Level::m_CreateFinalBossBattle3(){
 	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"armor_heavyglass",16),false)){
 		(new c_Item)->m_new(0,-4,String(L"armor_glass",11),false,-1,false);
 	}
-	(new c_LuteDragon)->m_new(-1,-16,1);
+	c_LuteDragon* t_dragon=(new c_LuteDragon)->m_new(-1,-16,1);
+	t_dragon->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	(new c_BounceTrap)->m_new(-3,-10,0);
 	(new c_BounceTrap)->m_new(3,-10,1);
 	(new c_Sarcophagus)->m_new(-5,-16,2);
 	(new c_Sarcophagus)->m_new(5,-16,1);
-	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtNecrodancer() && !m_isReplaying){
+	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtLuteDragon() && !m_isReplaying){
 		m_charactersJustUnlocked->p_AddLast12(508);
 	}
 	c_GameData::m_SetFoughtLuteDragon();
@@ -19825,7 +19897,7 @@ void c_Level::m_CreateFinalBossBattle2(){
 	(new c_Sarcophagus)->m_new(-6,-7,1);
 	(new c_Sarcophagus)->m_new(6,-7,1);
 	c_Enemy::m_enemiesPaused=true;
-	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtNecrodancer() && !m_isReplaying){
+	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtNecrodancer2() && !m_isReplaying){
 		m_charactersJustUnlocked->p_AddLast12(507);
 	}
 	c_GameData::m_SetFoughtNecrodancer2();
@@ -20696,7 +20768,70 @@ void c_Level::m_CreateBossBattle9(){
 	c_Enemy::m_enemiesPaused=true;
 }
 void c_Level::m_CreateBossBattleFrankensteinway(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.CreateBossBattleFrankensteinway()",39));
+	bb_logger_Debug->p_Log(String(L"CREATEBOSSBATTLEFRANKENSTEINWAY: Creating Frankensteinway battle.",65));
+	m_InitNewMap(true);
+	m_outsideBossChamber=true;
+	m_DisableLevelConstraints();
+	m_CreateRoom3(-3,-3,6,6,false,6);
+	if(m_isTrainingMode){
+		m_AddExit(2,0,-2,1);
+		m_PlaceTileRemovingExistingTiles(2,0,2,false,-1,false);
+	}
+	m_GetTileAt(-3,0)->p_AddTorch();
+	m_GetTileAt(3,0)->p_AddTorch();
+	m_GetTileAt(0,3)->p_AddTorch();
+	m_PlaceTileRemovingExistingTiles(-1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-5,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-5,109,false,-1,false);
+	m_CreateRoom3(-8,-14,16,8,false,6);
+	for(int t_x=-1;t_x<=1;t_x=t_x+1){
+		m_PlaceTileRemovingExistingTiles(t_x,-6,103,false,-1,false);
+		m_GetTileAt(t_x,-6)->p_SetDoorTrigger(2);
+	}
+	m_GetTileAt(-5,-6)->p_AddTorch2();
+	m_GetTileAt(-2,-6)->p_AddTorch2();
+	m_GetTileAt(2,-6)->p_AddTorch2();
+	m_GetTileAt(5,-6)->p_AddTorch2();
+	m_GetTileAt(-5,-14)->p_AddTorch2();
+	m_GetTileAt(-2,-14)->p_AddTorch2();
+	m_GetTileAt(2,-14)->p_AddTorch2();
+	m_GetTileAt(5,-14)->p_AddTorch2();
+	m_GetTileAt(-8,-12)->p_AddTorch2();
+	m_GetTileAt(-8,-8)->p_AddTorch2();
+	m_GetTileAt(8,-12)->p_AddTorch2();
+	m_GetTileAt(8,-8)->p_AddTorch2();
+	m_SetMagicBarrier(true);
+	m_PaintTriggerInterior(-8,-14,16,8,1);
+	int t_frankensteinwayX=-2;
+	int t_frankensteinwayY=-12;
+	if(c_Util::m_RndIntRangeFromZero(1,true)==0){
+		t_frankensteinwayX=1;
+	}
+	if(c_Util::m_RndIntRangeFromZero(1,true)==0){
+		t_frankensteinwayY=-9;
+	}
+	c_Frankensteinway* t_frankensteinway=(new c_Frankensteinway)->m_new(t_frankensteinwayX,t_frankensteinwayY);
+	t_frankensteinway->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
+	t_frankensteinway->p_SpawnSarcophagi();
+	t_frankensteinway->p_AddProp(-6,-11,-1);
+	t_frankensteinway->p_AddProp(6,-11,-1);
+	t_frankensteinway->p_AddProp(-6,-9,1);
+	t_frankensteinway->p_AddProp(6,-9,1);
+	c_Enemy::m_enemiesPaused=true;
+	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtFrankensteinway() && !m_isReplaying){
+		m_charactersJustUnlocked->p_AddLast12(509);
+	}
+	c_GameData::m_SetFoughtFrankensteinway();
 }
 void c_Level::m_PlacePenaltyBoxEnemies(){
 	int t_initialCorner=c_Util::m_RndIntRangeFromZero(3,true);
@@ -21822,7 +21957,7 @@ c_RoomWithDoor* c_Level::m_PlaceRoomZone5(c_PortalSeg* t_pseg,int t_width,int t_
 					if(t_body->p_ContainsNoCorners(t_door)){
 						c_RoomWithDoor* t_room=(new c_RoomWithDoor)->m_new(t_body,t_door);
 						bb_logger_Debug->p_Assert(t_body->p_Contains6(t_door),String());
-						t_rooms->p_Push25(t_room);
+						t_rooms->p_Push28(t_room);
 					}
 				}
 			}
@@ -24619,11 +24754,11 @@ void c_Level::m_PlaceEnemiesZone5(){
 		}
 		c_RectRoom* t_room=(new c_RectRoom)->m_new(t_roomData);
 		m_PutRoomEnemiesZone5((t_room),t_roomData->m_hasExit);
-		t_wraithRooms->p_Push28(t_room);
+		t_wraithRooms->p_Push31(t_room);
 	}
 	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
 	m_PutRoomEnemiesZone5((m_hallwayZone5),false);
-	t_wraithRooms->p_Push28(m_hallwayZone5);
+	t_wraithRooms->p_Push31(m_hallwayZone5);
 	if(m_AllowSpirit()){
 		c_RoomBase* t_room2=t_wraithRooms->p_ChooseRandom(true);
 		c_Point* t_point=m_GetRandPointInRoomWithOptions(t_room2,true,true,true,false,true,false);
@@ -27479,7 +27614,7 @@ bool c_Level::m_CreateMapZone5(bool t_recursive){
 	for(t_numRotations=t_numRotations;t_numRotations>0;t_numRotations=t_numRotations+-1){
 		t_hallway->p_RotateCWAbout(t_rotationPoint);
 	}
-	c_Stack7* t_hallwayTiles=t_hallway->p_MakeTiles();
+	c_Stack8* t_hallwayTiles=t_hallway->p_MakeTiles();
 	c_Enumerator23* t_=t_hallwayTiles->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_TileData* t_hallwayTile=t_->p_NextObject();
@@ -27597,14 +27732,14 @@ bool c_Level::m_CreateMapZone5(bool t_recursive){
 		c_Point* t_point3=t_4->p_NextObject();
 		m_PlaceWire(t_exitPoint,t_point3);
 	}
-	c_Stack10* t_rooms=(new c_Stack10)->m_new();
-	t_rooms->p_Push28(t_room1);
-	t_rooms->p_Push28(t_hallway);
-	t_rooms->p_Push28(t_minibossRoom);
-	t_rooms->p_Push28(t_smallRoom1);
-	t_rooms->p_Push28(t_smallRoom2);
-	t_rooms->p_Push28(t_smallRoom3);
-	t_rooms->p_Push28(t_smallRoom4);
+	c_Stack11* t_rooms=(new c_Stack11)->m_new();
+	t_rooms->p_Push31(t_room1);
+	t_rooms->p_Push31(t_hallway);
+	t_rooms->p_Push31(t_minibossRoom);
+	t_rooms->p_Push31(t_smallRoom1);
+	t_rooms->p_Push31(t_smallRoom2);
+	t_rooms->p_Push31(t_smallRoom3);
+	t_rooms->p_Push31(t_smallRoom4);
 	c_Enumerator26* t_5=t_rooms->p_ObjectEnumerator();
 	while(t_5->p_HasNext()){
 		c_RoomBase* t_room=t_5->p_NextObject();
@@ -37614,9 +37749,9 @@ void c_Item::m_CreateItemPools(){
 	c_XMLNode* t_itemsNode=bb_necrodancergame_xmlData->p_GetChild2(String(L"items",5),false);
 	c_List* t_itemNodes=t_itemsNode->p_GetChildren(0,false);
 	c_StringStack* t_attributeNames=(new c_StringStack)->m_new2();
-	c_Stack5* t_unlockedItems=(new c_Stack5)->m_new();
+	c_Stack6* t_unlockedItems=(new c_Stack6)->m_new();
 	c_IntStack* t_unlockedItemsChances=(new c_IntStack)->m_new2();
-	c_Stack5* t_itemPoolCandidates=(new c_Stack5)->m_new();
+	c_Stack6* t_itemPoolCandidates=(new c_Stack6)->m_new();
 	for(int t_i=0;t_i<2;t_i=t_i+1){
 		for(int t_j=0;t_j<8;t_j=t_j+1){
 			int t_kMax=1;
@@ -37705,7 +37840,7 @@ void c_Item::m_CreateItemPools(){
 						}
 						if(t_chance>0){
 							if(c_Level::m_isHardcoreMode || m_IsUnlocked(t_itemNode->p_name())){
-								t_unlockedItems->p_Push13(t_itemNode);
+								t_unlockedItems->p_Push16(t_itemNode);
 								if(t_j==7){
 									t_unlockedItemsChances->p_Push4(1);
 								}else{
@@ -37747,7 +37882,7 @@ void c_Item::m_CreateItemPools(){
 						t_n=0;
 					}
 					c_XMLNode* t_itemPoolCandidate=t_unlockedItems->p_Get2(t_n);
-					t_itemPoolCandidates->p_Push13(t_itemPoolCandidate);
+					t_itemPoolCandidates->p_Push16(t_itemPoolCandidate);
 					t_unlockedItems->p_Remove4(t_n);
 					t_unlockedItemsChances->p_Remove4(t_n);
 				}
@@ -59013,57 +59148,185 @@ c_Rect* c_Rect::p_Copy(){
 void c_Rect::mark(){
 	Object::mark();
 }
+c_Frankensteinway::c_Frankensteinway(){
+	m_props=0;
+}
+c_Frankensteinway* c_Frankensteinway::m_new(int t_xVal,int t_yVal){
+	c_Enemy::m_new();
+	this->p_Init3(t_xVal,t_yVal,1,String(L"frankensteinway",15),String(),-1,-1);
+	gc_assign(this->m_props,(new c_Stack5)->m_new());
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.New(Int, Int)",29));
+	return this;
+}
+c_Frankensteinway* c_Frankensteinway::m_new2(){
+	c_Enemy::m_new();
+	return this;
+}
+void c_Frankensteinway::p_SpawnSarcophagus(int t_atX,int t_atY){
+	(new c_Sarcophagus)->m_new(t_atX,t_atY,1);
+}
+void c_Frankensteinway::p_SpawnSarcophagi(){
+	this->p_SpawnSarcophagus(-7,-13);
+	this->p_SpawnSarcophagus(7,-13);
+}
+void c_Frankensteinway::p_AddProp(int t_propX,int t_propY,int t_switchDY){
+	c_FrankensteinwayProp* t_prop=(new c_FrankensteinwayProp)->m_new(t_propX,t_propY);
+	this->m_props->p_Push13(t_prop);
+	c_FrankensteinwaySwitch* t_switch=(new c_FrankensteinwaySwitch)->m_new(t_propX,t_propY+t_switchDY);
+	gc_assign(t_switch->m_parent,t_prop);
+}
+void c_Frankensteinway::p_Die(){
+	c_Enemy::p_Die();
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.Die()",21));
+}
+c_Point* c_Frankensteinway::p_GetMovementDirection(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.GetMovementDirection()",38));
+	return 0;
+}
+bool c_Frankensteinway::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.Hit(String, Int, Int, Entity, Bool, Int)",56));
+	return false;
+}
+void c_Frankensteinway::p_MoveFail(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.MoveFail()",26));
+}
+void c_Frankensteinway::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.MoveSucceed(Bool, Bool)",39));
+}
+int c_Frankensteinway::p_PerformMovement(int t_xVal,int t_yVal){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.PerformMovement(Int, Int)",41));
+	return 0;
+}
+void c_Frankensteinway::p_Update(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Frankensteinway.Update()",24));
+}
+void c_Frankensteinway::mark(){
+	c_Enemy::mark();
+	gc_mark_q(m_props);
+}
+c_FrankensteinwayProp::c_FrankensteinwayProp(){
+}
+c_FrankensteinwayProp* c_FrankensteinwayProp::m_new(int t_xVal,int t_yVal){
+	c_Enemy::m_new();
+	this->p_Init3(t_xVal,t_yVal,1,String(L"frankensteinway_prop",20),String(),-1,-1);
+	bb_logger_Debug->p_TraceNotImplemented(String(L"FrankensteinwayProp.New(Int, Int)",33));
+	return this;
+}
+c_FrankensteinwayProp* c_FrankensteinwayProp::m_new2(){
+	c_Enemy::m_new();
+	return this;
+}
+bool c_FrankensteinwayProp::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"FrankensteinwayProp.Hit(String, Int, Int, Entity, Bool, Int)",60));
+	return false;
+}
+void c_FrankensteinwayProp::p_Update(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"FrankensteinwayProp.Update()",28));
+}
+void c_FrankensteinwayProp::mark(){
+	c_Enemy::mark();
+}
 c_Stack5::c_Stack5(){
-	m_data=Array<c_XMLNode* >();
+	m_data=Array<c_FrankensteinwayProp* >();
 	m_length=0;
 }
 c_Stack5* c_Stack5::m_new(){
 	return this;
 }
-c_Stack5* c_Stack5::m_new2(Array<c_XMLNode* > t_data){
+c_Stack5* c_Stack5::m_new2(Array<c_FrankensteinwayProp* > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-c_XMLNode* c_Stack5::m_NIL;
-void c_Stack5::p_Clear(){
-	for(int t_i=0;t_i<m_length;t_i=t_i+1){
-		gc_assign(m_data[t_i],m_NIL);
-	}
-	m_length=0;
-}
-void c_Stack5::p_Push13(c_XMLNode* t_value){
+void c_Stack5::p_Push13(c_FrankensteinwayProp* t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	gc_assign(m_data[m_length],t_value);
 	m_length+=1;
 }
-void c_Stack5::p_Push14(Array<c_XMLNode* > t_values,int t_offset,int t_count){
+void c_Stack5::p_Push14(Array<c_FrankensteinwayProp* > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
 		p_Push13(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack5::p_Push15(Array<c_XMLNode* > t_values,int t_offset){
+void c_Stack5::p_Push15(Array<c_FrankensteinwayProp* > t_values,int t_offset){
 	p_Push14(t_values,t_offset,t_values.Length()-t_offset);
 }
-bool c_Stack5::p_IsEmpty(){
+void c_Stack5::mark(){
+	Object::mark();
+	gc_mark_q(m_data);
+}
+c_FrankensteinwaySwitch::c_FrankensteinwaySwitch(){
+	m_parent=0;
+}
+c_FrankensteinwaySwitch* c_FrankensteinwaySwitch::m_new(int t_xVal,int t_yVal){
+	c_Trap::m_new(t_xVal,t_yVal,12);
+	bb_logger_Debug->p_TraceNotImplemented(String(L"FrankensteinwaySwitch.New(Int, Int)",35));
+	return this;
+}
+c_FrankensteinwaySwitch* c_FrankensteinwaySwitch::m_new2(){
+	c_Trap::m_new2();
+	return this;
+}
+void c_FrankensteinwaySwitch::p_Trigger(c_Entity* t_ent){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"FrankensteinwaySwitch.Trigger(Entity)",37));
+}
+void c_FrankensteinwaySwitch::mark(){
+	c_Trap::mark();
+	gc_mark_q(m_parent);
+}
+c_Stack6::c_Stack6(){
+	m_data=Array<c_XMLNode* >();
+	m_length=0;
+}
+c_Stack6* c_Stack6::m_new(){
+	return this;
+}
+c_Stack6* c_Stack6::m_new2(Array<c_XMLNode* > t_data){
+	gc_assign(this->m_data,t_data.Slice(0));
+	this->m_length=t_data.Length();
+	return this;
+}
+c_XMLNode* c_Stack6::m_NIL;
+void c_Stack6::p_Clear(){
+	for(int t_i=0;t_i<m_length;t_i=t_i+1){
+		gc_assign(m_data[t_i],m_NIL);
+	}
+	m_length=0;
+}
+void c_Stack6::p_Push16(c_XMLNode* t_value){
+	if(m_length==m_data.Length()){
+		gc_assign(m_data,m_data.Resize(m_length*2+10));
+	}
+	gc_assign(m_data[m_length],t_value);
+	m_length+=1;
+}
+void c_Stack6::p_Push17(Array<c_XMLNode* > t_values,int t_offset,int t_count){
+	for(int t_i=0;t_i<t_count;t_i=t_i+1){
+		p_Push16(t_values[t_offset+t_i]);
+	}
+}
+void c_Stack6::p_Push18(Array<c_XMLNode* > t_values,int t_offset){
+	p_Push17(t_values,t_offset,t_values.Length()-t_offset);
+}
+bool c_Stack6::p_IsEmpty(){
 	return m_length==0;
 }
-c_XMLNode* c_Stack5::p_Get2(int t_index){
+c_XMLNode* c_Stack6::p_Get2(int t_index){
 	return m_data[t_index];
 }
-void c_Stack5::p_Remove4(int t_index){
+void c_Stack6::p_Remove4(int t_index){
 	for(int t_i=t_index;t_i<m_length-1;t_i=t_i+1){
 		gc_assign(m_data[t_i],m_data[t_i+1]);
 	}
 	m_length-=1;
 	gc_assign(m_data[m_length],m_NIL);
 }
-c_Enumerator14* c_Stack5::p_ObjectEnumerator(){
+c_Enumerator14* c_Stack6::p_ObjectEnumerator(){
 	return (new c_Enumerator14)->m_new(this);
 }
-void c_Stack5::p_Length2(int t_newlength){
+void c_Stack6::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			gc_assign(m_data[t_i],m_NIL);
@@ -59075,10 +59338,10 @@ void c_Stack5::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack5::p_Length(){
+int c_Stack6::p_Length(){
 	return m_length;
 }
-void c_Stack5::mark(){
+void c_Stack6::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
@@ -59108,7 +59371,7 @@ c_Enumerator14::c_Enumerator14(){
 	m_stack=0;
 	m_index=0;
 }
-c_Enumerator14* c_Enumerator14::m_new(c_Stack5* t_stack){
+c_Enumerator14* c_Enumerator14::m_new(c_Stack6* t_stack){
 	gc_assign(this->m_stack,t_stack);
 	return this;
 }
@@ -59929,14 +60192,14 @@ void c_Thing::mark(){
 }
 c_WeightedPicker::c_WeightedPicker(){
 	m_weights=(new c_Stack2)->m_new();
-	m_enabled=(new c_Stack6)->m_new();
+	m_enabled=(new c_Stack7)->m_new();
 }
 c_WeightedPicker* c_WeightedPicker::m_new(){
 	return this;
 }
 void c_WeightedPicker::p_Push4(int t_weight){
 	this->m_weights->p_Push4(t_weight);
-	this->m_enabled->p_Push16(true);
+	this->m_enabled->p_Push19(true);
 }
 int c_WeightedPicker::p__IndexOfEnabled(int t_startIndex){
 	int t_i=t_startIndex;
@@ -59975,35 +60238,35 @@ void c_WeightedPicker::mark(){
 	gc_mark_q(m_weights);
 	gc_mark_q(m_enabled);
 }
-c_Stack6::c_Stack6(){
+c_Stack7::c_Stack7(){
 	m_data=Array<bool >();
 	m_length=0;
 }
-c_Stack6* c_Stack6::m_new(){
+c_Stack7* c_Stack7::m_new(){
 	return this;
 }
-c_Stack6* c_Stack6::m_new2(Array<bool > t_data){
+c_Stack7* c_Stack7::m_new2(Array<bool > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-void c_Stack6::p_Push16(bool t_value){
+void c_Stack7::p_Push19(bool t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	m_data[m_length]=t_value;
 	m_length+=1;
 }
-void c_Stack6::p_Push17(Array<bool > t_values,int t_offset,int t_count){
+void c_Stack7::p_Push20(Array<bool > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
-		p_Push16(t_values[t_offset+t_i]);
+		p_Push19(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack6::p_Push18(Array<bool > t_values,int t_offset){
-	p_Push17(t_values,t_offset,t_values.Length()-t_offset);
+void c_Stack7::p_Push21(Array<bool > t_values,int t_offset){
+	p_Push20(t_values,t_offset,t_values.Length()-t_offset);
 }
-bool c_Stack6::m_NIL;
-void c_Stack6::p_Length2(int t_newlength){
+bool c_Stack7::m_NIL;
+void c_Stack7::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			m_data[t_i]=m_NIL;
@@ -60015,16 +60278,16 @@ void c_Stack6::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack6::p_Length(){
+int c_Stack7::p_Length(){
 	return m_length;
 }
-bool c_Stack6::p_Get2(int t_index){
+bool c_Stack7::p_Get2(int t_index){
 	return m_data[t_index];
 }
-void c_Stack6::p_Set18(int t_index,bool t_value){
+void c_Stack7::p_Set18(int t_index,bool t_value){
 	m_data[t_index]=t_value;
 }
-void c_Stack6::mark(){
+void c_Stack7::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
@@ -60846,7 +61109,7 @@ c_StackEx3* c_RoomBase::p_GetPortalSegs(){
 				}
 			}else{
 				if(t_portalSeg!=0){
-					t_portalSegs->p_Push22(t_portalSeg);
+					t_portalSegs->p_Push25(t_portalSeg);
 					t_portalSeg=0;
 				}
 			}
@@ -60862,7 +61125,7 @@ c_StackEx3* c_RoomBase::p_GetPortalSegs(){
 				}
 			}else{
 				if(t_portalSeg!=0){
-					t_portalSegs->p_Push22(t_portalSeg);
+					t_portalSegs->p_Push25(t_portalSeg);
 					t_portalSeg=0;
 				}
 			}
@@ -60878,7 +61141,7 @@ c_StackEx3* c_RoomBase::p_GetPortalSegs(){
 				}
 			}else{
 				if(t_portalSeg!=0){
-					t_portalSegs->p_Push22(t_portalSeg);
+					t_portalSegs->p_Push25(t_portalSeg);
 					t_portalSeg=0;
 				}
 			}
@@ -60894,7 +61157,7 @@ c_StackEx3* c_RoomBase::p_GetPortalSegs(){
 				}
 			}else{
 				if(t_portalSeg!=0){
-					t_portalSegs->p_Push22(t_portalSeg);
+					t_portalSegs->p_Push25(t_portalSeg);
 					t_portalSeg=0;
 				}
 			}
@@ -60991,8 +61254,8 @@ bool c_BlobRoom::p_IsWall3(int t_x,int t_y){
 bool c_BlobRoom::p_IsWallPoint(c_Point* t_p){
 	return this->p_IsWall3(t_p->m_x,t_p->m_y);
 }
-c_Stack7* c_BlobRoom::p_MakeTiles(){
-	c_Stack7* t_tiles=(new c_Stack7)->m_new();
+c_Stack8* c_BlobRoom::p_MakeTiles(){
+	c_Stack8* t_tiles=(new c_Stack8)->m_new();
 	c_KeyEnumerator2* t_=this->m_footprint->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Point* t_tilePoint=t_->p_NextObject();
@@ -61001,7 +61264,7 @@ c_Stack7* c_BlobRoom::p_MakeTiles(){
 			t_tileType=100;
 		}
 		c_TileData* t_tileData=(new c_TileData)->m_new(t_tilePoint->m_x,t_tilePoint->m_y,t_tileType);
-		t_tiles->p_Push19(t_tileData);
+		t_tiles->p_Push22(t_tileData);
 	}
 	return t_tiles;
 }
@@ -61324,38 +61587,38 @@ void c_MapKeys2::mark(){
 	Object::mark();
 	gc_mark_q(m_map);
 }
-c_Stack7::c_Stack7(){
+c_Stack8::c_Stack8(){
 	m_data=Array<c_TileData* >();
 	m_length=0;
 }
-c_Stack7* c_Stack7::m_new(){
+c_Stack8* c_Stack8::m_new(){
 	return this;
 }
-c_Stack7* c_Stack7::m_new2(Array<c_TileData* > t_data){
+c_Stack8* c_Stack8::m_new2(Array<c_TileData* > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-void c_Stack7::p_Push19(c_TileData* t_value){
+void c_Stack8::p_Push22(c_TileData* t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	gc_assign(m_data[m_length],t_value);
 	m_length+=1;
 }
-void c_Stack7::p_Push20(Array<c_TileData* > t_values,int t_offset,int t_count){
+void c_Stack8::p_Push23(Array<c_TileData* > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
-		p_Push19(t_values[t_offset+t_i]);
+		p_Push22(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack7::p_Push21(Array<c_TileData* > t_values,int t_offset){
-	p_Push20(t_values,t_offset,t_values.Length()-t_offset);
+void c_Stack8::p_Push24(Array<c_TileData* > t_values,int t_offset){
+	p_Push23(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_Enumerator23* c_Stack7::p_ObjectEnumerator(){
+c_Enumerator23* c_Stack8::p_ObjectEnumerator(){
 	return (new c_Enumerator23)->m_new(this);
 }
-c_TileData* c_Stack7::m_NIL;
-void c_Stack7::p_Length2(int t_newlength){
+c_TileData* c_Stack8::m_NIL;
+void c_Stack8::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			gc_assign(m_data[t_i],m_NIL);
@@ -61367,10 +61630,10 @@ void c_Stack7::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack7::p_Length(){
+int c_Stack8::p_Length(){
 	return m_length;
 }
-void c_Stack7::mark(){
+void c_Stack8::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
@@ -61378,7 +61641,7 @@ c_Enumerator23::c_Enumerator23(){
 	m_stack=0;
 	m_index=0;
 }
-c_Enumerator23* c_Enumerator23::m_new(c_Stack7* t_stack){
+c_Enumerator23* c_Enumerator23::m_new(c_Stack8* t_stack){
 	gc_assign(this->m_stack,t_stack);
 	return this;
 }
@@ -61508,38 +61771,38 @@ void c_PortalSeg::mark(){
 	Object::mark();
 	gc_mark_q(m_origin);
 }
-c_Stack8::c_Stack8(){
+c_Stack9::c_Stack9(){
 	m_data=Array<c_PortalSeg* >();
 	m_length=0;
 }
-c_Stack8* c_Stack8::m_new(){
+c_Stack9* c_Stack9::m_new(){
 	return this;
 }
-c_Stack8* c_Stack8::m_new2(Array<c_PortalSeg* > t_data){
+c_Stack9* c_Stack9::m_new2(Array<c_PortalSeg* > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-void c_Stack8::p_Push22(c_PortalSeg* t_value){
+void c_Stack9::p_Push25(c_PortalSeg* t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	gc_assign(m_data[m_length],t_value);
 	m_length+=1;
 }
-void c_Stack8::p_Push23(Array<c_PortalSeg* > t_values,int t_offset,int t_count){
+void c_Stack9::p_Push26(Array<c_PortalSeg* > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
-		p_Push22(t_values[t_offset+t_i]);
+		p_Push25(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack8::p_Push24(Array<c_PortalSeg* > t_values,int t_offset){
-	p_Push23(t_values,t_offset,t_values.Length()-t_offset);
+void c_Stack9::p_Push27(Array<c_PortalSeg* > t_values,int t_offset){
+	p_Push26(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_Enumerator24* c_Stack8::p_ObjectEnumerator(){
+c_Enumerator24* c_Stack9::p_ObjectEnumerator(){
 	return (new c_Enumerator24)->m_new(this);
 }
-c_PortalSeg* c_Stack8::m_NIL;
-void c_Stack8::p_Length2(int t_newlength){
+c_PortalSeg* c_Stack9::m_NIL;
+void c_Stack9::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			gc_assign(m_data[t_i],m_NIL);
@@ -61551,23 +61814,23 @@ void c_Stack8::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack8::p_Length(){
+int c_Stack9::p_Length(){
 	return m_length;
 }
-c_PortalSeg* c_Stack8::p_Get2(int t_index){
+c_PortalSeg* c_Stack9::p_Get2(int t_index){
 	return m_data[t_index];
 }
-void c_Stack8::p_Set20(int t_index,c_PortalSeg* t_value){
+void c_Stack9::p_Set20(int t_index,c_PortalSeg* t_value){
 	gc_assign(m_data[t_index],t_value);
 }
-void c_Stack8::mark(){
+void c_Stack9::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
 c_StackEx3::c_StackEx3(){
 }
 c_StackEx3* c_StackEx3::m_new(){
-	c_Stack8::m_new();
+	c_Stack9::m_new();
 	return this;
 }
 void c_StackEx3::p_Shuffle(bool t_useSeed){
@@ -61585,17 +61848,17 @@ void c_StackEx3::p_Extend(c_StackEx3* t_other){
 	c_Enumerator24* t_=t_other->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_PortalSeg* t_item=t_->p_NextObject();
-		this->p_Push22(t_item);
+		this->p_Push25(t_item);
 	}
 }
 void c_StackEx3::mark(){
-	c_Stack8::mark();
+	c_Stack9::mark();
 }
 c_Enumerator24::c_Enumerator24(){
 	m_stack=0;
 	m_index=0;
 }
-c_Enumerator24* c_Enumerator24::m_new(c_Stack8* t_stack){
+c_Enumerator24* c_Enumerator24::m_new(c_Stack9* t_stack){
 	gc_assign(this->m_stack,t_stack);
 	return this;
 }
@@ -61656,35 +61919,35 @@ void c_Enumerator25::mark(){
 	Object::mark();
 	gc_mark_q(m_stack);
 }
-c_Stack9::c_Stack9(){
+c_Stack10::c_Stack10(){
 	m_data=Array<c_RoomWithDoor* >();
 	m_length=0;
 }
-c_Stack9* c_Stack9::m_new(){
+c_Stack10* c_Stack10::m_new(){
 	return this;
 }
-c_Stack9* c_Stack9::m_new2(Array<c_RoomWithDoor* > t_data){
+c_Stack10* c_Stack10::m_new2(Array<c_RoomWithDoor* > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-void c_Stack9::p_Push25(c_RoomWithDoor* t_value){
+void c_Stack10::p_Push28(c_RoomWithDoor* t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	gc_assign(m_data[m_length],t_value);
 	m_length+=1;
 }
-void c_Stack9::p_Push26(Array<c_RoomWithDoor* > t_values,int t_offset,int t_count){
+void c_Stack10::p_Push29(Array<c_RoomWithDoor* > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
-		p_Push25(t_values[t_offset+t_i]);
+		p_Push28(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack9::p_Push27(Array<c_RoomWithDoor* > t_values,int t_offset){
-	p_Push26(t_values,t_offset,t_values.Length()-t_offset);
+void c_Stack10::p_Push30(Array<c_RoomWithDoor* > t_values,int t_offset){
+	p_Push29(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_RoomWithDoor* c_Stack9::m_NIL;
-void c_Stack9::p_Length2(int t_newlength){
+c_RoomWithDoor* c_Stack10::m_NIL;
+void c_Stack10::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			gc_assign(m_data[t_i],m_NIL);
@@ -61696,20 +61959,20 @@ void c_Stack9::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack9::p_Length(){
+int c_Stack10::p_Length(){
 	return m_length;
 }
-c_RoomWithDoor* c_Stack9::p_Get2(int t_index){
+c_RoomWithDoor* c_Stack10::p_Get2(int t_index){
 	return m_data[t_index];
 }
-void c_Stack9::mark(){
+void c_Stack10::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
 c_StackEx4::c_StackEx4(){
 }
 c_StackEx4* c_StackEx4::m_new(){
-	c_Stack9::m_new();
+	c_Stack10::m_new();
 	return this;
 }
 c_RoomWithDoor* c_StackEx4::p_ChooseRandom(bool t_useSeed){
@@ -61717,7 +61980,7 @@ c_RoomWithDoor* c_StackEx4::p_ChooseRandom(bool t_useSeed){
 	return this->p_Get2(t_randomIndex);
 }
 void c_StackEx4::mark(){
-	c_Stack9::mark();
+	c_Stack10::mark();
 }
 c_IntPointMap2::c_IntPointMap2(){
 }
@@ -61743,38 +62006,38 @@ int c_IntPointMap2::p_Compare3(c_Point* t_lhs,c_Point* t_rhs){
 void c_IntPointMap2::mark(){
 	c_Map13::mark();
 }
-c_Stack10::c_Stack10(){
+c_Stack11::c_Stack11(){
 	m_data=Array<c_RoomBase* >();
 	m_length=0;
 }
-c_Stack10* c_Stack10::m_new(){
+c_Stack11* c_Stack11::m_new(){
 	return this;
 }
-c_Stack10* c_Stack10::m_new2(Array<c_RoomBase* > t_data){
+c_Stack11* c_Stack11::m_new2(Array<c_RoomBase* > t_data){
 	gc_assign(this->m_data,t_data.Slice(0));
 	this->m_length=t_data.Length();
 	return this;
 }
-void c_Stack10::p_Push28(c_RoomBase* t_value){
+void c_Stack11::p_Push31(c_RoomBase* t_value){
 	if(m_length==m_data.Length()){
 		gc_assign(m_data,m_data.Resize(m_length*2+10));
 	}
 	gc_assign(m_data[m_length],t_value);
 	m_length+=1;
 }
-void c_Stack10::p_Push29(Array<c_RoomBase* > t_values,int t_offset,int t_count){
+void c_Stack11::p_Push32(Array<c_RoomBase* > t_values,int t_offset,int t_count){
 	for(int t_i=0;t_i<t_count;t_i=t_i+1){
-		p_Push28(t_values[t_offset+t_i]);
+		p_Push31(t_values[t_offset+t_i]);
 	}
 }
-void c_Stack10::p_Push30(Array<c_RoomBase* > t_values,int t_offset){
-	p_Push29(t_values,t_offset,t_values.Length()-t_offset);
+void c_Stack11::p_Push33(Array<c_RoomBase* > t_values,int t_offset){
+	p_Push32(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_Enumerator26* c_Stack10::p_ObjectEnumerator(){
+c_Enumerator26* c_Stack11::p_ObjectEnumerator(){
 	return (new c_Enumerator26)->m_new(this);
 }
-c_RoomBase* c_Stack10::m_NIL;
-void c_Stack10::p_Length2(int t_newlength){
+c_RoomBase* c_Stack11::m_NIL;
+void c_Stack11::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
 		for(int t_i=t_newlength;t_i<m_length;t_i=t_i+1){
 			gc_assign(m_data[t_i],m_NIL);
@@ -61786,13 +62049,13 @@ void c_Stack10::p_Length2(int t_newlength){
 	}
 	m_length=t_newlength;
 }
-int c_Stack10::p_Length(){
+int c_Stack11::p_Length(){
 	return m_length;
 }
-c_RoomBase* c_Stack10::p_Get2(int t_index){
+c_RoomBase* c_Stack11::p_Get2(int t_index){
 	return m_data[t_index];
 }
-void c_Stack10::mark(){
+void c_Stack11::mark(){
 	Object::mark();
 	gc_mark_q(m_data);
 }
@@ -61800,7 +62063,7 @@ c_Enumerator26::c_Enumerator26(){
 	m_stack=0;
 	m_index=0;
 }
-c_Enumerator26* c_Enumerator26::m_new(c_Stack10* t_stack){
+c_Enumerator26* c_Enumerator26::m_new(c_Stack11* t_stack){
 	gc_assign(this->m_stack,t_stack);
 	return this;
 }
@@ -62051,7 +62314,7 @@ void c_ABTeleportTrap::mark(){
 c_StackEx5::c_StackEx5(){
 }
 c_StackEx5* c_StackEx5::m_new(){
-	c_Stack10::m_new();
+	c_Stack11::m_new();
 	return this;
 }
 c_RoomBase* c_StackEx5::p_ChooseRandom(bool t_useSeed){
@@ -62059,7 +62322,7 @@ c_RoomBase* c_StackEx5::p_ChooseRandom(bool t_useSeed){
 	return this->p_Get2(t_randomIndex);
 }
 void c_StackEx5::mark(){
-	c_Stack10::mark();
+	c_Stack11::mark();
 }
 c_EnemyBaseType::c_EnemyBaseType(){
 }
@@ -63873,7 +64136,7 @@ int bbInit(){
 	c_Shopkeeper::m_isMonstrous=false;
 	c_Bell::m_bells=(new c_List24)->m_new();
 	c_Stack3::m_NIL=String();
-	c_Stack5::m_NIL=0;
+	c_Stack6::m_NIL=0;
 	c_Item::m_debugTrailerMode=false;
 	bb_controller_game_debugEnablePrototypes=true;
 	c_Level::m_previousLevelMinibosses=(new c_StackEx)->m_new();
@@ -63883,16 +64146,16 @@ int bbInit(){
 	c_Level::m_specialRoomEntranceX=0;
 	c_Level::m_specialRoomEntranceY=0;
 	c_SaleItem::m_currentSaleItems=(new c_List28)->m_new();
-	c_Stack6::m_NIL=false;
+	c_Stack7::m_NIL=false;
 	c_Shrine::m_shrineList=(new c_List29)->m_new();
 	c_Chest::m_chestList=(new c_List33)->m_new();
 	c_SaleChest::m_currentSaleChests=(new c_List34)->m_new();
 	c_Crate::m_crateList=(new c_List5)->m_new();
-	c_Stack7::m_NIL=0;
 	c_Stack8::m_NIL=0;
-	c_Level::m_debugForceMonstrousShop=false;
 	c_Stack9::m_NIL=0;
+	c_Level::m_debugForceMonstrousShop=false;
 	c_Stack10::m_NIL=0;
+	c_Stack11::m_NIL=0;
 	c_Level::m_tempTileWalk=(new c_List27)->m_new();
 	c_Level::m_chestsStillToPlace=0;
 	c_Poltergeist::m_theGhoul=0;
@@ -64122,17 +64385,17 @@ void gc_mark(){
 	gc_mark_q(c_Nightmare::m_nightmare);
 	gc_mark_q(c_NPC::m_npcList);
 	gc_mark_q(c_Bell::m_bells);
-	gc_mark_q(c_Stack5::m_NIL);
+	gc_mark_q(c_Stack6::m_NIL);
 	gc_mark_q(c_Level::m_previousLevelMinibosses);
 	gc_mark_q(c_SaleItem::m_currentSaleItems);
 	gc_mark_q(c_Shrine::m_shrineList);
 	gc_mark_q(c_Chest::m_chestList);
 	gc_mark_q(c_SaleChest::m_currentSaleChests);
 	gc_mark_q(c_Crate::m_crateList);
-	gc_mark_q(c_Stack7::m_NIL);
 	gc_mark_q(c_Stack8::m_NIL);
 	gc_mark_q(c_Stack9::m_NIL);
 	gc_mark_q(c_Stack10::m_NIL);
+	gc_mark_q(c_Stack11::m_NIL);
 	gc_mark_q(c_Level::m_tempTileWalk);
 	gc_mark_q(c_Poltergeist::m_theGhoul);
 	gc_mark_q(c_Level::m_hallwayZone5);
