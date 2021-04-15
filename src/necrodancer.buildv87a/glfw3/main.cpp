@@ -5404,18 +5404,31 @@ class c_Enumerator6;
 class c_Enumerator7;
 class c_Stack3;
 class c_StringStack;
-class c_Necrodancer;
+class c_List19;
+class c_Node35;
+class c_HeadNode19;
+class c_Enumerator8;
+class c_Bomb;
+class c_List20;
+class c_Node36;
+class c_HeadNode20;
+class c_Enumerator9;
+class c_LuteDragon;
 class c_BeatAnimationData;
 class c_Map16;
 class c_IntMap8;
-class c_Node35;
+class c_Node37;
 class c_MovementType;
+class c_BounceTrap;
+class c_BounceTrapDirection;
+class c_TrapType;
 class c_Sarcophagus;
-class c_List19;
-class c_Node36;
-class c_HeadNode19;
+class c_List21;
+class c_Node38;
+class c_HeadNode21;
+class c_Necrodancer;
 class c_IntStack;
-class c_Enumerator8;
+class c_Enumerator10;
 class c_KingConga;
 class c_ZombieSnake;
 class c_Ghost;
@@ -5443,19 +5456,10 @@ class c_Slime;
 class c_Skeleton;
 class c_EnemyClamper;
 class c_Monkey;
-class c_List20;
-class c_Node37;
-class c_HeadNode20;
-class c_Enumerator9;
-class c_Enumerator10;
-class c_List21;
-class c_Node38;
-class c_HeadNode21;
-class c_Enumerator11;
-class c_Bomb;
 class c_List22;
 class c_Node39;
 class c_HeadNode22;
+class c_Enumerator11;
 class c_Enumerator12;
 class c_Zombie;
 class c_Wraith;
@@ -5510,12 +5514,9 @@ class c_Gorgon;
 class c_ZombieElectric;
 class c_Orc;
 class c_SpikeTrap;
-class c_TrapType;
 class c_SpeedUpTrap;
 class c_ConfuseTrap;
 class c_DeathMetal;
-class c_BounceTrap;
-class c_BounceTrapDirection;
 class c_King;
 class c_Octoboss;
 class c_Tentacle;
@@ -6036,6 +6037,7 @@ class c_GameData : public Object{
 	static bool m_GetLobbyMove();
 	static bool m_GetNPCUnlock(String);
 	static bool m_HasFoughtNecrodancer();
+	static void m_SetFoughtLuteDragon();
 	static void m_SetFoughtNecrodancer2();
 	static bool m_cachedAudioLatency;
 	static int m_cachedAudioLatencyVal;
@@ -6444,8 +6446,8 @@ class c_Sprite : public c_Tweenable{
 	void p_SetFrame(int);
 	void p_SetAlphaValue(Float);
 	void p_FlipX(bool,bool);
-	void p_SetFlipXOff(int);
 	void p_UnSetZ();
+	void p_SetFlipXOff(int);
 	void p_SetAlphaTweenFromCurrent(Float,int);
 	Float p_GetAlphaValue();
 	void p_SetCutoffY(int);
@@ -6622,8 +6624,8 @@ class c_TextSprite : public Object{
 	int m_shadowOffX;
 	int m_shadowOffY;
 	int m_fontScale;
-	c_List22* m_containedSprites;
-	c_List22* m_containedSpriteShadows;
+	c_List20* m_containedSprites;
+	c_List20* m_containedSpriteShadows;
 	c_TextSprite();
 	static void m_Init();
 	c_TextSprite* m_new(int,Float,int,int,bool,int,int,int);
@@ -6822,7 +6824,6 @@ class c_Level : public Object{
 	static Array<bool > m_allCharsCompletionDLC;
 	static void m_CreateAllCharsDLCSelect();
 	static int m_bossNumber;
-	static void m_CreateFinalBossBattle3();
 	static c_IntMap7* m_tiles;
 	static c_List14* m_minibossFormerWall;
 	static c_List15* m_rooms;
@@ -6884,6 +6885,7 @@ class c_Level : public Object{
 	static void m_SetMagicBarrier(bool);
 	static void m_PaintTriggerInterior(int,int,int,int,int);
 	static c_List12* m_charactersJustUnlocked;
+	static void m_CreateFinalBossBattle3();
 	static void m_CreateFinalBossBattle2();
 	static void m_EnsureBossTraining(String);
 	static bool m_skipNextPenaltyBox;
@@ -7296,14 +7298,14 @@ class c_RenderableObject : public Object{
 	bool m_lightSource;
 	bool m_collides;
 	Float m_lightSourceBrightness;
+	bool m_isItem;
 	bool m_isEnemy;
+	bool m_isTrap;
 	bool m_playerOverrideCollide;
 	int m_width;
 	int m_height;
-	bool m_isItem;
 	bool m_isCrate;
 	bool m_isNPC;
-	bool m_isTrap;
 	bool m_isChest;
 	bool m_clampedOn;
 	c_RenderableObject();
@@ -7343,18 +7345,18 @@ class c_Entity : public c_RenderableObject{
 	int m_coinsToDrop;
 	bool m_falling;
 	int m_confusedUntil;
+	bool m_flaggedForDeath;
+	bool m_isMysteried;
+	int m_shadowYOff;
 	int m_level;
 	String m_xmlName;
 	String m_friendlyName;
 	int m_shadowXOff;
-	int m_shadowYOff;
-	bool m_isMysteried;
 	int m_damagePerHit;
 	bool m_ignoreWalls;
 	String m_overrideAttackSound;
 	bool m_hasBeenVisible;
 	bool m_isGentle;
-	bool m_flaggedForDeath;
 	bool m_invisible;
 	bool m_isWraithLike;
 	bool m_canMoveOntoPlayer;
@@ -7956,8 +7958,8 @@ class c_Item : public c_Entity{
 	static int m_GetValue(String);
 	int p_GetValue();
 	static c_List* m_GetAllItemsInClass(String);
-	static c_List21* m_pickupList;
-	static c_List21* m_GetPickupsAt(int,int,c_Item*);
+	static c_List19* m_pickupList;
+	static c_List19* m_GetPickupsAt(int,int,c_Item*);
 	c_Item* m_new(int,int,String,bool,int,bool);
 	c_Item* m_new2();
 	static void m_CreateAmountOfCoins(int,int,int);
@@ -8119,10 +8121,10 @@ class c_Enemy : public c_MobileEntity{
 	c_Sprite* m_attackSwipeImage;
 	c_Sprite* m_jumpDirt;
 	int m_jumpDirtTimer;
-	bool m_isNecroDancer;
-	bool m_isDancer;
 	String m_overrideHitSound;
 	String m_overrideDeathSound;
+	bool m_isNecroDancer;
+	bool m_isDancer;
 	bool m_exemptFromPause;
 	int m_healthMax;
 	bool m_movesRegardlessOfDistance;
@@ -9243,7 +9245,7 @@ class c_SoulFamiliar : public c_FamiliarFixed{
 	c_SoulFamiliar();
 	c_SoulFamiliar* m_new(int,int,Object*);
 	c_SoulFamiliar* m_new2();
-	static c_List20* m_allSouls;
+	static c_List22* m_allSouls;
 	void p_Die();
 	bool p_Hit(String,int,int,c_Entity*,bool,int);
 	static c_SoulFamiliar* m_GetSoulAt(int,int);
@@ -9412,7 +9414,7 @@ class c_Stack2 : public Object{
 	void p_Push4(int);
 	void p_Push5(Array<int >,int,int);
 	void p_Push6(Array<int >,int);
-	c_Enumerator8* p_ObjectEnumerator();
+	c_Enumerator10* p_ObjectEnumerator();
 	void p_Length2(int);
 	int p_Length();
 	int p_Get2(int);
@@ -9627,7 +9629,7 @@ class c_List14 : public Object{
 	c_Node30* p_AddLast14(c_MinibossTileData*);
 	c_List14* m_new2(Array<c_MinibossTileData* >);
 	int p_Clear();
-	c_Enumerator10* p_ObjectEnumerator();
+	c_Enumerator12* p_ObjectEnumerator();
 	void mark();
 };
 class c_Node30 : public Object{
@@ -9985,6 +9987,247 @@ class c_StringStack : public c_Stack3{
 	c_StringStack* m_new2();
 	void mark();
 };
+String bb_item_GetResourceCoinType(int);
+class c_List19 : public Object{
+	public:
+	c_Node35* m__head;
+	c_List19();
+	c_List19* m_new();
+	c_Node35* p_AddLast19(c_Item*);
+	c_List19* m_new2(Array<c_Item* >);
+	c_Enumerator8* p_ObjectEnumerator();
+	bool p_Equals14(c_Item*,c_Item*);
+	int p_RemoveEach9(c_Item*);
+	void mark();
+};
+class c_Node35 : public Object{
+	public:
+	c_Node35* m__succ;
+	c_Node35* m__pred;
+	c_Item* m__data;
+	c_Node35();
+	c_Node35* m_new(c_Node35*,c_Node35*,c_Item*);
+	c_Node35* m_new2();
+	int p_Remove();
+	void mark();
+};
+class c_HeadNode19 : public c_Node35{
+	public:
+	c_HeadNode19();
+	c_HeadNode19* m_new();
+	void mark();
+};
+class c_Enumerator8 : public Object{
+	public:
+	c_List19* m__list;
+	c_Node35* m__curr;
+	c_Enumerator8();
+	c_Enumerator8* m_new(c_List19*);
+	c_Enumerator8* m_new2();
+	bool p_HasNext();
+	c_Item* p_NextObject();
+	void mark();
+};
+class c_Bomb : public c_Item{
+	public:
+	c_Player* m_player;
+	bool m_isBig;
+	int m_beatsUntilExplosion;
+	String m_damageSource;
+	c_Sprite* m_explosionImg;
+	c_Bomb();
+	static c_List38* m_bombList;
+	c_Bomb* m_new(int,int,c_Player*,bool,bool,String);
+	c_Bomb* m_new2();
+	void p_Die();
+	bool p_IsVisible();
+	void p_Move();
+	void p_Update();
+	void mark();
+};
+class c_List20 : public Object{
+	public:
+	c_Node36* m__head;
+	c_List20();
+	c_List20* m_new();
+	c_Node36* p_AddLast20(c_Sprite*);
+	c_List20* m_new2(Array<c_Sprite* >);
+	c_Enumerator9* p_ObjectEnumerator();
+	void mark();
+};
+class c_Node36 : public Object{
+	public:
+	c_Node36* m__succ;
+	c_Node36* m__pred;
+	c_Sprite* m__data;
+	c_Node36();
+	c_Node36* m_new(c_Node36*,c_Node36*,c_Sprite*);
+	c_Node36* m_new2();
+	void mark();
+};
+class c_HeadNode20 : public c_Node36{
+	public:
+	c_HeadNode20();
+	c_HeadNode20* m_new();
+	void mark();
+};
+class c_Enumerator9 : public Object{
+	public:
+	c_List20* m__list;
+	c_Node36* m__curr;
+	c_Enumerator9();
+	c_Enumerator9* m_new(c_List20*);
+	c_Enumerator9* m_new2();
+	bool p_HasNext();
+	c_Sprite* p_NextObject();
+	void mark();
+};
+class c_LuteDragon : public c_Enemy{
+	public:
+	c_LuteDragon();
+	c_LuteDragon* m_new(int,int,int);
+	c_LuteDragon* m_new2();
+	c_Point* p_GetMovementDirection();
+	bool p_Hit(String,int,int,c_Entity*,bool,int);
+	void p_MoveSucceed(bool,bool);
+	int p_PerformMovement(int,int);
+	void p_PerformTween(int,int,int,int,int,int,bool);
+	void p_Update();
+	void mark();
+};
+class c_BeatAnimationData : public Object{
+	public:
+	int m_frame;
+	Float m_onFraction;
+	Float m_offFraction;
+	bool m_singleFrame;
+	c_BeatAnimationData();
+	c_BeatAnimationData* m_new(int,Float,Float,bool);
+	c_BeatAnimationData* m_new2();
+	void mark();
+};
+class c_Map16 : public Object{
+	public:
+	c_Node37* m_root;
+	c_Map16();
+	c_Map16* m_new();
+	int p_Clear();
+	virtual int p_Compare(int,int)=0;
+	int p_RotateLeft15(c_Node37*);
+	int p_RotateRight15(c_Node37*);
+	int p_InsertFixup15(c_Node37*);
+	bool p_Set16(int,c_BeatAnimationData*);
+	bool p_IsEmpty();
+	c_Node37* p_FindNode(int);
+	bool p_Contains(int);
+	c_BeatAnimationData* p_Get2(int);
+	void mark();
+};
+class c_IntMap8 : public c_Map16{
+	public:
+	c_IntMap8();
+	c_IntMap8* m_new();
+	int p_Compare(int,int);
+	void mark();
+};
+class c_Node37 : public Object{
+	public:
+	int m_key;
+	c_Node37* m_right;
+	c_Node37* m_left;
+	c_BeatAnimationData* m_value;
+	int m_color;
+	c_Node37* m_parent;
+	c_Node37();
+	c_Node37* m_new(int,c_BeatAnimationData*,int,c_Node37*);
+	c_Node37* m_new2();
+	void mark();
+};
+class c_MovementType : public Object{
+	public:
+	c_MovementType();
+	void mark();
+};
+class c_BounceTrap : public c_Trap{
+	public:
+	int m_bounceDir;
+	bool m_isRotatingCW;
+	bool m_isRotatingCCW;
+	int m_originalDir;
+	int m_retractCounter;
+	int m_rotatedBeat;
+	c_BounceTrap();
+	c_BounceTrap* m_new(int,int,int);
+	c_BounceTrap* m_new2();
+	int p_RotateDir(int,bool);
+	void p_Trigger(c_Entity*);
+	void p_Rotate();
+	int p_GetFrameToShow();
+	void p_Update();
+	void mark();
+};
+class c_BounceTrapDirection : public Object{
+	public:
+	c_BounceTrapDirection();
+	static String m_ToString(int);
+	void mark();
+};
+class c_TrapType : public Object{
+	public:
+	c_TrapType();
+	static String m_ToDisplayName(int);
+	void mark();
+};
+class c_Sarcophagus : public c_Enemy{
+	public:
+	int m_numEnemiesSpawned;
+	int m_vibrateCounter;
+	Float m_vibrateOffset;
+	c_Sarcophagus();
+	static c_List21* m_sarcophagi;
+	c_Sarcophagus* m_new(int,int,int);
+	c_Sarcophagus* m_new2();
+	bool p_CanBeLord();
+	void p_Delete();
+	void p_Die();
+	c_Point* p_GetMovementDirection();
+	bool p_ImmuneToFear();
+	void p_MoveFail();
+	void p_MoveSucceed(bool,bool);
+	int p_PerformMovement(int,int);
+	void p_Update();
+	static int m_GetNumSarcophagi();
+	void mark();
+};
+class c_List21 : public Object{
+	public:
+	c_Node38* m__head;
+	c_List21();
+	c_List21* m_new();
+	c_Node38* p_AddLast21(c_Sarcophagus*);
+	c_List21* m_new2(Array<c_Sarcophagus* >);
+	bool p_Equals15(c_Sarcophagus*,c_Sarcophagus*);
+	int p_RemoveEach10(c_Sarcophagus*);
+	int p_Count();
+	void mark();
+};
+class c_Node38 : public Object{
+	public:
+	c_Node38* m__succ;
+	c_Node38* m__pred;
+	c_Sarcophagus* m__data;
+	c_Node38();
+	c_Node38* m_new(c_Node38*,c_Node38*,c_Sarcophagus*);
+	c_Node38* m_new2();
+	int p_Remove();
+	void mark();
+};
+class c_HeadNode21 : public c_Node38{
+	public:
+	c_HeadNode21();
+	c_HeadNode21* m_new();
+	void mark();
+};
 class c_Necrodancer : public c_Enemy{
 	public:
 	c_Sprite* m_iceBlast;
@@ -10020,109 +10263,6 @@ class c_Necrodancer : public c_Enemy{
 	void p_Update();
 	void mark();
 };
-class c_BeatAnimationData : public Object{
-	public:
-	int m_frame;
-	Float m_onFraction;
-	Float m_offFraction;
-	bool m_singleFrame;
-	c_BeatAnimationData();
-	c_BeatAnimationData* m_new(int,Float,Float,bool);
-	c_BeatAnimationData* m_new2();
-	void mark();
-};
-class c_Map16 : public Object{
-	public:
-	c_Node35* m_root;
-	c_Map16();
-	c_Map16* m_new();
-	int p_Clear();
-	virtual int p_Compare(int,int)=0;
-	int p_RotateLeft15(c_Node35*);
-	int p_RotateRight15(c_Node35*);
-	int p_InsertFixup15(c_Node35*);
-	bool p_Set16(int,c_BeatAnimationData*);
-	bool p_IsEmpty();
-	c_Node35* p_FindNode(int);
-	bool p_Contains(int);
-	c_BeatAnimationData* p_Get2(int);
-	void mark();
-};
-class c_IntMap8 : public c_Map16{
-	public:
-	c_IntMap8();
-	c_IntMap8* m_new();
-	int p_Compare(int,int);
-	void mark();
-};
-class c_Node35 : public Object{
-	public:
-	int m_key;
-	c_Node35* m_right;
-	c_Node35* m_left;
-	c_BeatAnimationData* m_value;
-	int m_color;
-	c_Node35* m_parent;
-	c_Node35();
-	c_Node35* m_new(int,c_BeatAnimationData*,int,c_Node35*);
-	c_Node35* m_new2();
-	void mark();
-};
-class c_MovementType : public Object{
-	public:
-	c_MovementType();
-	void mark();
-};
-class c_Sarcophagus : public c_Enemy{
-	public:
-	int m_numEnemiesSpawned;
-	int m_vibrateCounter;
-	Float m_vibrateOffset;
-	c_Sarcophagus();
-	static c_List19* m_sarcophagi;
-	c_Sarcophagus* m_new(int,int,int);
-	c_Sarcophagus* m_new2();
-	static int m_GetNumSarcophagi();
-	bool p_CanBeLord();
-	void p_Delete();
-	void p_Die();
-	c_Point* p_GetMovementDirection();
-	bool p_ImmuneToFear();
-	void p_MoveFail();
-	void p_MoveSucceed(bool,bool);
-	int p_PerformMovement(int,int);
-	void p_Update();
-	void mark();
-};
-class c_List19 : public Object{
-	public:
-	c_Node36* m__head;
-	c_List19();
-	c_List19* m_new();
-	c_Node36* p_AddLast19(c_Sarcophagus*);
-	c_List19* m_new2(Array<c_Sarcophagus* >);
-	bool p_Equals14(c_Sarcophagus*,c_Sarcophagus*);
-	int p_RemoveEach9(c_Sarcophagus*);
-	int p_Count();
-	void mark();
-};
-class c_Node36 : public Object{
-	public:
-	c_Node36* m__succ;
-	c_Node36* m__pred;
-	c_Sarcophagus* m__data;
-	c_Node36();
-	c_Node36* m_new(c_Node36*,c_Node36*,c_Sarcophagus*);
-	c_Node36* m_new2();
-	int p_Remove();
-	void mark();
-};
-class c_HeadNode19 : public c_Node36{
-	public:
-	c_HeadNode19();
-	c_HeadNode19* m_new();
-	void mark();
-};
 class c_IntStack : public c_Stack2{
 	public:
 	c_IntStack();
@@ -10131,13 +10271,13 @@ class c_IntStack : public c_Stack2{
 	bool p_Equals9(int,int);
 	void mark();
 };
-class c_Enumerator8 : public Object{
+class c_Enumerator10 : public Object{
 	public:
 	c_Stack2* m_stack;
 	int m_index;
-	c_Enumerator8();
-	c_Enumerator8* m_new(c_Stack2*);
-	c_Enumerator8* m_new2();
+	c_Enumerator10();
+	c_Enumerator10* m_new(c_Stack2*);
+	c_Enumerator10* m_new2();
 	bool p_HasNext();
 	int p_NextObject();
 	void mark();
@@ -10460,129 +10600,23 @@ class c_Monkey : public c_EnemyClamper{
 };
 Float bb_fmod_GetSongPositionFMOD(int);
 extern Array<int > bb_controller_game_beatData;
-class c_List20 : public Object{
-	public:
-	c_Node37* m__head;
-	c_List20();
-	c_List20* m_new();
-	c_Node37* p_AddLast20(c_SoulFamiliar*);
-	c_List20* m_new2(Array<c_SoulFamiliar* >);
-	c_Enumerator9* p_ObjectEnumerator();
-	void mark();
-};
-class c_Node37 : public Object{
-	public:
-	c_Node37* m__succ;
-	c_Node37* m__pred;
-	c_SoulFamiliar* m__data;
-	c_Node37();
-	c_Node37* m_new(c_Node37*,c_Node37*,c_SoulFamiliar*);
-	c_Node37* m_new2();
-	void mark();
-};
-class c_HeadNode20 : public c_Node37{
-	public:
-	c_HeadNode20();
-	c_HeadNode20* m_new();
-	void mark();
-};
-class c_Enumerator9 : public Object{
-	public:
-	c_List20* m__list;
-	c_Node37* m__curr;
-	c_Enumerator9();
-	c_Enumerator9* m_new(c_List20*);
-	c_Enumerator9* m_new2();
-	bool p_HasNext();
-	c_SoulFamiliar* p_NextObject();
-	void mark();
-};
-class c_Enumerator10 : public Object{
-	public:
-	c_List14* m__list;
-	c_Node30* m__curr;
-	c_Enumerator10();
-	c_Enumerator10* m_new(c_List14*);
-	c_Enumerator10* m_new2();
-	bool p_HasNext();
-	c_MinibossTileData* p_NextObject();
-	void mark();
-};
-String bb_item_GetResourceCoinType(int);
-class c_List21 : public Object{
-	public:
-	c_Node38* m__head;
-	c_List21();
-	c_List21* m_new();
-	c_Node38* p_AddLast21(c_Item*);
-	c_List21* m_new2(Array<c_Item* >);
-	c_Enumerator11* p_ObjectEnumerator();
-	bool p_Equals15(c_Item*,c_Item*);
-	int p_RemoveEach10(c_Item*);
-	void mark();
-};
-class c_Node38 : public Object{
-	public:
-	c_Node38* m__succ;
-	c_Node38* m__pred;
-	c_Item* m__data;
-	c_Node38();
-	c_Node38* m_new(c_Node38*,c_Node38*,c_Item*);
-	c_Node38* m_new2();
-	int p_Remove();
-	void mark();
-};
-class c_HeadNode21 : public c_Node38{
-	public:
-	c_HeadNode21();
-	c_HeadNode21* m_new();
-	void mark();
-};
-class c_Enumerator11 : public Object{
-	public:
-	c_List21* m__list;
-	c_Node38* m__curr;
-	c_Enumerator11();
-	c_Enumerator11* m_new(c_List21*);
-	c_Enumerator11* m_new2();
-	bool p_HasNext();
-	c_Item* p_NextObject();
-	void mark();
-};
-class c_Bomb : public c_Item{
-	public:
-	c_Player* m_player;
-	bool m_isBig;
-	int m_beatsUntilExplosion;
-	String m_damageSource;
-	c_Sprite* m_explosionImg;
-	c_Bomb();
-	static c_List38* m_bombList;
-	c_Bomb* m_new(int,int,c_Player*,bool,bool,String);
-	c_Bomb* m_new2();
-	void p_Die();
-	bool p_IsVisible();
-	void p_Move();
-	void p_Update();
-	void mark();
-};
 class c_List22 : public Object{
 	public:
 	c_Node39* m__head;
 	c_List22();
 	c_List22* m_new();
-	c_Node39* p_AddLast22(c_Sprite*);
-	c_List22* m_new2(Array<c_Sprite* >);
-	c_Enumerator12* p_ObjectEnumerator();
+	c_Node39* p_AddLast22(c_SoulFamiliar*);
+	c_List22* m_new2(Array<c_SoulFamiliar* >);
+	c_Enumerator11* p_ObjectEnumerator();
 	void mark();
 };
 class c_Node39 : public Object{
 	public:
 	c_Node39* m__succ;
 	c_Node39* m__pred;
-	c_Sprite* m__data;
+	c_SoulFamiliar* m__data;
 	c_Node39();
-	c_Node39* m_new(c_Node39*,c_Node39*,c_Sprite*);
+	c_Node39* m_new(c_Node39*,c_Node39*,c_SoulFamiliar*);
 	c_Node39* m_new2();
 	void mark();
 };
@@ -10592,15 +10626,26 @@ class c_HeadNode22 : public c_Node39{
 	c_HeadNode22* m_new();
 	void mark();
 };
-class c_Enumerator12 : public Object{
+class c_Enumerator11 : public Object{
 	public:
 	c_List22* m__list;
 	c_Node39* m__curr;
+	c_Enumerator11();
+	c_Enumerator11* m_new(c_List22*);
+	c_Enumerator11* m_new2();
+	bool p_HasNext();
+	c_SoulFamiliar* p_NextObject();
+	void mark();
+};
+class c_Enumerator12 : public Object{
+	public:
+	c_List14* m__list;
+	c_Node30* m__curr;
 	c_Enumerator12();
-	c_Enumerator12* m_new(c_List22*);
+	c_Enumerator12* m_new(c_List14*);
 	c_Enumerator12* m_new2();
 	bool p_HasNext();
-	c_Sprite* p_NextObject();
+	c_MinibossTileData* p_NextObject();
 	void mark();
 };
 class c_Zombie : public c_Enemy{
@@ -11307,12 +11352,6 @@ class c_SpikeTrap : public c_Trap{
 	void p_Update();
 	void mark();
 };
-class c_TrapType : public Object{
-	public:
-	c_TrapType();
-	static String m_ToDisplayName(int);
-	void mark();
-};
 class c_SpeedUpTrap : public c_Trap{
 	public:
 	int m_speedUpStartBeat;
@@ -11351,30 +11390,6 @@ class c_DeathMetal : public c_Enemy{
 	void p_MoveSucceed(bool,bool);
 	void p_TakeAction();
 	void p_Update();
-	void mark();
-};
-class c_BounceTrap : public c_Trap{
-	public:
-	int m_bounceDir;
-	bool m_isRotatingCW;
-	bool m_isRotatingCCW;
-	int m_originalDir;
-	int m_retractCounter;
-	int m_rotatedBeat;
-	c_BounceTrap();
-	c_BounceTrap* m_new(int,int,int);
-	c_BounceTrap* m_new2();
-	int p_RotateDir(int,bool);
-	void p_Trigger(c_Entity*);
-	void p_Rotate();
-	int p_GetFrameToShow();
-	void p_Update();
-	void mark();
-};
-class c_BounceTrapDirection : public Object{
-	public:
-	c_BounceTrapDirection();
-	static String m_ToString(int);
 	void mark();
 };
 class c_King : public c_Enemy{
@@ -14299,7 +14314,7 @@ Float c_Util::m_GetDistFromClosestPlayer(int t_xVal,int t_yVal,bool t_includeSou
 		}
 	}
 	if(t_includeSouls){
-		c_Enumerator9* t_=c_SoulFamiliar::m_allSouls->p_ObjectEnumerator();
+		c_Enumerator11* t_=c_SoulFamiliar::m_allSouls->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			c_SoulFamiliar* t_soulFamiliar=t_->p_NextObject();
 			Float t_distToSoulFamiliar=m_GetDist(t_soulFamiliar->m_x,t_soulFamiliar->m_y,t_xVal,t_yVal);
@@ -14660,7 +14675,7 @@ Float c_Util::m_GetDistSqFromClosestPlayer(int t_xVal,int t_yVal,bool t_includeS
 		}
 	}
 	if(t_includeSouls){
-		c_Enumerator9* t_=c_SoulFamiliar::m_allSouls->p_ObjectEnumerator();
+		c_Enumerator11* t_=c_SoulFamiliar::m_allSouls->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			c_SoulFamiliar* t_soulFamiliar=t_->p_NextObject();
 			Float t_distToSoulFamiliarSq=m_GetDistSqFromObject(t_xVal,t_yVal,(t_soulFamiliar));
@@ -15004,6 +15019,9 @@ bool c_GameData::m_GetNPCUnlock(String t_npcName){
 bool c_GameData::m_HasFoughtNecrodancer(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.HasFoughtNecrodancer()",31));
 	return false;
+}
+void c_GameData::m_SetFoughtLuteDragon(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtLuteDragon()",30));
 }
 void c_GameData::m_SetFoughtNecrodancer2(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"GameData.SetFoughtNecrodancer2()",32));
@@ -17175,12 +17193,12 @@ void c_Sprite::p_FlipX(bool t_f,bool t_withOffset){
 	this->m_flipX=t_f;
 	this->m_flipXWithOffset=t_withOffset;
 }
-void c_Sprite::p_SetFlipXOff(int t_x){
-	this->m_flipXOff=t_x;
-}
 void c_Sprite::p_UnSetZ(){
 	this->m_zSet=false;
 	this->m_z=FLOAT(0.0);
+}
+void c_Sprite::p_SetFlipXOff(int t_x){
+	this->m_flipXOff=t_x;
 }
 void c_Sprite::p_SetAlphaTweenFromCurrent(Float t_finalVal,int t_duration){
 	this->p_SetAlphaTween(this->m_alpha,t_finalVal,t_duration);
@@ -18282,8 +18300,8 @@ c_TextSprite::c_TextSprite(){
 	m_shadowOffX=1;
 	m_shadowOffY=1;
 	m_fontScale=1;
-	m_containedSprites=(new c_List22)->m_new();
-	m_containedSpriteShadows=(new c_List22)->m_new();
+	m_containedSprites=(new c_List20)->m_new();
+	m_containedSpriteShadows=(new c_List20)->m_new();
 }
 void c_TextSprite::m_Init(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"TextSprite.Init()",17));
@@ -18334,12 +18352,12 @@ void c_TextSprite::p_SetText(String t_t,bool t_force){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"TextSprite.SetText(String, Bool)",32));
 }
 void c_TextSprite::p_InWorld(bool t_b){
-	c_Enumerator12* t_=this->m_containedSprites->p_ObjectEnumerator();
+	c_Enumerator9* t_=this->m_containedSprites->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Sprite* t_containedSprite=t_->p_NextObject();
 		t_containedSprite->p_InWorld(t_b);
 	}
-	c_Enumerator12* t_2=this->m_containedSpriteShadows->p_ObjectEnumerator();
+	c_Enumerator9* t_2=this->m_containedSpriteShadows->p_ObjectEnumerator();
 	while(t_2->p_HasNext()){
 		c_Sprite* t_containedSpriteShadow=t_2->p_NextObject();
 		t_containedSpriteShadow->p_InWorld(t_b);
@@ -18980,9 +18998,6 @@ void c_Level::m_CreateAllCharsDLCSelect(){
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.CreateAllCharsDLCSelect()",31));
 }
 int c_Level::m_bossNumber;
-void c_Level::m_CreateFinalBossBattle3(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Level.CreateFinalBossBattle3()",30));
-}
 c_IntMap7* c_Level::m_tiles;
 c_List14* c_Level::m_minibossFormerWall;
 c_List15* c_Level::m_rooms;
@@ -19696,6 +19711,67 @@ void c_Level::m_PaintTriggerInterior(int t_x,int t_y,int t_w,int t_h,int t_trigg
 	}
 }
 c_List12* c_Level::m_charactersJustUnlocked;
+void c_Level::m_CreateFinalBossBattle3(){
+	bb_logger_Debug->p_Log(String(L"CREATEFINALBOSSBATTLE3: Creating Lute Dragon battle.",52));
+	m_InitNewMap(true);
+	m_outsideBossChamber=true;
+	m_DisableLevelConstraints();
+	m_CreateRoom3(-3,-3,6,6,false,6);
+	if(m_isTrainingMode){
+		m_AddExit(2,0,-2,1);
+		m_PlaceTileRemovingExistingTiles(2,0,2,false,-1,false);
+	}
+	m_GetTileAt(-3,0)->p_AddTorch();
+	m_GetTileAt(3,0)->p_AddTorch();
+	m_GetTileAt(0,3)->p_AddTorch();
+	m_PlaceTileRemovingExistingTiles(-1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-3,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-4,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(0,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(1,-5,14,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-4,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(-2,-5,109,false,-1,false);
+	m_PlaceTileRemovingExistingTiles(2,-5,109,false,-1,false);
+	m_CreateRoom3(-6,-17,12,11,false,6);
+	for(int t_x=-1;t_x<=1;t_x=t_x+1){
+		m_PlaceTileRemovingExistingTiles(t_x,-6,103,false,-1,false);
+		m_GetTileAt(t_x,-6)->p_SetDoorTrigger(2);
+	}
+	m_GetTileAt(-5,-6)->p_AddTorch2();
+	m_GetTileAt(-2,-6)->p_AddTorch2();
+	m_GetTileAt(2,-6)->p_AddTorch2();
+	m_GetTileAt(5,-6)->p_AddTorch2();
+	m_GetTileAt(-5,-17)->p_AddTorch2();
+	m_GetTileAt(-2,-17)->p_AddTorch2();
+	m_GetTileAt(2,-17)->p_AddTorch2();
+	m_GetTileAt(5,-17)->p_AddTorch2();
+	m_GetTileAt(-6,-14)->p_AddTorch2();
+	m_GetTileAt(-6,-10)->p_AddTorch2();
+	m_GetTileAt(6,-14)->p_AddTorch2();
+	m_GetTileAt(6,-10)->p_AddTorch2();
+	m_SetMagicBarrier(true);
+	m_PaintTriggerInterior(-6,-17,12,11,1);
+	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"feet_boots_winged",17),false) || c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"feet_boots_lead",15),false)){
+		(new c_Item)->m_new(0,-3,String(L"feet_boots_explorers",20),false,-1,false);
+	}
+	if(c_Player::m_DoesAnyPlayerHaveItemOfType(String(L"armor_heavyglass",16),false)){
+		(new c_Item)->m_new(0,-4,String(L"armor_glass",11),false,-1,false);
+	}
+	(new c_LuteDragon)->m_new(-1,-16,1);
+	(new c_BounceTrap)->m_new(-3,-10,0);
+	(new c_BounceTrap)->m_new(3,-10,1);
+	(new c_Sarcophagus)->m_new(-5,-16,2);
+	(new c_Sarcophagus)->m_new(5,-16,1);
+	if(c_GameData::m_GetNPCUnlock(String(L"bossmaster",10)) && !c_GameData::m_HasFoughtNecrodancer() && !m_isReplaying){
+		m_charactersJustUnlocked->p_AddLast12(508);
+	}
+	c_GameData::m_SetFoughtLuteDragon();
+}
 void c_Level::m_CreateFinalBossBattle2(){
 	bb_logger_Debug->p_Log(String(L"CREATEFINALBOSSBATTLE2: Creating Necrodancer (Melody) battle.",61));
 	m_InitNewMap(true);
@@ -19740,7 +19816,7 @@ void c_Level::m_CreateFinalBossBattle2(){
 	m_GetTileAt(9,-14)->p_AddTorch2();
 	m_GetTileAt(9,-10)->p_AddTorch2();
 	m_SetMagicBarrier(true);
-	m_PaintTriggerInterior(-9,-17,16,11,1);
+	m_PaintTriggerInterior(-9,-17,18,11,1);
 	c_Necrodancer* t_necrodancer=(new c_Necrodancer)->m_new(0,-15,2);
 	t_necrodancer->p_ActivateLight(FLOAT(0.01),FLOAT(1.5));
 	for(int t_sarcX=-6;t_sarcX<=6;t_sarcX=t_sarcX+2){
@@ -19836,7 +19912,7 @@ bool c_Level::m_QueryHarderBosses(){
 	return false;
 }
 void c_Level::m_ClearMinibossWall(){
-	c_Enumerator10* t_=m_minibossFormerWall->p_ObjectEnumerator();
+	c_Enumerator12* t_=m_minibossFormerWall->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_MinibossTileData* t_tileData=t_->p_NextObject();
 		c_Tile* t_tile=m_GetTileAt(t_tileData->m_x,t_tileData->m_y);
@@ -20810,7 +20886,7 @@ void c_Level::m_CreateBossBattle(){
 		}
 		bb_logger_Debug->p_Log(String(L"CREATEBOSSBATTLE Selecting randomly from eligible bosses:",57));
 		c_StackEx* t_eligibleBossNumbers=(new c_StackEx)->m_new();
-		c_Enumerator8* t_=t_bossNumbers->p_ObjectEnumerator();
+		c_Enumerator10* t_=t_bossNumbers->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			int t_bossNumber=t_->p_NextObject();
 			if(m_usedBosses->p_Contains(t_bossNumber)){
@@ -23939,18 +24015,18 @@ void c_Level::m_PlaceAppropriateMinibosses(c_RoomBase* t_room){
 		}
 		c_IntStack* t_minibossesPlacedFlags=(new c_IntStack)->m_new2();
 		int t_minibossPlacedFlagsMin=999999;
-		c_Enumerator8* t_=t_minibossTypes->p_ObjectEnumerator();
+		c_Enumerator10* t_=t_minibossTypes->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			int t_minibossType=t_->p_NextObject();
 			int t_minibossPlacedFlags=0;
-			c_Enumerator8* t_2=m_previousLevelMinibosses->p_ObjectEnumerator();
+			c_Enumerator10* t_2=m_previousLevelMinibosses->p_ObjectEnumerator();
 			while(t_2->p_HasNext()){
 				int t_previousLevelMiniboss=t_2->p_NextObject();
 				if(t_minibossType==c_Enemy::m_GetBaseType(t_previousLevelMiniboss)){
 					t_minibossPlacedFlags+=1;
 				}
 			}
-			c_Enumerator8* t_3=t_placedMinibossTypes->p_ObjectEnumerator();
+			c_Enumerator10* t_3=t_placedMinibossTypes->p_ObjectEnumerator();
 			while(t_3->p_HasNext()){
 				int t_placedMinibossType=t_3->p_NextObject();
 				if(t_minibossType==t_placedMinibossType){
@@ -27881,7 +27957,7 @@ void c_Level::m_CheckMapConsistency(){
 			}
 		}
 	}
-	c_Enumerator11* t_2=c_Item::m_pickupList->p_ObjectEnumerator();
+	c_Enumerator8* t_2=c_Item::m_pickupList->p_ObjectEnumerator();
 	while(t_2->p_HasNext()){
 		c_Item* t_pickup=t_2->p_NextObject();
 		if(m_IsWallAt(t_pickup->m_x,t_pickup->m_y,false,false)){
@@ -30397,7 +30473,7 @@ void c_Level::m_GenerateHardcoreZoneOrder(){
 	t_zones->p_Push4(4);
 	t_zones->p_Push4(5);
 	gc_assign(m_zoneOrder,(new c_Stack2)->m_new());
-	c_Enumerator8* t_=t_zones->p_ObjectEnumerator();
+	c_Enumerator10* t_=t_zones->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		int t_zone=t_->p_NextObject();
 		if(t_randomZones->p_Contains(t_zone)){
@@ -32899,14 +32975,14 @@ c_RenderableObject::c_RenderableObject(){
 	m_lightSource=false;
 	m_collides=false;
 	m_lightSourceBrightness=FLOAT(1.0);
+	m_isItem=false;
 	m_isEnemy=false;
+	m_isTrap=false;
 	m_playerOverrideCollide=false;
 	m_width=1;
 	m_height=1;
-	m_isItem=false;
 	m_isCrate=false;
 	m_isNPC=false;
-	m_isTrap=false;
 	m_isChest=false;
 	m_clampedOn=false;
 }
@@ -33008,18 +33084,18 @@ c_Entity::c_Entity(){
 	m_coinsToDrop=1;
 	m_falling=false;
 	m_confusedUntil=-1;
+	m_flaggedForDeath=false;
+	m_isMysteried=false;
+	m_shadowYOff=0;
 	m_level=0;
 	m_xmlName=String();
 	m_friendlyName=String();
 	m_shadowXOff=0;
-	m_shadowYOff=0;
-	m_isMysteried=false;
 	m_damagePerHit=1;
 	m_ignoreWalls=false;
 	m_overrideAttackSound=String();
 	m_hasBeenVisible=false;
 	m_isGentle=false;
-	m_flaggedForDeath=false;
 	m_invisible=false;
 	m_isWraithLike=false;
 	m_canMoveOntoPlayer=false;
@@ -36959,14 +37035,14 @@ c_List* c_Item::m_GetAllItemsInClass(String t_itemClass){
 	c_XMLNode* t_itemsNode=bb_necrodancergame_xmlData->p_GetChild2(String(L"items",5),false);
 	return t_itemsNode->p_GetChildrenWithAttributes(t_itemClass+String(L"=True",5),0,false);
 }
-c_List21* c_Item::m_pickupList;
-c_List21* c_Item::m_GetPickupsAt(int t_xVal,int t_yVal,c_Item* t_slf){
-	c_List21* t_pickups=(new c_List21)->m_new();
-	c_Enumerator11* t_=m_pickupList->p_ObjectEnumerator();
+c_List19* c_Item::m_pickupList;
+c_List19* c_Item::m_GetPickupsAt(int t_xVal,int t_yVal,c_Item* t_slf){
+	c_List19* t_pickups=(new c_List19)->m_new();
+	c_Enumerator8* t_=m_pickupList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Item* t_pickup=t_->p_NextObject();
 		if(t_pickup!=t_slf && !t_pickup->m_flaggedForDeath && !t_pickup->m_dead && t_pickup->m_pickupable && (t_pickup->m_x==t_xVal && t_pickup->m_y==t_yVal) && (t_pickup->m_dropX!=t_xVal || t_pickup->m_dropY!=t_yVal)){
-			t_pickups->p_AddLast21(t_pickup);
+			t_pickups->p_AddLast19(t_pickup);
 		}
 	}
 	return t_pickups;
@@ -37019,7 +37095,7 @@ c_Item* c_Item::m_new(int t_xVal,int t_yVal,String t_type,bool t_drop,int t_utl,
 		if(!c_Level::m_IsWallAt(this->m_x,this->m_y+1,false,false)){
 			this->m_yOff+=FLOAT(5.0);
 		}
-		c_Enumerator11* t_=m_GetPickupsAt(this->m_x,this->m_y,this)->p_ObjectEnumerator();
+		c_Enumerator8* t_=m_GetPickupsAt(this->m_x,this->m_y,this)->p_ObjectEnumerator();
 		while(t_->p_HasNext()){
 			c_Item* t_pickup=t_->p_NextObject();
 			if(!t_pickup->p_IsItemOfType(String(L"isCoin",6))){
@@ -37105,7 +37181,7 @@ c_Item* c_Item::m_new(int t_xVal,int t_yVal,String t_type,bool t_drop,int t_utl,
 		this->p_ActivateLight(FLOAT(1.0),t_lMax);
 	}
 	m_AddToSeenItems(this->m_itemType);
-	m_pickupList->p_AddLast21(this);
+	m_pickupList->p_AddLast19(this);
 	c_FamiliarFixed* t_familiar=c_FamiliarFixed::m_GetFamiliarAt(this->m_x,this->m_y);
 	if(t_familiar!=0){
 		t_familiar->p_TryPickup();
@@ -37653,7 +37729,7 @@ void c_Item::m_CreateItemPools(){
 				t_itemPoolCandidates->p_Clear();
 				while(!t_unlockedItems->p_IsEmpty()){
 					int t_high=0;
-					c_Enumerator8* t_3=t_unlockedItemsChances->p_ObjectEnumerator();
+					c_Enumerator10* t_3=t_unlockedItemsChances->p_ObjectEnumerator();
 					while(t_3->p_HasNext()){
 						int t_chance2=t_3->p_NextObject();
 						t_high+=t_chance2;
@@ -37713,7 +37789,7 @@ String c_Item::m_GetDisplayName(String t_itemName){
 	return t_itemName;
 }
 void c_Item::p_Die(){
-	m_pickupList->p_RemoveEach10(this);
+	m_pickupList->p_RemoveEach9(this);
 	if(this->m_hintText!=0){
 		this->m_hintText->p_Discard();
 	}
@@ -37726,7 +37802,7 @@ void c_Item::p_Die(){
 	c_Entity::p_Die();
 }
 c_Item* c_Item::m_GetPickupAt(int t_xVal,int t_yVal,c_Item* t_slf){
-	c_Enumerator11* t_=m_pickupList->p_ObjectEnumerator();
+	c_Enumerator8* t_=m_pickupList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Item* t_pickup=t_->p_NextObject();
 		if(t_pickup->m_x==t_xVal && t_pickup->m_y==t_yVal){
@@ -37735,7 +37811,7 @@ c_Item* c_Item::m_GetPickupAt(int t_xVal,int t_yVal,c_Item* t_slf){
 			}
 		}
 	}
-	c_Enumerator11* t_2=m_pickupList->p_ObjectEnumerator();
+	c_Enumerator8* t_2=m_pickupList->p_ObjectEnumerator();
 	while(t_2->p_HasNext()){
 		c_Item* t_pickup2=t_2->p_NextObject();
 		if(t_pickup2==t_slf){
@@ -37994,7 +38070,7 @@ void c_Item::m_ClearAllSingleChoiceItems(c_Item* t_takenItem){
 		bool t_loop=false;
 		do{
 			t_loop=false;
-			c_Enumerator11* t_=m_pickupList->p_ObjectEnumerator();
+			c_Enumerator8* t_=m_pickupList->p_ObjectEnumerator();
 			while(t_->p_HasNext()){
 				c_Item* t_pickup=t_->p_NextObject();
 				if(t_pickup->m_singleChoiceItem && t_pickup!=t_takenItem && c_Util::m_GetDist(t_pickup->m_x,t_pickup->m_y,t_takenItem->m_x,t_takenItem->m_y)<FLOAT(5.0)){
@@ -38082,7 +38158,7 @@ String c_Item::p_Pickup(c_Player* t_player){
 }
 int c_Item::m_ConsumeCoinsRemainingOnLevel(){
 	int t_numCoins=0;
-	c_Enumerator11* t_=m_pickupList->p_ObjectEnumerator();
+	c_Enumerator8* t_=m_pickupList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Item* t_pickup=t_->p_NextObject();
 		if(!t_pickup->m_flaggedForDeath && !t_pickup->m_dead && t_pickup->m_pickupable && t_pickup->p_IsItemOfType(String(L"isCoin",6))){
@@ -38110,7 +38186,7 @@ void c_Item::p_Move(){
 	}
 }
 void c_Item::m_MoveAll(){
-	c_Enumerator11* t_=m_pickupList->p_ObjectEnumerator();
+	c_Enumerator8* t_=m_pickupList->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_Item* t_pickup=t_->p_NextObject();
 		if(dynamic_cast<c_Bomb*>(t_pickup)!=0){
@@ -38558,10 +38634,10 @@ c_Enemy::c_Enemy(){
 	m_attackSwipeImage=0;
 	m_jumpDirt=0;
 	m_jumpDirtTimer=-1;
-	m_isNecroDancer=false;
-	m_isDancer=false;
 	m_overrideHitSound=String();
 	m_overrideDeathSound=String();
+	m_isNecroDancer=false;
+	m_isDancer=false;
 	m_exemptFromPause=false;
 	m_healthMax=0;
 	m_movesRegardlessOfDistance=false;
@@ -48675,7 +48751,7 @@ c_SoulFamiliar* c_SoulFamiliar::m_new2(){
 	c_FamiliarFixed::m_new();
 	return this;
 }
-c_List20* c_SoulFamiliar::m_allSouls;
+c_List22* c_SoulFamiliar::m_allSouls;
 void c_SoulFamiliar::p_Die(){
 	c_FamiliarFixed::p_Die();
 	bb_logger_Debug->p_TraceNotImplemented(String(L"SoulFamiliar.Die()",18));
@@ -48685,7 +48761,7 @@ bool c_SoulFamiliar::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity
 	return false;
 }
 c_SoulFamiliar* c_SoulFamiliar::m_GetSoulAt(int t_x,int t_y){
-	c_Enumerator9* t_=m_allSouls->p_ObjectEnumerator();
+	c_Enumerator11* t_=m_allSouls->p_ObjectEnumerator();
 	while(t_->p_HasNext()){
 		c_SoulFamiliar* t_soulFamiliar=t_->p_NextObject();
 		if(t_soulFamiliar->m_x==t_x && t_soulFamiliar->m_y==t_y){
@@ -49093,8 +49169,8 @@ void c_Stack2::p_Push5(Array<int > t_values,int t_offset,int t_count){
 void c_Stack2::p_Push6(Array<int > t_values,int t_offset){
 	p_Push5(t_values,t_offset,t_values.Length()-t_offset);
 }
-c_Enumerator8* c_Stack2::p_ObjectEnumerator(){
-	return (new c_Enumerator8)->m_new(this);
+c_Enumerator10* c_Stack2::p_ObjectEnumerator(){
+	return (new c_Enumerator10)->m_new(this);
 }
 void c_Stack2::p_Length2(int t_newlength){
 	if(t_newlength<m_length){
@@ -50121,8 +50197,8 @@ int c_List14::p_Clear(){
 	gc_assign(m__head->m__pred,m__head);
 	return 0;
 }
-c_Enumerator10* c_List14::p_ObjectEnumerator(){
-	return (new c_Enumerator10)->m_new(this);
+c_Enumerator12* c_List14::p_ObjectEnumerator(){
+	return (new c_Enumerator12)->m_new(this);
 }
 void c_List14::mark(){
 	Object::mark();
@@ -51307,6 +51383,960 @@ c_StringStack* c_StringStack::m_new2(){
 void c_StringStack::mark(){
 	c_Stack3::mark();
 }
+String bb_item_GetResourceCoinType(int t_amount){
+	return String(L"resource_coin",13)+String(bb_math_Clamp(t_amount,1,10));
+}
+c_List19::c_List19(){
+	m__head=((new c_HeadNode19)->m_new());
+}
+c_List19* c_List19::m_new(){
+	return this;
+}
+c_Node35* c_List19::p_AddLast19(c_Item* t_data){
+	return (new c_Node35)->m_new(m__head,m__head->m__pred,t_data);
+}
+c_List19* c_List19::m_new2(Array<c_Item* > t_data){
+	Array<c_Item* > t_=t_data;
+	int t_2=0;
+	while(t_2<t_.Length()){
+		c_Item* t_t=t_[t_2];
+		t_2=t_2+1;
+		p_AddLast19(t_t);
+	}
+	return this;
+}
+c_Enumerator8* c_List19::p_ObjectEnumerator(){
+	return (new c_Enumerator8)->m_new(this);
+}
+bool c_List19::p_Equals14(c_Item* t_lhs,c_Item* t_rhs){
+	return t_lhs==t_rhs;
+}
+int c_List19::p_RemoveEach9(c_Item* t_value){
+	c_Node35* t_node=m__head->m__succ;
+	while(t_node!=m__head){
+		c_Node35* t_succ=t_node->m__succ;
+		if(p_Equals14(t_node->m__data,t_value)){
+			t_node->p_Remove();
+		}
+		t_node=t_succ;
+	}
+	return 0;
+}
+void c_List19::mark(){
+	Object::mark();
+	gc_mark_q(m__head);
+}
+c_Node35::c_Node35(){
+	m__succ=0;
+	m__pred=0;
+	m__data=0;
+}
+c_Node35* c_Node35::m_new(c_Node35* t_succ,c_Node35* t_pred,c_Item* t_data){
+	gc_assign(m__succ,t_succ);
+	gc_assign(m__pred,t_pred);
+	gc_assign(m__succ->m__pred,this);
+	gc_assign(m__pred->m__succ,this);
+	gc_assign(m__data,t_data);
+	return this;
+}
+c_Node35* c_Node35::m_new2(){
+	return this;
+}
+int c_Node35::p_Remove(){
+	gc_assign(m__succ->m__pred,m__pred);
+	gc_assign(m__pred->m__succ,m__succ);
+	return 0;
+}
+void c_Node35::mark(){
+	Object::mark();
+	gc_mark_q(m__succ);
+	gc_mark_q(m__pred);
+	gc_mark_q(m__data);
+}
+c_HeadNode19::c_HeadNode19(){
+}
+c_HeadNode19* c_HeadNode19::m_new(){
+	c_Node35::m_new2();
+	gc_assign(m__succ,(this));
+	gc_assign(m__pred,(this));
+	return this;
+}
+void c_HeadNode19::mark(){
+	c_Node35::mark();
+}
+c_Enumerator8::c_Enumerator8(){
+	m__list=0;
+	m__curr=0;
+}
+c_Enumerator8* c_Enumerator8::m_new(c_List19* t_list){
+	gc_assign(m__list,t_list);
+	gc_assign(m__curr,t_list->m__head->m__succ);
+	return this;
+}
+c_Enumerator8* c_Enumerator8::m_new2(){
+	return this;
+}
+bool c_Enumerator8::p_HasNext(){
+	while(m__curr->m__succ->m__pred!=m__curr){
+		gc_assign(m__curr,m__curr->m__succ);
+	}
+	return m__curr!=m__list->m__head;
+}
+c_Item* c_Enumerator8::p_NextObject(){
+	c_Item* t_data=m__curr->m__data;
+	gc_assign(m__curr,m__curr->m__succ);
+	return t_data;
+}
+void c_Enumerator8::mark(){
+	Object::mark();
+	gc_mark_q(m__list);
+	gc_mark_q(m__curr);
+}
+c_Bomb::c_Bomb(){
+	m_player=0;
+	m_isBig=false;
+	m_beatsUntilExplosion=-1;
+	m_damageSource=String(L"bomb",4);
+	m_explosionImg=0;
+}
+c_List38* c_Bomb::m_bombList;
+c_Bomb* c_Bomb::m_new(int t_xVal,int t_yVal,c_Player* t_dropper,bool t_playLitSound,bool t_big,String t_dmgSource){
+	c_Item::m_new(t_xVal,t_yVal,String(L"bomb",4),false,-1,false);
+	this->m_pickupable=false;
+	gc_assign(this->m_player,t_dropper);
+	this->m_isBig=t_big;
+	this->m_beatsUntilExplosion=3;
+	this->m_damageSource=t_dmgSource;
+	gc_assign(this->m_explosionImg,(new c_Sprite)->m_new2(String(L"items/3x3_explosion.png",23),8,c_Image::m_DefaultFlags));
+	this->m_explosionImg->p_SetZOff(FLOAT(1000.0));
+	if(t_playLitSound){
+		bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.New(Int, Int, Player, Bool, Bool, String) (Audio)",54));
+	}
+	m_bombList->p_AddLast38(this);
+	return this;
+}
+c_Bomb* c_Bomb::m_new2(){
+	c_Item::m_new2();
+	return this;
+}
+void c_Bomb::p_Die(){
+	c_Item::p_Die();
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Die()",10));
+}
+bool c_Bomb::p_IsVisible(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.IsVisible()",16));
+	return false;
+}
+void c_Bomb::p_Move(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Move()",11));
+}
+void c_Bomb::p_Update(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Update()",13));
+}
+void c_Bomb::mark(){
+	c_Item::mark();
+	gc_mark_q(m_player);
+	gc_mark_q(m_explosionImg);
+}
+c_List20::c_List20(){
+	m__head=((new c_HeadNode20)->m_new());
+}
+c_List20* c_List20::m_new(){
+	return this;
+}
+c_Node36* c_List20::p_AddLast20(c_Sprite* t_data){
+	return (new c_Node36)->m_new(m__head,m__head->m__pred,t_data);
+}
+c_List20* c_List20::m_new2(Array<c_Sprite* > t_data){
+	Array<c_Sprite* > t_=t_data;
+	int t_2=0;
+	while(t_2<t_.Length()){
+		c_Sprite* t_t=t_[t_2];
+		t_2=t_2+1;
+		p_AddLast20(t_t);
+	}
+	return this;
+}
+c_Enumerator9* c_List20::p_ObjectEnumerator(){
+	return (new c_Enumerator9)->m_new(this);
+}
+void c_List20::mark(){
+	Object::mark();
+	gc_mark_q(m__head);
+}
+c_Node36::c_Node36(){
+	m__succ=0;
+	m__pred=0;
+	m__data=0;
+}
+c_Node36* c_Node36::m_new(c_Node36* t_succ,c_Node36* t_pred,c_Sprite* t_data){
+	gc_assign(m__succ,t_succ);
+	gc_assign(m__pred,t_pred);
+	gc_assign(m__succ->m__pred,this);
+	gc_assign(m__pred->m__succ,this);
+	gc_assign(m__data,t_data);
+	return this;
+}
+c_Node36* c_Node36::m_new2(){
+	return this;
+}
+void c_Node36::mark(){
+	Object::mark();
+	gc_mark_q(m__succ);
+	gc_mark_q(m__pred);
+	gc_mark_q(m__data);
+}
+c_HeadNode20::c_HeadNode20(){
+}
+c_HeadNode20* c_HeadNode20::m_new(){
+	c_Node36::m_new2();
+	gc_assign(m__succ,(this));
+	gc_assign(m__pred,(this));
+	return this;
+}
+void c_HeadNode20::mark(){
+	c_Node36::mark();
+}
+c_Enumerator9::c_Enumerator9(){
+	m__list=0;
+	m__curr=0;
+}
+c_Enumerator9* c_Enumerator9::m_new(c_List20* t_list){
+	gc_assign(m__list,t_list);
+	gc_assign(m__curr,t_list->m__head->m__succ);
+	return this;
+}
+c_Enumerator9* c_Enumerator9::m_new2(){
+	return this;
+}
+bool c_Enumerator9::p_HasNext(){
+	while(m__curr->m__succ->m__pred!=m__curr){
+		gc_assign(m__curr,m__curr->m__succ);
+	}
+	return m__curr!=m__list->m__head;
+}
+c_Sprite* c_Enumerator9::p_NextObject(){
+	c_Sprite* t_data=m__curr->m__data;
+	gc_assign(m__curr,m__curr->m__succ);
+	return t_data;
+}
+void c_Enumerator9::mark(){
+	Object::mark();
+	gc_mark_q(m__list);
+	gc_mark_q(m__curr);
+}
+c_LuteDragon::c_LuteDragon(){
+}
+c_LuteDragon* c_LuteDragon::m_new(int t_xVal,int t_yVal,int t_l){
+	c_Enemy::m_new();
+	this->p_Init3(t_xVal,t_yVal,t_l,String(L"lute_dragon",11),String(),-1,-1);
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.New(Int, Int, Int)",29));
+	return this;
+}
+c_LuteDragon* c_LuteDragon::m_new2(){
+	c_Enemy::m_new();
+	return this;
+}
+c_Point* c_LuteDragon::p_GetMovementDirection(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.GetMovementDirection()",33));
+	return 0;
+}
+bool c_LuteDragon::p_Hit(String t_damageSource,int t_damage,int t_dir,c_Entity* t_hitter,bool t_hitAtLastTile,int t_hitType){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.Hit(String, Int, Int, Entity, Bool, Int)",51));
+	return false;
+}
+void c_LuteDragon::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.MoveSucceed(Bool, Bool)",34));
+}
+int c_LuteDragon::p_PerformMovement(int t_xVal,int t_yVal){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.PerformMovement(Int, Int)",36));
+	return 0;
+}
+void c_LuteDragon::p_PerformTween(int t_xVal,int t_yVal,int t_oldX,int t_oldY,int t_tweenType,int t_shadowTweenType,bool t_bufferTween){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.PerformTween(Int, Int, Int, Int, Int, Int, Bool)",59));
+}
+void c_LuteDragon::p_Update(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"LuteDragon.Update()",19));
+}
+void c_LuteDragon::mark(){
+	c_Enemy::mark();
+}
+c_BeatAnimationData::c_BeatAnimationData(){
+	m_frame=0;
+	m_onFraction=FLOAT(.0);
+	m_offFraction=FLOAT(.0);
+	m_singleFrame=false;
+}
+c_BeatAnimationData* c_BeatAnimationData::m_new(int t_frame,Float t_onFraction,Float t_offFraction,bool t_singleFrame){
+	this->m_frame=t_frame;
+	this->m_onFraction=t_onFraction;
+	this->m_offFraction=t_offFraction;
+	this->m_singleFrame=t_singleFrame;
+	return this;
+}
+c_BeatAnimationData* c_BeatAnimationData::m_new2(){
+	return this;
+}
+void c_BeatAnimationData::mark(){
+	Object::mark();
+}
+c_Map16::c_Map16(){
+	m_root=0;
+}
+c_Map16* c_Map16::m_new(){
+	return this;
+}
+int c_Map16::p_Clear(){
+	m_root=0;
+	return 0;
+}
+int c_Map16::p_RotateLeft15(c_Node37* t_node){
+	c_Node37* t_child=t_node->m_right;
+	gc_assign(t_node->m_right,t_child->m_left);
+	if((t_child->m_left)!=0){
+		gc_assign(t_child->m_left->m_parent,t_node);
+	}
+	gc_assign(t_child->m_parent,t_node->m_parent);
+	if((t_node->m_parent)!=0){
+		if(t_node==t_node->m_parent->m_left){
+			gc_assign(t_node->m_parent->m_left,t_child);
+		}else{
+			gc_assign(t_node->m_parent->m_right,t_child);
+		}
+	}else{
+		gc_assign(m_root,t_child);
+	}
+	gc_assign(t_child->m_left,t_node);
+	gc_assign(t_node->m_parent,t_child);
+	return 0;
+}
+int c_Map16::p_RotateRight15(c_Node37* t_node){
+	c_Node37* t_child=t_node->m_left;
+	gc_assign(t_node->m_left,t_child->m_right);
+	if((t_child->m_right)!=0){
+		gc_assign(t_child->m_right->m_parent,t_node);
+	}
+	gc_assign(t_child->m_parent,t_node->m_parent);
+	if((t_node->m_parent)!=0){
+		if(t_node==t_node->m_parent->m_right){
+			gc_assign(t_node->m_parent->m_right,t_child);
+		}else{
+			gc_assign(t_node->m_parent->m_left,t_child);
+		}
+	}else{
+		gc_assign(m_root,t_child);
+	}
+	gc_assign(t_child->m_right,t_node);
+	gc_assign(t_node->m_parent,t_child);
+	return 0;
+}
+int c_Map16::p_InsertFixup15(c_Node37* t_node){
+	while(((t_node->m_parent)!=0) && t_node->m_parent->m_color==-1 && ((t_node->m_parent->m_parent)!=0)){
+		if(t_node->m_parent==t_node->m_parent->m_parent->m_left){
+			c_Node37* t_uncle=t_node->m_parent->m_parent->m_right;
+			if(((t_uncle)!=0) && t_uncle->m_color==-1){
+				t_node->m_parent->m_color=1;
+				t_uncle->m_color=1;
+				t_uncle->m_parent->m_color=-1;
+				t_node=t_uncle->m_parent;
+			}else{
+				if(t_node==t_node->m_parent->m_right){
+					t_node=t_node->m_parent;
+					p_RotateLeft15(t_node);
+				}
+				t_node->m_parent->m_color=1;
+				t_node->m_parent->m_parent->m_color=-1;
+				p_RotateRight15(t_node->m_parent->m_parent);
+			}
+		}else{
+			c_Node37* t_uncle2=t_node->m_parent->m_parent->m_left;
+			if(((t_uncle2)!=0) && t_uncle2->m_color==-1){
+				t_node->m_parent->m_color=1;
+				t_uncle2->m_color=1;
+				t_uncle2->m_parent->m_color=-1;
+				t_node=t_uncle2->m_parent;
+			}else{
+				if(t_node==t_node->m_parent->m_left){
+					t_node=t_node->m_parent;
+					p_RotateRight15(t_node);
+				}
+				t_node->m_parent->m_color=1;
+				t_node->m_parent->m_parent->m_color=-1;
+				p_RotateLeft15(t_node->m_parent->m_parent);
+			}
+		}
+	}
+	m_root->m_color=1;
+	return 0;
+}
+bool c_Map16::p_Set16(int t_key,c_BeatAnimationData* t_value){
+	c_Node37* t_node=m_root;
+	c_Node37* t_parent=0;
+	int t_cmp=0;
+	while((t_node)!=0){
+		t_parent=t_node;
+		t_cmp=p_Compare(t_key,t_node->m_key);
+		if(t_cmp>0){
+			t_node=t_node->m_right;
+		}else{
+			if(t_cmp<0){
+				t_node=t_node->m_left;
+			}else{
+				gc_assign(t_node->m_value,t_value);
+				return false;
+			}
+		}
+	}
+	t_node=(new c_Node37)->m_new(t_key,t_value,-1,t_parent);
+	if((t_parent)!=0){
+		if(t_cmp>0){
+			gc_assign(t_parent->m_right,t_node);
+		}else{
+			gc_assign(t_parent->m_left,t_node);
+		}
+		p_InsertFixup15(t_node);
+	}else{
+		gc_assign(m_root,t_node);
+	}
+	return true;
+}
+bool c_Map16::p_IsEmpty(){
+	return m_root==0;
+}
+c_Node37* c_Map16::p_FindNode(int t_key){
+	c_Node37* t_node=m_root;
+	while((t_node)!=0){
+		int t_cmp=p_Compare(t_key,t_node->m_key);
+		if(t_cmp>0){
+			t_node=t_node->m_right;
+		}else{
+			if(t_cmp<0){
+				t_node=t_node->m_left;
+			}else{
+				return t_node;
+			}
+		}
+	}
+	return t_node;
+}
+bool c_Map16::p_Contains(int t_key){
+	return p_FindNode(t_key)!=0;
+}
+c_BeatAnimationData* c_Map16::p_Get2(int t_key){
+	c_Node37* t_node=p_FindNode(t_key);
+	if((t_node)!=0){
+		return t_node->m_value;
+	}
+	return 0;
+}
+void c_Map16::mark(){
+	Object::mark();
+	gc_mark_q(m_root);
+}
+c_IntMap8::c_IntMap8(){
+}
+c_IntMap8* c_IntMap8::m_new(){
+	c_Map16::m_new();
+	return this;
+}
+int c_IntMap8::p_Compare(int t_lhs,int t_rhs){
+	return t_lhs-t_rhs;
+}
+void c_IntMap8::mark(){
+	c_Map16::mark();
+}
+c_Node37::c_Node37(){
+	m_key=0;
+	m_right=0;
+	m_left=0;
+	m_value=0;
+	m_color=0;
+	m_parent=0;
+}
+c_Node37* c_Node37::m_new(int t_key,c_BeatAnimationData* t_value,int t_color,c_Node37* t_parent){
+	this->m_key=t_key;
+	gc_assign(this->m_value,t_value);
+	this->m_color=t_color;
+	gc_assign(this->m_parent,t_parent);
+	return this;
+}
+c_Node37* c_Node37::m_new2(){
+	return this;
+}
+void c_Node37::mark(){
+	Object::mark();
+	gc_mark_q(m_right);
+	gc_mark_q(m_left);
+	gc_mark_q(m_value);
+	gc_mark_q(m_parent);
+}
+c_MovementType::c_MovementType(){
+}
+void c_MovementType::mark(){
+	Object::mark();
+}
+c_BounceTrap::c_BounceTrap(){
+	m_bounceDir=0;
+	m_isRotatingCW=false;
+	m_isRotatingCCW=false;
+	m_originalDir=0;
+	m_retractCounter=0;
+	m_rotatedBeat=-1;
+}
+c_BounceTrap* c_BounceTrap::m_new(int t_xVal,int t_yVal,int t_d){
+	c_Trap::m_new(t_xVal,t_yVal,1);
+	this->m_xOff=FLOAT(12.0);
+	this->m_yOff=FLOAT(18.0);
+	int t_1=t_d;
+	if(t_1==-1){
+		for(int t_i=499;t_i>0;t_i=t_i+-1){
+			this->m_bounceDir=c_Util::m_RndIntRangeFromZero(3,true);
+			int t_2=this->m_bounceDir;
+			if(t_2==0){
+				if(!c_Level::m_IsWallAt(t_xVal+1,t_yVal,false,false)){
+					break;
+				}
+			}else{
+				if(t_2==1){
+					if(!c_Level::m_IsWallAt(t_xVal-1,t_yVal,false,false)){
+						break;
+					}
+				}else{
+					if(t_2==2){
+						if(!c_Level::m_IsWallAt(t_xVal,t_yVal+1,false,false)){
+							break;
+						}
+					}else{
+						if(t_2==3){
+							if(!c_Level::m_IsWallAt(t_xVal,t_yVal-1,false,false)){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}else{
+		if(t_1==9){
+			this->m_bounceDir=c_Util::m_RndIntRangeFromZero(3,true);
+			if(c_Util::m_RndBool(true)){
+				this->m_isRotatingCW=true;
+			}else{
+				this->m_isRotatingCCW=true;
+			}
+		}else{
+			this->m_bounceDir=t_d;
+		}
+	}
+	int t_3=this->m_bounceDir;
+	if(t_3==8){
+		gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/bouncetrap_omni.png",25),14,16,12,1));
+	}else{
+		if(t_3==7 || t_3==6 || t_3==5 || t_3==4){
+			gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/diagonal_bouncetrap.png",29),14,16,16,1));
+		}else{
+			gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/bouncetrap.png",20),14,16,12,1));
+		}
+	}
+	this->m_image->p_SetZ(FLOAT(-995.0));
+	this->m_originalDir=this->m_bounceDir;
+	int t_debugBounceDir=this->m_bounceDir;
+	if(t_d==9){
+		t_debugBounceDir=9;
+	}
+	bb_logger_Debug->p_WriteLine2(String(L"    Direction: ",15)+c_BounceTrapDirection::m_ToString(t_debugBounceDir));
+	return this;
+}
+c_BounceTrap* c_BounceTrap::m_new2(){
+	c_Trap::m_new2();
+	return this;
+}
+int c_BounceTrap::p_RotateDir(int t_dir,bool t_cw){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"BounceTrap.RotateDir(Int, Bool)",31));
+	return 0;
+}
+void c_BounceTrap::p_Trigger(c_Entity* t_ent){
+	int t_bounceDir=this->m_bounceDir;
+	int t_numRotations=(this->m_triggeredOnBeat+1) % 4;
+	if(this->m_isRotatingCW){
+		for(int t_i=0;t_i<t_numRotations;t_i=t_i+1){
+			t_bounceDir=this->p_RotateDir(t_bounceDir,true);
+		}
+	}else{
+		if(this->m_isRotatingCCW){
+			for(int t_i2=0;t_i2<t_numRotations;t_i2=t_i2+1){
+				t_bounceDir=this->p_RotateDir(t_bounceDir,false);
+			}
+		}
+	}
+	this->m_retractCounter=200;
+	if(t_bounceDir==8){
+		t_bounceDir=c_Util::m_GetDirFromDiff(t_ent->m_x-t_ent->m_lastX,t_ent->m_y-t_ent->m_lastY);
+	}
+	c_Point* t_dirPoint=c_Util::m_GetPointFromDir(t_bounceDir);
+	if(c_Util::m_GetDist(t_ent->m_x,t_ent->m_y,t_ent->m_lastX,t_ent->m_lastY)<=FLOAT(4.2)){
+		if(t_ent->m_isPlayer){
+			c_Player* t_player=dynamic_cast<c_Player*>(t_ent);
+			if(t_player->m_immobilized){
+				return;
+			}
+			if(t_player->p_IsHeavy()){
+				c_Audio::m_PlayGameSound(String(L"bounceFail",10),-1,FLOAT(1.0));
+				c_Trap::p_Trigger(t_ent);
+				return;
+			}
+			if(c_Util::m_IsGlobalCollisionAt2(t_player->m_x+t_dirPoint->m_x,t_player->m_y+t_dirPoint->m_y,false,false,false,false)){
+				t_player->p_BounceInPlace(true);
+			}else{
+				t_player->p_ImmediatelyMoveTo(t_dirPoint->m_x,t_dirPoint->m_y,false,false,true,false,false);
+			}
+		}else{
+			if(c_Util::m_IsGlobalCollisionAt2(t_ent->m_x+t_dirPoint->m_x,t_ent->m_y+t_dirPoint->m_y,false,false,false,false)){
+				t_ent->p_BounceInPlace(true);
+			}else{
+				t_ent->p_MoveImmediate(t_dirPoint->m_x,t_dirPoint->m_y,String(L"bounceTrap",10));
+			}
+		}
+	}else{
+		t_ent->p_BounceInPlace(false);
+	}
+	if(!t_ent->m_clampedOn){
+		c_Audio::m_PlayGameSoundAt(String(L"bounceTrap",10),this->m_x,this->m_y,false,-1,false);
+	}
+	c_Trap::p_Trigger(t_ent);
+}
+void c_BounceTrap::p_Rotate(){
+	if(this->m_isRotatingCW){
+		this->m_bounceDir=this->p_RotateDir(this->m_bounceDir,true);
+	}else{
+		if(this->m_isRotatingCCW){
+			this->m_bounceDir=this->p_RotateDir(this->m_bounceDir,false);
+		}
+	}
+	this->m_rotatedBeat=c_Audio::m_GetClosestBeatNum(true);
+}
+int c_BounceTrap::p_GetFrameToShow(){
+	int t_4=this->m_originalDir;
+	if(t_4==0){
+		this->m_image->p_FlipX(true,false);
+	}else{
+		if(t_4==1){
+			this->m_image->p_FlipX(false,false);
+		}
+	}
+	int t_frame=0;
+	int t_5=this->m_originalDir;
+	if(t_5==0 || t_5==1 || t_5==4){
+		t_frame=2;
+	}else{
+		if(t_5==2 || t_5==7){
+			t_frame=4;
+		}else{
+			if(t_5==6){
+				t_frame=6;
+			}
+		}
+	}
+	if(this->m_triggered){
+		t_frame+=1;
+	}
+	return t_frame;
+}
+void c_BounceTrap::p_Update(){
+	if(this->m_retractCounter>0){
+		this->m_retractCounter-=1;
+		if(this->m_retractCounter==0){
+			this->m_triggered=false;
+		}
+	}
+	if(this->m_rotatedBeat!=c_Audio::m_GetClosestBeatNum(true)){
+		this->p_Rotate();
+	}
+	int t_frameToShow=this->p_GetFrameToShow();
+	this->m_image->p_SetFrame(t_frameToShow);
+	c_Trap::p_Update();
+}
+void c_BounceTrap::mark(){
+	c_Trap::mark();
+}
+c_BounceTrapDirection::c_BounceTrapDirection(){
+}
+String c_BounceTrapDirection::m_ToString(int t_dir){
+	int t_6=t_dir;
+	if(t_6==0){
+		return String(L"Right",5);
+	}else{
+		if(t_6==1){
+			return String(L"Left",4);
+		}else{
+			if(t_6==2){
+				return String(L"Down",4);
+			}else{
+				if(t_6==3){
+					return String(L"Up",2);
+				}else{
+					if(t_6==4){
+						return String(L"Down Right",10);
+					}else{
+						if(t_6==5){
+							return String(L"Down Left",9);
+						}else{
+							if(t_6==6){
+								return String(L"Up Left",7);
+							}else{
+								if(t_6==7){
+									return String(L"Up Right",8);
+								}else{
+									if(t_6==8){
+										return String(L"Omni",4);
+									}else{
+										if(t_6==9){
+											return String(L"Spin",4);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return String(L"None",4);
+}
+void c_BounceTrapDirection::mark(){
+	Object::mark();
+}
+c_TrapType::c_TrapType(){
+}
+String c_TrapType::m_ToDisplayName(int t_type){
+	int t_1=t_type;
+	if(t_1==1){
+		return String(L"Bounce Trap",11);
+	}else{
+		if(t_1==2){
+			return String(L"Spike Trap",10);
+		}else{
+			if(t_1==3){
+				return String(L"Trap Door",9);
+			}else{
+				if(t_1==4){
+					return String(L"Confuse Trap",12);
+				}else{
+					if(t_1==5){
+						return String(L"Teleport Trap",13);
+					}else{
+						if(t_1==6){
+							return String(L"Slow Down Trap",14);
+						}else{
+							if(t_1==7){
+								return String(L"Speed Up Trap",13);
+							}else{
+								if(t_1==8){
+									return String(L"Travel Rune",11);
+								}else{
+									if(t_1==9){
+										return String(L"Bomb Trap",9);
+									}else{
+										if(t_1==10){
+											return String(L"Wall Pig",8);
+										}else{
+											if(t_1==11){
+												return String(L"AB Teleport Trap",16);
+											}else{
+												if(t_1==12){
+													return String(L"Switch",6);
+												}else{
+													if(t_1==13){
+														return String(L"Decorative Fire Trap",20);
+													}else{
+														if(t_1==14){
+															return String(L"Scatter Trap",12);
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return String(L"Unknown trap (",14)+String(t_type)+String(L")",1);
+}
+void c_TrapType::mark(){
+	Object::mark();
+}
+c_Sarcophagus::c_Sarcophagus(){
+	m_numEnemiesSpawned=0;
+	m_vibrateCounter=3;
+	m_vibrateOffset=FLOAT(0.7);
+}
+c_List21* c_Sarcophagus::m_sarcophagi;
+c_Sarcophagus* c_Sarcophagus::m_new(int t_xVal,int t_yVal,int t_l){
+	c_Enemy::m_new();
+	if(c_Shrine::m_warShrineActive){
+		t_l=3;
+	}
+	this->p_Init3(t_xVal,t_yVal,t_l,String(L"sarcophagus",11),String(),-1,-1);
+	m_sarcophagi->p_AddLast21(this);
+	this->m_overrideHitSound=String(L"sarcophagusHit",14);
+	this->m_overrideDeathSound=String(L"sarcophagusDeath",16);
+	return this;
+}
+c_Sarcophagus* c_Sarcophagus::m_new2(){
+	c_Enemy::m_new();
+	return this;
+}
+bool c_Sarcophagus::p_CanBeLord(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.CanBeLord()",23));
+	return false;
+}
+void c_Sarcophagus::p_Delete(){
+	m_sarcophagi->p_RemoveEach10(this);
+	c_Enemy::p_Delete();
+}
+void c_Sarcophagus::p_Die(){
+	if(this->m_coinsToDrop>0){
+		if(this->m_numEnemiesSpawned<=1){
+			this->m_coinsToDrop=5*this->m_level+15;
+		}else{
+			if(this->m_numEnemiesSpawned==2){
+				this->m_coinsToDrop=2*this->m_level+6;
+			}else{
+				this->m_coinsToDrop=1*this->m_level+4;
+			}
+		}
+	}
+	m_sarcophagi->p_RemoveEach10(this);
+	c_Enemy::p_Die();
+}
+c_Point* c_Sarcophagus::p_GetMovementDirection(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetMovementDirection()",34));
+	return 0;
+}
+bool c_Sarcophagus::p_ImmuneToFear(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.ImmuneToFear()",26));
+	return false;
+}
+void c_Sarcophagus::p_MoveFail(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveFail()",22));
+}
+void c_Sarcophagus::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveSucceed(Bool, Bool)",35));
+}
+int c_Sarcophagus::p_PerformMovement(int t_xVal,int t_yVal){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.PerformMovement(Int, Int)",37));
+	return 0;
+}
+void c_Sarcophagus::p_Update(){
+	if(this->m_currentMoveDelay>1){
+		this->m_xOff=FLOAT(0.0);
+	}else{
+		this->m_vibrateCounter-=1;
+		if(this->m_vibrateCounter==0){
+			this->m_xOff=this->m_vibrateOffset;
+			this->m_vibrateOffset=-this->m_vibrateOffset;
+			this->m_vibrateCounter=3;
+		}
+	}
+	c_Enemy::p_Update();
+}
+int c_Sarcophagus::m_GetNumSarcophagi(){
+	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetNumSarcophagi()",30));
+	return 0;
+}
+void c_Sarcophagus::mark(){
+	c_Enemy::mark();
+}
+c_List21::c_List21(){
+	m__head=((new c_HeadNode21)->m_new());
+}
+c_List21* c_List21::m_new(){
+	return this;
+}
+c_Node38* c_List21::p_AddLast21(c_Sarcophagus* t_data){
+	return (new c_Node38)->m_new(m__head,m__head->m__pred,t_data);
+}
+c_List21* c_List21::m_new2(Array<c_Sarcophagus* > t_data){
+	Array<c_Sarcophagus* > t_=t_data;
+	int t_2=0;
+	while(t_2<t_.Length()){
+		c_Sarcophagus* t_t=t_[t_2];
+		t_2=t_2+1;
+		p_AddLast21(t_t);
+	}
+	return this;
+}
+bool c_List21::p_Equals15(c_Sarcophagus* t_lhs,c_Sarcophagus* t_rhs){
+	return t_lhs==t_rhs;
+}
+int c_List21::p_RemoveEach10(c_Sarcophagus* t_value){
+	c_Node38* t_node=m__head->m__succ;
+	while(t_node!=m__head){
+		c_Node38* t_succ=t_node->m__succ;
+		if(p_Equals15(t_node->m__data,t_value)){
+			t_node->p_Remove();
+		}
+		t_node=t_succ;
+	}
+	return 0;
+}
+int c_List21::p_Count(){
+	int t_n=0;
+	c_Node38* t_node=m__head->m__succ;
+	while(t_node!=m__head){
+		t_node=t_node->m__succ;
+		t_n+=1;
+	}
+	return t_n;
+}
+void c_List21::mark(){
+	Object::mark();
+	gc_mark_q(m__head);
+}
+c_Node38::c_Node38(){
+	m__succ=0;
+	m__pred=0;
+	m__data=0;
+}
+c_Node38* c_Node38::m_new(c_Node38* t_succ,c_Node38* t_pred,c_Sarcophagus* t_data){
+	gc_assign(m__succ,t_succ);
+	gc_assign(m__pred,t_pred);
+	gc_assign(m__succ->m__pred,this);
+	gc_assign(m__pred->m__succ,this);
+	gc_assign(m__data,t_data);
+	return this;
+}
+c_Node38* c_Node38::m_new2(){
+	return this;
+}
+int c_Node38::p_Remove(){
+	gc_assign(m__succ->m__pred,m__pred);
+	gc_assign(m__pred->m__succ,m__succ);
+	return 0;
+}
+void c_Node38::mark(){
+	Object::mark();
+	gc_mark_q(m__succ);
+	gc_mark_q(m__pred);
+	gc_mark_q(m__data);
+}
+c_HeadNode21::c_HeadNode21(){
+}
+c_HeadNode21* c_HeadNode21::m_new(){
+	c_Node38::m_new2();
+	gc_assign(m__succ,(this));
+	gc_assign(m__pred,(this));
+	return this;
+}
+void c_HeadNode21::mark(){
+	c_Node38::mark();
+}
 c_Necrodancer::c_Necrodancer(){
 	m_iceBlast=0;
 	m_shieldImage=0;
@@ -51516,386 +52546,6 @@ void c_Necrodancer::mark(){
 	gc_mark_q(m_shieldImage);
 	gc_mark_q(m_theLute);
 }
-c_BeatAnimationData::c_BeatAnimationData(){
-	m_frame=0;
-	m_onFraction=FLOAT(.0);
-	m_offFraction=FLOAT(.0);
-	m_singleFrame=false;
-}
-c_BeatAnimationData* c_BeatAnimationData::m_new(int t_frame,Float t_onFraction,Float t_offFraction,bool t_singleFrame){
-	this->m_frame=t_frame;
-	this->m_onFraction=t_onFraction;
-	this->m_offFraction=t_offFraction;
-	this->m_singleFrame=t_singleFrame;
-	return this;
-}
-c_BeatAnimationData* c_BeatAnimationData::m_new2(){
-	return this;
-}
-void c_BeatAnimationData::mark(){
-	Object::mark();
-}
-c_Map16::c_Map16(){
-	m_root=0;
-}
-c_Map16* c_Map16::m_new(){
-	return this;
-}
-int c_Map16::p_Clear(){
-	m_root=0;
-	return 0;
-}
-int c_Map16::p_RotateLeft15(c_Node35* t_node){
-	c_Node35* t_child=t_node->m_right;
-	gc_assign(t_node->m_right,t_child->m_left);
-	if((t_child->m_left)!=0){
-		gc_assign(t_child->m_left->m_parent,t_node);
-	}
-	gc_assign(t_child->m_parent,t_node->m_parent);
-	if((t_node->m_parent)!=0){
-		if(t_node==t_node->m_parent->m_left){
-			gc_assign(t_node->m_parent->m_left,t_child);
-		}else{
-			gc_assign(t_node->m_parent->m_right,t_child);
-		}
-	}else{
-		gc_assign(m_root,t_child);
-	}
-	gc_assign(t_child->m_left,t_node);
-	gc_assign(t_node->m_parent,t_child);
-	return 0;
-}
-int c_Map16::p_RotateRight15(c_Node35* t_node){
-	c_Node35* t_child=t_node->m_left;
-	gc_assign(t_node->m_left,t_child->m_right);
-	if((t_child->m_right)!=0){
-		gc_assign(t_child->m_right->m_parent,t_node);
-	}
-	gc_assign(t_child->m_parent,t_node->m_parent);
-	if((t_node->m_parent)!=0){
-		if(t_node==t_node->m_parent->m_right){
-			gc_assign(t_node->m_parent->m_right,t_child);
-		}else{
-			gc_assign(t_node->m_parent->m_left,t_child);
-		}
-	}else{
-		gc_assign(m_root,t_child);
-	}
-	gc_assign(t_child->m_right,t_node);
-	gc_assign(t_node->m_parent,t_child);
-	return 0;
-}
-int c_Map16::p_InsertFixup15(c_Node35* t_node){
-	while(((t_node->m_parent)!=0) && t_node->m_parent->m_color==-1 && ((t_node->m_parent->m_parent)!=0)){
-		if(t_node->m_parent==t_node->m_parent->m_parent->m_left){
-			c_Node35* t_uncle=t_node->m_parent->m_parent->m_right;
-			if(((t_uncle)!=0) && t_uncle->m_color==-1){
-				t_node->m_parent->m_color=1;
-				t_uncle->m_color=1;
-				t_uncle->m_parent->m_color=-1;
-				t_node=t_uncle->m_parent;
-			}else{
-				if(t_node==t_node->m_parent->m_right){
-					t_node=t_node->m_parent;
-					p_RotateLeft15(t_node);
-				}
-				t_node->m_parent->m_color=1;
-				t_node->m_parent->m_parent->m_color=-1;
-				p_RotateRight15(t_node->m_parent->m_parent);
-			}
-		}else{
-			c_Node35* t_uncle2=t_node->m_parent->m_parent->m_left;
-			if(((t_uncle2)!=0) && t_uncle2->m_color==-1){
-				t_node->m_parent->m_color=1;
-				t_uncle2->m_color=1;
-				t_uncle2->m_parent->m_color=-1;
-				t_node=t_uncle2->m_parent;
-			}else{
-				if(t_node==t_node->m_parent->m_left){
-					t_node=t_node->m_parent;
-					p_RotateRight15(t_node);
-				}
-				t_node->m_parent->m_color=1;
-				t_node->m_parent->m_parent->m_color=-1;
-				p_RotateLeft15(t_node->m_parent->m_parent);
-			}
-		}
-	}
-	m_root->m_color=1;
-	return 0;
-}
-bool c_Map16::p_Set16(int t_key,c_BeatAnimationData* t_value){
-	c_Node35* t_node=m_root;
-	c_Node35* t_parent=0;
-	int t_cmp=0;
-	while((t_node)!=0){
-		t_parent=t_node;
-		t_cmp=p_Compare(t_key,t_node->m_key);
-		if(t_cmp>0){
-			t_node=t_node->m_right;
-		}else{
-			if(t_cmp<0){
-				t_node=t_node->m_left;
-			}else{
-				gc_assign(t_node->m_value,t_value);
-				return false;
-			}
-		}
-	}
-	t_node=(new c_Node35)->m_new(t_key,t_value,-1,t_parent);
-	if((t_parent)!=0){
-		if(t_cmp>0){
-			gc_assign(t_parent->m_right,t_node);
-		}else{
-			gc_assign(t_parent->m_left,t_node);
-		}
-		p_InsertFixup15(t_node);
-	}else{
-		gc_assign(m_root,t_node);
-	}
-	return true;
-}
-bool c_Map16::p_IsEmpty(){
-	return m_root==0;
-}
-c_Node35* c_Map16::p_FindNode(int t_key){
-	c_Node35* t_node=m_root;
-	while((t_node)!=0){
-		int t_cmp=p_Compare(t_key,t_node->m_key);
-		if(t_cmp>0){
-			t_node=t_node->m_right;
-		}else{
-			if(t_cmp<0){
-				t_node=t_node->m_left;
-			}else{
-				return t_node;
-			}
-		}
-	}
-	return t_node;
-}
-bool c_Map16::p_Contains(int t_key){
-	return p_FindNode(t_key)!=0;
-}
-c_BeatAnimationData* c_Map16::p_Get2(int t_key){
-	c_Node35* t_node=p_FindNode(t_key);
-	if((t_node)!=0){
-		return t_node->m_value;
-	}
-	return 0;
-}
-void c_Map16::mark(){
-	Object::mark();
-	gc_mark_q(m_root);
-}
-c_IntMap8::c_IntMap8(){
-}
-c_IntMap8* c_IntMap8::m_new(){
-	c_Map16::m_new();
-	return this;
-}
-int c_IntMap8::p_Compare(int t_lhs,int t_rhs){
-	return t_lhs-t_rhs;
-}
-void c_IntMap8::mark(){
-	c_Map16::mark();
-}
-c_Node35::c_Node35(){
-	m_key=0;
-	m_right=0;
-	m_left=0;
-	m_value=0;
-	m_color=0;
-	m_parent=0;
-}
-c_Node35* c_Node35::m_new(int t_key,c_BeatAnimationData* t_value,int t_color,c_Node35* t_parent){
-	this->m_key=t_key;
-	gc_assign(this->m_value,t_value);
-	this->m_color=t_color;
-	gc_assign(this->m_parent,t_parent);
-	return this;
-}
-c_Node35* c_Node35::m_new2(){
-	return this;
-}
-void c_Node35::mark(){
-	Object::mark();
-	gc_mark_q(m_right);
-	gc_mark_q(m_left);
-	gc_mark_q(m_value);
-	gc_mark_q(m_parent);
-}
-c_MovementType::c_MovementType(){
-}
-void c_MovementType::mark(){
-	Object::mark();
-}
-c_Sarcophagus::c_Sarcophagus(){
-	m_numEnemiesSpawned=0;
-	m_vibrateCounter=3;
-	m_vibrateOffset=FLOAT(0.7);
-}
-c_List19* c_Sarcophagus::m_sarcophagi;
-c_Sarcophagus* c_Sarcophagus::m_new(int t_xVal,int t_yVal,int t_l){
-	c_Enemy::m_new();
-	if(c_Shrine::m_warShrineActive){
-		t_l=3;
-	}
-	this->p_Init3(t_xVal,t_yVal,t_l,String(L"sarcophagus",11),String(),-1,-1);
-	m_sarcophagi->p_AddLast19(this);
-	this->m_overrideHitSound=String(L"sarcophagusHit",14);
-	this->m_overrideDeathSound=String(L"sarcophagusDeath",16);
-	return this;
-}
-c_Sarcophagus* c_Sarcophagus::m_new2(){
-	c_Enemy::m_new();
-	return this;
-}
-int c_Sarcophagus::m_GetNumSarcophagi(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetNumSarcophagi()",30));
-	return 0;
-}
-bool c_Sarcophagus::p_CanBeLord(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.CanBeLord()",23));
-	return false;
-}
-void c_Sarcophagus::p_Delete(){
-	m_sarcophagi->p_RemoveEach9(this);
-	c_Enemy::p_Delete();
-}
-void c_Sarcophagus::p_Die(){
-	if(this->m_coinsToDrop>0){
-		if(this->m_numEnemiesSpawned<=1){
-			this->m_coinsToDrop=5*this->m_level+15;
-		}else{
-			if(this->m_numEnemiesSpawned==2){
-				this->m_coinsToDrop=2*this->m_level+6;
-			}else{
-				this->m_coinsToDrop=1*this->m_level+4;
-			}
-		}
-	}
-	m_sarcophagi->p_RemoveEach9(this);
-	c_Enemy::p_Die();
-}
-c_Point* c_Sarcophagus::p_GetMovementDirection(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.GetMovementDirection()",34));
-	return 0;
-}
-bool c_Sarcophagus::p_ImmuneToFear(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.ImmuneToFear()",26));
-	return false;
-}
-void c_Sarcophagus::p_MoveFail(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveFail()",22));
-}
-void c_Sarcophagus::p_MoveSucceed(bool t_hitPlayer,bool t_moveDelayed){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.MoveSucceed(Bool, Bool)",35));
-}
-int c_Sarcophagus::p_PerformMovement(int t_xVal,int t_yVal){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Sarcophagus.PerformMovement(Int, Int)",37));
-	return 0;
-}
-void c_Sarcophagus::p_Update(){
-	if(this->m_currentMoveDelay>1){
-		this->m_xOff=FLOAT(0.0);
-	}else{
-		this->m_vibrateCounter-=1;
-		if(this->m_vibrateCounter==0){
-			this->m_xOff=this->m_vibrateOffset;
-			this->m_vibrateOffset=-this->m_vibrateOffset;
-			this->m_vibrateCounter=3;
-		}
-	}
-	c_Enemy::p_Update();
-}
-void c_Sarcophagus::mark(){
-	c_Enemy::mark();
-}
-c_List19::c_List19(){
-	m__head=((new c_HeadNode19)->m_new());
-}
-c_List19* c_List19::m_new(){
-	return this;
-}
-c_Node36* c_List19::p_AddLast19(c_Sarcophagus* t_data){
-	return (new c_Node36)->m_new(m__head,m__head->m__pred,t_data);
-}
-c_List19* c_List19::m_new2(Array<c_Sarcophagus* > t_data){
-	Array<c_Sarcophagus* > t_=t_data;
-	int t_2=0;
-	while(t_2<t_.Length()){
-		c_Sarcophagus* t_t=t_[t_2];
-		t_2=t_2+1;
-		p_AddLast19(t_t);
-	}
-	return this;
-}
-bool c_List19::p_Equals14(c_Sarcophagus* t_lhs,c_Sarcophagus* t_rhs){
-	return t_lhs==t_rhs;
-}
-int c_List19::p_RemoveEach9(c_Sarcophagus* t_value){
-	c_Node36* t_node=m__head->m__succ;
-	while(t_node!=m__head){
-		c_Node36* t_succ=t_node->m__succ;
-		if(p_Equals14(t_node->m__data,t_value)){
-			t_node->p_Remove();
-		}
-		t_node=t_succ;
-	}
-	return 0;
-}
-int c_List19::p_Count(){
-	int t_n=0;
-	c_Node36* t_node=m__head->m__succ;
-	while(t_node!=m__head){
-		t_node=t_node->m__succ;
-		t_n+=1;
-	}
-	return t_n;
-}
-void c_List19::mark(){
-	Object::mark();
-	gc_mark_q(m__head);
-}
-c_Node36::c_Node36(){
-	m__succ=0;
-	m__pred=0;
-	m__data=0;
-}
-c_Node36* c_Node36::m_new(c_Node36* t_succ,c_Node36* t_pred,c_Sarcophagus* t_data){
-	gc_assign(m__succ,t_succ);
-	gc_assign(m__pred,t_pred);
-	gc_assign(m__succ->m__pred,this);
-	gc_assign(m__pred->m__succ,this);
-	gc_assign(m__data,t_data);
-	return this;
-}
-c_Node36* c_Node36::m_new2(){
-	return this;
-}
-int c_Node36::p_Remove(){
-	gc_assign(m__succ->m__pred,m__pred);
-	gc_assign(m__pred->m__succ,m__succ);
-	return 0;
-}
-void c_Node36::mark(){
-	Object::mark();
-	gc_mark_q(m__succ);
-	gc_mark_q(m__pred);
-	gc_mark_q(m__data);
-}
-c_HeadNode19::c_HeadNode19(){
-}
-c_HeadNode19* c_HeadNode19::m_new(){
-	c_Node36::m_new2();
-	gc_assign(m__succ,(this));
-	gc_assign(m__pred,(this));
-	return this;
-}
-void c_HeadNode19::mark(){
-	c_Node36::mark();
-}
 c_IntStack::c_IntStack(){
 }
 c_IntStack* c_IntStack::m_new(Array<int > t_data){
@@ -51912,25 +52562,25 @@ bool c_IntStack::p_Equals9(int t_lhs,int t_rhs){
 void c_IntStack::mark(){
 	c_Stack2::mark();
 }
-c_Enumerator8::c_Enumerator8(){
+c_Enumerator10::c_Enumerator10(){
 	m_stack=0;
 	m_index=0;
 }
-c_Enumerator8* c_Enumerator8::m_new(c_Stack2* t_stack){
+c_Enumerator10* c_Enumerator10::m_new(c_Stack2* t_stack){
 	gc_assign(this->m_stack,t_stack);
 	return this;
 }
-c_Enumerator8* c_Enumerator8::m_new2(){
+c_Enumerator10* c_Enumerator10::m_new2(){
 	return this;
 }
-bool c_Enumerator8::p_HasNext(){
+bool c_Enumerator10::p_HasNext(){
 	return m_index<m_stack->p_Length();
 }
-int c_Enumerator8::p_NextObject(){
+int c_Enumerator10::p_NextObject(){
 	m_index+=1;
 	return m_stack->m_data[m_index-1];
 }
-void c_Enumerator8::mark(){
+void c_Enumerator10::mark(){
 	Object::mark();
 	gc_mark_q(m_stack);
 }
@@ -53776,297 +54426,27 @@ Float bb_fmod_GetSongPositionFMOD(int t_ch){
 	return 0;
 }
 Array<int > bb_controller_game_beatData;
-c_List20::c_List20(){
-	m__head=((new c_HeadNode20)->m_new());
-}
-c_List20* c_List20::m_new(){
-	return this;
-}
-c_Node37* c_List20::p_AddLast20(c_SoulFamiliar* t_data){
-	return (new c_Node37)->m_new(m__head,m__head->m__pred,t_data);
-}
-c_List20* c_List20::m_new2(Array<c_SoulFamiliar* > t_data){
-	Array<c_SoulFamiliar* > t_=t_data;
-	int t_2=0;
-	while(t_2<t_.Length()){
-		c_SoulFamiliar* t_t=t_[t_2];
-		t_2=t_2+1;
-		p_AddLast20(t_t);
-	}
-	return this;
-}
-c_Enumerator9* c_List20::p_ObjectEnumerator(){
-	return (new c_Enumerator9)->m_new(this);
-}
-void c_List20::mark(){
-	Object::mark();
-	gc_mark_q(m__head);
-}
-c_Node37::c_Node37(){
-	m__succ=0;
-	m__pred=0;
-	m__data=0;
-}
-c_Node37* c_Node37::m_new(c_Node37* t_succ,c_Node37* t_pred,c_SoulFamiliar* t_data){
-	gc_assign(m__succ,t_succ);
-	gc_assign(m__pred,t_pred);
-	gc_assign(m__succ->m__pred,this);
-	gc_assign(m__pred->m__succ,this);
-	gc_assign(m__data,t_data);
-	return this;
-}
-c_Node37* c_Node37::m_new2(){
-	return this;
-}
-void c_Node37::mark(){
-	Object::mark();
-	gc_mark_q(m__succ);
-	gc_mark_q(m__pred);
-	gc_mark_q(m__data);
-}
-c_HeadNode20::c_HeadNode20(){
-}
-c_HeadNode20* c_HeadNode20::m_new(){
-	c_Node37::m_new2();
-	gc_assign(m__succ,(this));
-	gc_assign(m__pred,(this));
-	return this;
-}
-void c_HeadNode20::mark(){
-	c_Node37::mark();
-}
-c_Enumerator9::c_Enumerator9(){
-	m__list=0;
-	m__curr=0;
-}
-c_Enumerator9* c_Enumerator9::m_new(c_List20* t_list){
-	gc_assign(m__list,t_list);
-	gc_assign(m__curr,t_list->m__head->m__succ);
-	return this;
-}
-c_Enumerator9* c_Enumerator9::m_new2(){
-	return this;
-}
-bool c_Enumerator9::p_HasNext(){
-	while(m__curr->m__succ->m__pred!=m__curr){
-		gc_assign(m__curr,m__curr->m__succ);
-	}
-	return m__curr!=m__list->m__head;
-}
-c_SoulFamiliar* c_Enumerator9::p_NextObject(){
-	c_SoulFamiliar* t_data=m__curr->m__data;
-	gc_assign(m__curr,m__curr->m__succ);
-	return t_data;
-}
-void c_Enumerator9::mark(){
-	Object::mark();
-	gc_mark_q(m__list);
-	gc_mark_q(m__curr);
-}
-c_Enumerator10::c_Enumerator10(){
-	m__list=0;
-	m__curr=0;
-}
-c_Enumerator10* c_Enumerator10::m_new(c_List14* t_list){
-	gc_assign(m__list,t_list);
-	gc_assign(m__curr,t_list->m__head->m__succ);
-	return this;
-}
-c_Enumerator10* c_Enumerator10::m_new2(){
-	return this;
-}
-bool c_Enumerator10::p_HasNext(){
-	while(m__curr->m__succ->m__pred!=m__curr){
-		gc_assign(m__curr,m__curr->m__succ);
-	}
-	return m__curr!=m__list->m__head;
-}
-c_MinibossTileData* c_Enumerator10::p_NextObject(){
-	c_MinibossTileData* t_data=m__curr->m__data;
-	gc_assign(m__curr,m__curr->m__succ);
-	return t_data;
-}
-void c_Enumerator10::mark(){
-	Object::mark();
-	gc_mark_q(m__list);
-	gc_mark_q(m__curr);
-}
-String bb_item_GetResourceCoinType(int t_amount){
-	return String(L"resource_coin",13)+String(bb_math_Clamp(t_amount,1,10));
-}
-c_List21::c_List21(){
-	m__head=((new c_HeadNode21)->m_new());
-}
-c_List21* c_List21::m_new(){
-	return this;
-}
-c_Node38* c_List21::p_AddLast21(c_Item* t_data){
-	return (new c_Node38)->m_new(m__head,m__head->m__pred,t_data);
-}
-c_List21* c_List21::m_new2(Array<c_Item* > t_data){
-	Array<c_Item* > t_=t_data;
-	int t_2=0;
-	while(t_2<t_.Length()){
-		c_Item* t_t=t_[t_2];
-		t_2=t_2+1;
-		p_AddLast21(t_t);
-	}
-	return this;
-}
-c_Enumerator11* c_List21::p_ObjectEnumerator(){
-	return (new c_Enumerator11)->m_new(this);
-}
-bool c_List21::p_Equals15(c_Item* t_lhs,c_Item* t_rhs){
-	return t_lhs==t_rhs;
-}
-int c_List21::p_RemoveEach10(c_Item* t_value){
-	c_Node38* t_node=m__head->m__succ;
-	while(t_node!=m__head){
-		c_Node38* t_succ=t_node->m__succ;
-		if(p_Equals15(t_node->m__data,t_value)){
-			t_node->p_Remove();
-		}
-		t_node=t_succ;
-	}
-	return 0;
-}
-void c_List21::mark(){
-	Object::mark();
-	gc_mark_q(m__head);
-}
-c_Node38::c_Node38(){
-	m__succ=0;
-	m__pred=0;
-	m__data=0;
-}
-c_Node38* c_Node38::m_new(c_Node38* t_succ,c_Node38* t_pred,c_Item* t_data){
-	gc_assign(m__succ,t_succ);
-	gc_assign(m__pred,t_pred);
-	gc_assign(m__succ->m__pred,this);
-	gc_assign(m__pred->m__succ,this);
-	gc_assign(m__data,t_data);
-	return this;
-}
-c_Node38* c_Node38::m_new2(){
-	return this;
-}
-int c_Node38::p_Remove(){
-	gc_assign(m__succ->m__pred,m__pred);
-	gc_assign(m__pred->m__succ,m__succ);
-	return 0;
-}
-void c_Node38::mark(){
-	Object::mark();
-	gc_mark_q(m__succ);
-	gc_mark_q(m__pred);
-	gc_mark_q(m__data);
-}
-c_HeadNode21::c_HeadNode21(){
-}
-c_HeadNode21* c_HeadNode21::m_new(){
-	c_Node38::m_new2();
-	gc_assign(m__succ,(this));
-	gc_assign(m__pred,(this));
-	return this;
-}
-void c_HeadNode21::mark(){
-	c_Node38::mark();
-}
-c_Enumerator11::c_Enumerator11(){
-	m__list=0;
-	m__curr=0;
-}
-c_Enumerator11* c_Enumerator11::m_new(c_List21* t_list){
-	gc_assign(m__list,t_list);
-	gc_assign(m__curr,t_list->m__head->m__succ);
-	return this;
-}
-c_Enumerator11* c_Enumerator11::m_new2(){
-	return this;
-}
-bool c_Enumerator11::p_HasNext(){
-	while(m__curr->m__succ->m__pred!=m__curr){
-		gc_assign(m__curr,m__curr->m__succ);
-	}
-	return m__curr!=m__list->m__head;
-}
-c_Item* c_Enumerator11::p_NextObject(){
-	c_Item* t_data=m__curr->m__data;
-	gc_assign(m__curr,m__curr->m__succ);
-	return t_data;
-}
-void c_Enumerator11::mark(){
-	Object::mark();
-	gc_mark_q(m__list);
-	gc_mark_q(m__curr);
-}
-c_Bomb::c_Bomb(){
-	m_player=0;
-	m_isBig=false;
-	m_beatsUntilExplosion=-1;
-	m_damageSource=String(L"bomb",4);
-	m_explosionImg=0;
-}
-c_List38* c_Bomb::m_bombList;
-c_Bomb* c_Bomb::m_new(int t_xVal,int t_yVal,c_Player* t_dropper,bool t_playLitSound,bool t_big,String t_dmgSource){
-	c_Item::m_new(t_xVal,t_yVal,String(L"bomb",4),false,-1,false);
-	this->m_pickupable=false;
-	gc_assign(this->m_player,t_dropper);
-	this->m_isBig=t_big;
-	this->m_beatsUntilExplosion=3;
-	this->m_damageSource=t_dmgSource;
-	gc_assign(this->m_explosionImg,(new c_Sprite)->m_new2(String(L"items/3x3_explosion.png",23),8,c_Image::m_DefaultFlags));
-	this->m_explosionImg->p_SetZOff(FLOAT(1000.0));
-	if(t_playLitSound){
-		bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.New(Int, Int, Player, Bool, Bool, String) (Audio)",54));
-	}
-	m_bombList->p_AddLast38(this);
-	return this;
-}
-c_Bomb* c_Bomb::m_new2(){
-	c_Item::m_new2();
-	return this;
-}
-void c_Bomb::p_Die(){
-	c_Item::p_Die();
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Die()",10));
-}
-bool c_Bomb::p_IsVisible(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.IsVisible()",16));
-	return false;
-}
-void c_Bomb::p_Move(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Move()",11));
-}
-void c_Bomb::p_Update(){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"Bomb.Update()",13));
-}
-void c_Bomb::mark(){
-	c_Item::mark();
-	gc_mark_q(m_player);
-	gc_mark_q(m_explosionImg);
-}
 c_List22::c_List22(){
 	m__head=((new c_HeadNode22)->m_new());
 }
 c_List22* c_List22::m_new(){
 	return this;
 }
-c_Node39* c_List22::p_AddLast22(c_Sprite* t_data){
+c_Node39* c_List22::p_AddLast22(c_SoulFamiliar* t_data){
 	return (new c_Node39)->m_new(m__head,m__head->m__pred,t_data);
 }
-c_List22* c_List22::m_new2(Array<c_Sprite* > t_data){
-	Array<c_Sprite* > t_=t_data;
+c_List22* c_List22::m_new2(Array<c_SoulFamiliar* > t_data){
+	Array<c_SoulFamiliar* > t_=t_data;
 	int t_2=0;
 	while(t_2<t_.Length()){
-		c_Sprite* t_t=t_[t_2];
+		c_SoulFamiliar* t_t=t_[t_2];
 		t_2=t_2+1;
 		p_AddLast22(t_t);
 	}
 	return this;
 }
-c_Enumerator12* c_List22::p_ObjectEnumerator(){
-	return (new c_Enumerator12)->m_new(this);
+c_Enumerator11* c_List22::p_ObjectEnumerator(){
+	return (new c_Enumerator11)->m_new(this);
 }
 void c_List22::mark(){
 	Object::mark();
@@ -54077,7 +54457,7 @@ c_Node39::c_Node39(){
 	m__pred=0;
 	m__data=0;
 }
-c_Node39* c_Node39::m_new(c_Node39* t_succ,c_Node39* t_pred,c_Sprite* t_data){
+c_Node39* c_Node39::m_new(c_Node39* t_succ,c_Node39* t_pred,c_SoulFamiliar* t_data){
 	gc_assign(m__succ,t_succ);
 	gc_assign(m__pred,t_pred);
 	gc_assign(m__succ->m__pred,this);
@@ -54105,11 +54485,39 @@ c_HeadNode22* c_HeadNode22::m_new(){
 void c_HeadNode22::mark(){
 	c_Node39::mark();
 }
+c_Enumerator11::c_Enumerator11(){
+	m__list=0;
+	m__curr=0;
+}
+c_Enumerator11* c_Enumerator11::m_new(c_List22* t_list){
+	gc_assign(m__list,t_list);
+	gc_assign(m__curr,t_list->m__head->m__succ);
+	return this;
+}
+c_Enumerator11* c_Enumerator11::m_new2(){
+	return this;
+}
+bool c_Enumerator11::p_HasNext(){
+	while(m__curr->m__succ->m__pred!=m__curr){
+		gc_assign(m__curr,m__curr->m__succ);
+	}
+	return m__curr!=m__list->m__head;
+}
+c_SoulFamiliar* c_Enumerator11::p_NextObject(){
+	c_SoulFamiliar* t_data=m__curr->m__data;
+	gc_assign(m__curr,m__curr->m__succ);
+	return t_data;
+}
+void c_Enumerator11::mark(){
+	Object::mark();
+	gc_mark_q(m__list);
+	gc_mark_q(m__curr);
+}
 c_Enumerator12::c_Enumerator12(){
 	m__list=0;
 	m__curr=0;
 }
-c_Enumerator12* c_Enumerator12::m_new(c_List22* t_list){
+c_Enumerator12* c_Enumerator12::m_new(c_List14* t_list){
 	gc_assign(m__list,t_list);
 	gc_assign(m__curr,t_list->m__head->m__succ);
 	return this;
@@ -54123,8 +54531,8 @@ bool c_Enumerator12::p_HasNext(){
 	}
 	return m__curr!=m__list->m__head;
 }
-c_Sprite* c_Enumerator12::p_NextObject(){
-	c_Sprite* t_data=m__curr->m__data;
+c_MinibossTileData* c_Enumerator12::p_NextObject(){
+	c_MinibossTileData* t_data=m__curr->m__data;
 	gc_assign(m__curr,m__curr->m__succ);
 	return t_data;
 }
@@ -57655,70 +58063,6 @@ void c_SpikeTrap::p_Update(){
 void c_SpikeTrap::mark(){
 	c_Trap::mark();
 }
-c_TrapType::c_TrapType(){
-}
-String c_TrapType::m_ToDisplayName(int t_type){
-	int t_1=t_type;
-	if(t_1==1){
-		return String(L"Bounce Trap",11);
-	}else{
-		if(t_1==2){
-			return String(L"Spike Trap",10);
-		}else{
-			if(t_1==3){
-				return String(L"Trap Door",9);
-			}else{
-				if(t_1==4){
-					return String(L"Confuse Trap",12);
-				}else{
-					if(t_1==5){
-						return String(L"Teleport Trap",13);
-					}else{
-						if(t_1==6){
-							return String(L"Slow Down Trap",14);
-						}else{
-							if(t_1==7){
-								return String(L"Speed Up Trap",13);
-							}else{
-								if(t_1==8){
-									return String(L"Travel Rune",11);
-								}else{
-									if(t_1==9){
-										return String(L"Bomb Trap",9);
-									}else{
-										if(t_1==10){
-											return String(L"Wall Pig",8);
-										}else{
-											if(t_1==11){
-												return String(L"AB Teleport Trap",16);
-											}else{
-												if(t_1==12){
-													return String(L"Switch",6);
-												}else{
-													if(t_1==13){
-														return String(L"Decorative Fire Trap",20);
-													}else{
-														if(t_1==14){
-															return String(L"Scatter Trap",12);
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	return String(L"Unknown trap (",14)+String(t_type)+String(L")",1);
-}
-void c_TrapType::mark(){
-	Object::mark();
-}
 c_SpeedUpTrap::c_SpeedUpTrap(){
 	m_speedUpStartBeat=-1;
 	m_currentMusicSpeed=FLOAT(1.0);
@@ -57927,238 +58271,6 @@ void c_DeathMetal::p_Update(){
 }
 void c_DeathMetal::mark(){
 	c_Enemy::mark();
-}
-c_BounceTrap::c_BounceTrap(){
-	m_bounceDir=0;
-	m_isRotatingCW=false;
-	m_isRotatingCCW=false;
-	m_originalDir=0;
-	m_retractCounter=0;
-	m_rotatedBeat=-1;
-}
-c_BounceTrap* c_BounceTrap::m_new(int t_xVal,int t_yVal,int t_d){
-	c_Trap::m_new(t_xVal,t_yVal,1);
-	this->m_xOff=FLOAT(12.0);
-	this->m_yOff=FLOAT(18.0);
-	int t_1=t_d;
-	if(t_1==-1){
-		for(int t_i=499;t_i>0;t_i=t_i+-1){
-			this->m_bounceDir=c_Util::m_RndIntRangeFromZero(3,true);
-			int t_2=this->m_bounceDir;
-			if(t_2==0){
-				if(!c_Level::m_IsWallAt(t_xVal+1,t_yVal,false,false)){
-					break;
-				}
-			}else{
-				if(t_2==1){
-					if(!c_Level::m_IsWallAt(t_xVal-1,t_yVal,false,false)){
-						break;
-					}
-				}else{
-					if(t_2==2){
-						if(!c_Level::m_IsWallAt(t_xVal,t_yVal+1,false,false)){
-							break;
-						}
-					}else{
-						if(t_2==3){
-							if(!c_Level::m_IsWallAt(t_xVal,t_yVal-1,false,false)){
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-	}else{
-		if(t_1==9){
-			this->m_bounceDir=c_Util::m_RndIntRangeFromZero(3,true);
-			if(c_Util::m_RndBool(true)){
-				this->m_isRotatingCW=true;
-			}else{
-				this->m_isRotatingCCW=true;
-			}
-		}else{
-			this->m_bounceDir=t_d;
-		}
-	}
-	int t_3=this->m_bounceDir;
-	if(t_3==8){
-		gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/bouncetrap_omni.png",25),14,16,12,1));
-	}else{
-		if(t_3==7 || t_3==6 || t_3==5 || t_3==4){
-			gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/diagonal_bouncetrap.png",29),14,16,16,1));
-		}else{
-			gc_assign(this->m_image,(new c_Sprite)->m_new(String(L"traps/bouncetrap.png",20),14,16,12,1));
-		}
-	}
-	this->m_image->p_SetZ(FLOAT(-995.0));
-	this->m_originalDir=this->m_bounceDir;
-	int t_debugBounceDir=this->m_bounceDir;
-	if(t_d==9){
-		t_debugBounceDir=9;
-	}
-	bb_logger_Debug->p_WriteLine2(String(L"    Direction: ",15)+c_BounceTrapDirection::m_ToString(t_debugBounceDir));
-	return this;
-}
-c_BounceTrap* c_BounceTrap::m_new2(){
-	c_Trap::m_new2();
-	return this;
-}
-int c_BounceTrap::p_RotateDir(int t_dir,bool t_cw){
-	bb_logger_Debug->p_TraceNotImplemented(String(L"BounceTrap.RotateDir(Int, Bool)",31));
-	return 0;
-}
-void c_BounceTrap::p_Trigger(c_Entity* t_ent){
-	int t_bounceDir=this->m_bounceDir;
-	int t_numRotations=(this->m_triggeredOnBeat+1) % 4;
-	if(this->m_isRotatingCW){
-		for(int t_i=0;t_i<t_numRotations;t_i=t_i+1){
-			t_bounceDir=this->p_RotateDir(t_bounceDir,true);
-		}
-	}else{
-		if(this->m_isRotatingCCW){
-			for(int t_i2=0;t_i2<t_numRotations;t_i2=t_i2+1){
-				t_bounceDir=this->p_RotateDir(t_bounceDir,false);
-			}
-		}
-	}
-	this->m_retractCounter=200;
-	if(t_bounceDir==8){
-		t_bounceDir=c_Util::m_GetDirFromDiff(t_ent->m_x-t_ent->m_lastX,t_ent->m_y-t_ent->m_lastY);
-	}
-	c_Point* t_dirPoint=c_Util::m_GetPointFromDir(t_bounceDir);
-	if(c_Util::m_GetDist(t_ent->m_x,t_ent->m_y,t_ent->m_lastX,t_ent->m_lastY)<=FLOAT(4.2)){
-		if(t_ent->m_isPlayer){
-			c_Player* t_player=dynamic_cast<c_Player*>(t_ent);
-			if(t_player->m_immobilized){
-				return;
-			}
-			if(t_player->p_IsHeavy()){
-				c_Audio::m_PlayGameSound(String(L"bounceFail",10),-1,FLOAT(1.0));
-				c_Trap::p_Trigger(t_ent);
-				return;
-			}
-			if(c_Util::m_IsGlobalCollisionAt2(t_player->m_x+t_dirPoint->m_x,t_player->m_y+t_dirPoint->m_y,false,false,false,false)){
-				t_player->p_BounceInPlace(true);
-			}else{
-				t_player->p_ImmediatelyMoveTo(t_dirPoint->m_x,t_dirPoint->m_y,false,false,true,false,false);
-			}
-		}else{
-			if(c_Util::m_IsGlobalCollisionAt2(t_ent->m_x+t_dirPoint->m_x,t_ent->m_y+t_dirPoint->m_y,false,false,false,false)){
-				t_ent->p_BounceInPlace(true);
-			}else{
-				t_ent->p_MoveImmediate(t_dirPoint->m_x,t_dirPoint->m_y,String(L"bounceTrap",10));
-			}
-		}
-	}else{
-		t_ent->p_BounceInPlace(false);
-	}
-	if(!t_ent->m_clampedOn){
-		c_Audio::m_PlayGameSoundAt(String(L"bounceTrap",10),this->m_x,this->m_y,false,-1,false);
-	}
-	c_Trap::p_Trigger(t_ent);
-}
-void c_BounceTrap::p_Rotate(){
-	if(this->m_isRotatingCW){
-		this->m_bounceDir=this->p_RotateDir(this->m_bounceDir,true);
-	}else{
-		if(this->m_isRotatingCCW){
-			this->m_bounceDir=this->p_RotateDir(this->m_bounceDir,false);
-		}
-	}
-	this->m_rotatedBeat=c_Audio::m_GetClosestBeatNum(true);
-}
-int c_BounceTrap::p_GetFrameToShow(){
-	int t_4=this->m_originalDir;
-	if(t_4==0){
-		this->m_image->p_FlipX(true,false);
-	}else{
-		if(t_4==1){
-			this->m_image->p_FlipX(false,false);
-		}
-	}
-	int t_frame=0;
-	int t_5=this->m_originalDir;
-	if(t_5==0 || t_5==1 || t_5==4){
-		t_frame=2;
-	}else{
-		if(t_5==2 || t_5==7){
-			t_frame=4;
-		}else{
-			if(t_5==6){
-				t_frame=6;
-			}
-		}
-	}
-	if(this->m_triggered){
-		t_frame+=1;
-	}
-	return t_frame;
-}
-void c_BounceTrap::p_Update(){
-	if(this->m_retractCounter>0){
-		this->m_retractCounter-=1;
-		if(this->m_retractCounter==0){
-			this->m_triggered=false;
-		}
-	}
-	if(this->m_rotatedBeat!=c_Audio::m_GetClosestBeatNum(true)){
-		this->p_Rotate();
-	}
-	int t_frameToShow=this->p_GetFrameToShow();
-	this->m_image->p_SetFrame(t_frameToShow);
-	c_Trap::p_Update();
-}
-void c_BounceTrap::mark(){
-	c_Trap::mark();
-}
-c_BounceTrapDirection::c_BounceTrapDirection(){
-}
-String c_BounceTrapDirection::m_ToString(int t_dir){
-	int t_6=t_dir;
-	if(t_6==0){
-		return String(L"Right",5);
-	}else{
-		if(t_6==1){
-			return String(L"Left",4);
-		}else{
-			if(t_6==2){
-				return String(L"Down",4);
-			}else{
-				if(t_6==3){
-					return String(L"Up",2);
-				}else{
-					if(t_6==4){
-						return String(L"Down Right",10);
-					}else{
-						if(t_6==5){
-							return String(L"Down Left",9);
-						}else{
-							if(t_6==6){
-								return String(L"Up Left",7);
-							}else{
-								if(t_6==7){
-									return String(L"Up Right",8);
-								}else{
-									if(t_6==8){
-										return String(L"Omni",4);
-									}else{
-										if(t_6==9){
-											return String(L"Spin",4);
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	return String(L"None",4);
-}
-void c_BounceTrapDirection::mark(){
-	Object::mark();
 }
 c_King::c_King(){
 	m_initialYOff=0;
@@ -63710,13 +63822,14 @@ int bbInit(){
 	c_Level::m_pendingTiles=(new c_IntMap7)->m_new();
 	c_Tile::m_pendingTilesList=(new c_List13)->m_new();
 	c_Level::m_lastCreatedRoomType=-1;
+	c_Item::m_pickupList=(new c_List19)->m_new();
 	c_Enemy::m_randomizerXML=0;
 	c_Enemy::m_heartSmall=0;
 	c_Enemy::m_heartEmptySmall=0;
+	c_Sarcophagus::m_sarcophagi=(new c_List21)->m_new();
+	c_Level::m_charactersJustUnlocked=(new c_List12)->m_new();
 	c_Necrodancer::m_necrodancer=0;
 	c_Necrodancer::m_wallsStep=0;
-	c_Sarcophagus::m_sarcophagi=(new c_List19)->m_new();
-	c_Level::m_charactersJustUnlocked=(new c_List12)->m_new();
 	c_Level::m_skipNextPenaltyBox=false;
 	c_KingConga::m_theKing=0;
 	c_Level::m_isHardMode=false;
@@ -63736,8 +63849,7 @@ int bbInit(){
 	bb_controller_game_beatData=Array<int >();
 	c_Audio::m_numLoops=0;
 	c_Audio::m_songDuration=0;
-	c_SoulFamiliar::m_allSouls=(new c_List20)->m_new();
-	c_Item::m_pickupList=(new c_List21)->m_new();
+	c_SoulFamiliar::m_allSouls=(new c_List22)->m_new();
 	c_Wraith::m_theCursedWraith=0;
 	c_Item::m_itemPoolRandom=(new c_List)->m_new();
 	c_Item::m_itemPoolRandom2=(new c_List)->m_new();
@@ -63980,17 +64092,17 @@ void gc_mark(){
 	gc_mark_q(c_Level::m_firstRoom);
 	gc_mark_q(c_Level::m_pendingTiles);
 	gc_mark_q(c_Tile::m_pendingTilesList);
+	gc_mark_q(c_Item::m_pickupList);
 	gc_mark_q(c_Enemy::m_randomizerXML);
 	gc_mark_q(c_Enemy::m_heartSmall);
 	gc_mark_q(c_Enemy::m_heartEmptySmall);
-	gc_mark_q(c_Necrodancer::m_necrodancer);
 	gc_mark_q(c_Sarcophagus::m_sarcophagi);
 	gc_mark_q(c_Level::m_charactersJustUnlocked);
+	gc_mark_q(c_Necrodancer::m_necrodancer);
 	gc_mark_q(c_KingConga::m_theKing);
 	gc_mark_q(c_Stack4::m_NIL);
 	gc_mark_q(bb_controller_game_beatData);
 	gc_mark_q(c_SoulFamiliar::m_allSouls);
-	gc_mark_q(c_Item::m_pickupList);
 	gc_mark_q(c_Wraith::m_theCursedWraith);
 	gc_mark_q(c_Item::m_itemPoolRandom);
 	gc_mark_q(c_Item::m_itemPoolRandom2);

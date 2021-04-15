@@ -48,6 +48,7 @@ Import enemy.king
 Import enemy.king_conga
 Import enemy.knight
 Import enemy.leprechaun
+Import enemy.lute_dragon
 Import enemy.metrognome
 Import enemy.minotaur
 Import enemy.mommy
@@ -2429,7 +2430,7 @@ Class Level
         Level.GetTileAt(9, -10).AddTorch2()
         
         Level.SetMagicBarrier(True)
-        Level.PaintTriggerInterior(-9, -17, 16, 11, 1)
+        Level.PaintTriggerInterior(-9, -17, 18, 11, 1)
 
         Local necrodancer := New Necrodancer(0, -15, 2)
         necrodancer.ActivateLight(0.01, 1.5)
@@ -2453,7 +2454,87 @@ Class Level
     End Function
 
     Function CreateFinalBossBattle3: Void()
-        Debug.TraceNotImplemented("Level.CreateFinalBossBattle3()")
+        Debug.Log("CREATEFINALBOSSBATTLE3: Creating Lute Dragon battle.")
+
+        Level.InitNewMap(True)
+        Level.outsideBossChamber = True
+        Level.DisableLevelConstraints()
+
+        Level.CreateRoom(-3, -3, 6, 6, False, RoomType.Boss)
+
+        If Level.isTrainingMode Then
+            Level.AddExit(2, 0, LevelType.Lobby, 1)
+            Level.PlaceTileRemovingExistingTiles(2, 0, TileType.Stairs)
+        End
+
+        Level.GetTileAt(-3, 0).AddTorch()
+        Level.GetTileAt(3, 0).AddTorch()
+        Level.GetTileAt(0, 3).AddTorch()
+
+        Level.PlaceTileRemovingExistingTiles(-1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -5, TileType.BossFloor)
+
+        Level.PlaceTileRemovingExistingTiles(-2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(-2, -5, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -5, TileType.BossWall)
+
+        Level.CreateRoom(-6, -17, 12, 11, False, RoomType.Boss)
+
+        For Local x := -1 To 1
+            Level.PlaceTileRemovingExistingTiles(x, -6, TileType.Door)
+            Level.GetTileAt(x, -6).SetDoorTrigger(2)
+        End For
+
+        Level.GetTileAt(-5, -6).AddTorch2()
+        Level.GetTileAt(-2, -6).AddTorch2()
+        Level.GetTileAt(2, -6).AddTorch2()
+        Level.GetTileAt(5, -6).AddTorch2()
+
+        Level.GetTileAt(-5, -17).AddTorch2()
+        Level.GetTileAt(-2, -17).AddTorch2()
+        Level.GetTileAt(2, -17).AddTorch2()
+        Level.GetTileAt(5, -17).AddTorch2()
+
+        Level.GetTileAt(-6, -14).AddTorch2()
+        Level.GetTileAt(-6, -10).AddTorch2()
+        Level.GetTileAt(6, -14).AddTorch2()
+        Level.GetTileAt(6, -10).AddTorch2()
+
+        Level.SetMagicBarrier(True)
+        Level.PaintTriggerInterior(-6, -17, 12, 11, 1)
+
+        If Player.DoesAnyPlayerHaveItemOfType(ItemType.WingedBoots) Or
+          Player.DoesAnyPlayerHaveItemOfType(ItemType.LeadBoots) Then
+            New Item(0, -3, ItemType.ExplorersBoots, False, -1, False)
+        End
+
+        If Player.DoesAnyPlayerHaveItemOfType(ItemType.HeavyGlassArmor) Then
+            New Item(0, -4, ItemType.GlassArmor, False, -1, False)
+        End
+
+        New LuteDragon(-1, -16, 1)
+
+        New BounceTrap(-3, -10, BounceTrapDirection.Right)
+        New BounceTrap(3, -10, BounceTrapDirection.Left)
+
+        New Sarcophagus(-5, -16, 2)
+        New Sarcophagus(5, -16, 1)
+
+        If GameData.GetNPCUnlock("bossmaster") And
+           Not GameData.HasFoughtNecrodancer() And
+           Not Level.isReplaying
+            Level.charactersJustUnlocked.AddLast(508)
+        End If
+
+        GameData.SetFoughtLuteDragon()
     End Function
 
     Function CreateFinalBossBattleConductor: Void()

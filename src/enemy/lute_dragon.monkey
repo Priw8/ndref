@@ -13,6 +13,10 @@ Class LuteDragon Extends Enemy
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int, l: Int)
+        'Bare minimum for necrolevel
+        Super.New()
+        Self.Init(xVal, yVal, l, "lute_dragon")
+
         Debug.TraceNotImplemented("LuteDragon.New(Int, Int, Int)")
     End Method
 
