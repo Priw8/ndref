@@ -2,6 +2,7 @@
 
 Import monkey.list
 Import enemy
+Import enemy.conductor_prop
 Import entity
 Import logger
 Import point
@@ -17,6 +18,11 @@ Class Conductor Extends Enemy
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int)
+        'Bare minimum for necrolevel
+        Super.New()
+        Self.Init(xVal, yVal, 1, "conductor")
+        Conductor.theConductor = Self
+
         Debug.TraceNotImplemented("Conductor.New(Int, Int)")
     End Method
 
@@ -34,7 +40,91 @@ Class Conductor Extends Enemy
     Field angrySoundsPlayed: List<Object>
 
     Method AddProp: Void(propX: Int, propY: Int, propType: Int)
-        Debug.TraceNotImplemented("Conductor.AddProp(Int, Int, Int)")
+        Local prop := New ConductorProp(propX, propY, propType)
+        prop.ActivateLight(0.01, 1.5)
+        prop.parent = Self
+
+        Self.nprops = Self.nprops + 1
+
+        'Create wire going up/down from the prop
+        If propType = 1 Or propType = 2 Then
+            'Y coordinate on which the wire turns left/right
+            Local wireTurnY := propY + 2
+            For Local wireY := propY Until wireTurnY + 1
+                Local wireTile := prop.AddWireAt(propX, wireY)
+                Local wireDirection: Int
+                If wireY = wireTurnY Then
+                    If propType = 1 Then
+                        wireDirection = Direction.Right
+                    Else
+                        wireDirection = Direction.Left
+                    End
+                Else
+                    wireDirection = Direction.Down
+                End
+                wireTile.AddWireConnection(wireDirection)
+
+                If propY < wireY Then
+                    wireTile.AddWireConnection(Direction.Up)
+                End
+            End For
+        Else
+            Local wireTurnY := propY - 2
+            For Local wireY := wireTurnY Until propY + 1
+                Local wireTile := prop.AddWireAt(propX, wireY)
+                Local wireDirection: Int
+                If wireY = wireTurnY Then
+                    If propType = 3 Then
+                        wireDirection = Direction.Right
+                    Else
+                        wireDirection = Direction.Left
+                    End
+                Else
+                    wireDirection = Direction.Up
+                End
+                wireTile.AddWireConnection(wireDirection)
+    
+                If propY > wireY Then
+                    wireTile.AddWireConnection(Direction.Down)
+                End
+            End For
+        End
+
+        'Create wire going left/right from the previously created wire
+        If propType = 1 Or propType = 3 Then
+            Local wireY: Int
+            If propType = 1 Then
+                wireY = propY + 2
+            Else
+                wireY = propY - 2
+            End
+
+            Local lastWireX := propX + 4
+            For Local wireX := propX + 1 Until lastWireX + 1
+                Local wireTile := prop.AddWireAt(wireX, wireY)
+                If wireX <> lastWireX Then
+                    wireTile.AddWireConnection(Direction.Right)
+                End
+                wireTile.AddWireConnection(Direction.Left)
+            End For
+        Else
+            Local wireY: Int
+            If propType = 2 Then
+                wireY = propY + 2
+            Else
+                wireY = propY - 2
+            End
+
+            Local lastWireX := propX - 4
+            For Local wireX := lastWireX Until propX
+                Local wireTile := prop.AddWireAt(wireX, wireY)
+                If wireX <> lastWireX Then
+                    wireTile.AddWireConnection(Direction.Left)
+                End
+                wireTile.AddWireConnection(Direction.Right)
+            End
+        End
+
     End Method
 
     Method BeginPhase2: Void()
@@ -46,6 +136,7 @@ Class Conductor Extends Enemy
     End Method
 
     Method Die: Void()
+        Conductor.theConductor = Null
         Debug.TraceNotImplemented("Conductor.Die()")
     End Method
 

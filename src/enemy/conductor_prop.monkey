@@ -12,6 +12,13 @@ Class ConductorProp Extends Enemy
     Function _EditorFix: Void() End
 
     Method New(xVal: Int, yVal: Int, l: Int)
+        'Bare minimum for necrolevel
+        Super.New()
+        Self.Init(xVal, yVal, l, "conductor_prop")
+
+        Self.wireXs = New List<Int>
+        Self.wireYs = New List<Int>
+
         Debug.TraceNotImplemented("ConductorProp.New(Int, Int, Int)")
     End Method
 
@@ -24,8 +31,15 @@ Class ConductorProp Extends Enemy
     Field vibrateOffset: Float
     Field shieldFrameCounter: Int
 
-    Method AddWireAt: Object(wireX: Int, wireY: Int)
-        Debug.TraceNotImplemented("ConductorProp.AddWireAt(Int, Int)")
+    Method AddWireAt: Tile(wireX: Int, wireY: Int)
+        Self.wireXs.AddLast(wireX)
+        Self.wireYs.AddLast(wireY)
+
+        'Unsure if there's anything apart from this, there's a lot of inlining going on
+        'Maybe the linux build makes more sense
+        Local wireTile := Level.PlaceTileRemovingExistingTiles(wireX, wireY, TileType.ConductorWirePhase1)
+
+        Return wireTile
     End Method
 
     Method Die: Void()

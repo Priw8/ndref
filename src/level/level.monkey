@@ -2623,7 +2623,120 @@ Class Level
     End Function
 
     Function CreateFinalBossBattleConductor: Void()
-        Debug.TraceNotImplemented("Level.CreateFinalBossBattleConductor()")
+        Debug.Log("CREATEFINALBOSSBATTLECONDUCTOR: Creating Conductor battle.")
+
+        Level.InitNewMap(True)
+        Level.isConductorLevel = True
+        Level.outsideBossChamber = True
+        Level.DisableLevelConstraints()
+
+        Level.CreateRoom(-3, -3, 6, 6, False, RoomType.Boss)
+
+        If Level.isTrainingMode Then
+            Level.AddExit(2, 0, LevelType.Lobby, 1)
+            Level.PlaceTileRemovingExistingTiles(2, 0, TileType.Stairs)
+        End
+
+        Level.GetTileAt(-3, 0).AddTorch()
+        Level.GetTileAt(3, 0).AddTorch()
+        Level.GetTileAt(0, 3).AddTorch()
+
+        Level.PlaceTileRemovingExistingTiles(-1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -3, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -4, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(-1, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(0, -5, TileType.BossFloor)
+        Level.PlaceTileRemovingExistingTiles(1, -5, TileType.BossFloor)
+
+        Level.PlaceTileRemovingExistingTiles(-2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -4, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(-2, -5, TileType.BossWall)
+        Level.PlaceTileRemovingExistingTiles(2, -5, TileType.BossWall)
+
+        Level.CreateRoom(-7, -15, 14, 9, False, RoomType.Boss)
+
+        For Local x := -1 To 1
+            Level.PlaceTileRemovingExistingTiles(x, -6, TileType.Door)
+            Level.GetTileAt(x, -6).SetDoorTrigger(2)
+        End For
+
+        Level.PlaceTileRemovingExistingTiles(0, -15, TileType.ConductorWallPipe1)
+        Level.PlaceTileRemovingExistingTiles(-1, -15, TileType.ConductorWallPipe2)
+        Level.PlaceTileRemovingExistingTiles(1, -15, TileType.ConductorWallPipe2)
+        Level.PlaceTileRemovingExistingTiles(-2, -15, TileType.ConductorWallPipe3)
+        Level.PlaceTileRemovingExistingTiles(2, -15, TileType.ConductorWallPipe3)
+        Level.PlaceTileRemovingExistingTiles(-3, -15, TileType.ConductorWallPipe4)
+        Level.PlaceTileRemovingExistingTiles(3, -15, TileType.ConductorWallPipe4)
+
+        Level.GetTileAt(-5, -6).AddTorch2()
+        Level.GetTileAt(-2, -6).AddTorch2()
+        Level.GetTileAt(2, -6).AddTorch2()
+        Level.GetTileAt(5, -6).AddTorch2()
+
+        Level.GetTileAt(-4, -15).AddTorch2()
+        Level.GetTileAt(4, -15).AddTorch2()
+
+        Level.GetTileAt(-7, -13).AddTorch2()
+        Level.GetTileAt(-7, -9).AddTorch2()
+        Level.GetTileAt(7, -13).AddTorch2()
+        Level.GetTileAt(7, -9).AddTorch2()
+
+        Level.SetMagicBarrier(True)
+        Level.PaintTriggerInterior(-7, -15, 14, 9, 1)
+
+        If Player.DoesAnyPlayerHaveItemOfType(ItemType.WingedBoots) Then
+            New Item(6, -7, ItemType.ExplorersBoots, False, -1, False)
+        End
+
+        Local conductor := New Conductor(0, -14)
+        conductor.ActivateLight(0.01, 1.5)
+        conductor.AddProp(-5, -14, 1)
+        conductor.AddProp(5, -14, 2)
+        conductor.AddProp(-5, -8, 3)
+        conductor.AddProp(5, -8, 4)
+
+        For Local i := 0 Until 4
+            Local point := Level.GetRandomOffsetPoint()
+
+            Local xPos = i * 2 - 3
+
+            Local yPos := -10
+            If i = 1 Or i = 2 Then
+                yPos = -12
+            End
+
+            Local enemyTypeRoll := Util.RndIntRangeFromZero(3, True)
+            Local enemyType: Int
+            Select enemyTypeRoll
+                Case 0
+                    enemyType = EnemyType.Ghost
+                Case 1
+                    enemyType = EnemyType.WhiteSkeletonMage
+                Case 2
+                    enemyType = EnemyType.WhiteSkeletonKnight
+                Default
+                    enemyType = EnemyType.Lich
+            End Select
+
+            Local yOff = point.y
+            If yOff < 0 Then yOff = -yOff
+
+            Local enemy := Enemy.MakeEnemy(xPos + point.x, yPos + yOff, enemyType)
+            enemy.ActivateLight(0.01, 1.5)
+        End For
+
+        Enemy.enemiesPaused = True
+
+        If GameData.GetNPCUnlock("bossmaster") And
+           Not GameData.HasFoughtConductor() And
+           Not Level.isReplaying
+            Level.charactersJustUnlocked.AddLast(510)
+        End If
+
+        GameData.SetFoughtConductor()
     End Function
 
     Function CreateHephaestus: Void()
