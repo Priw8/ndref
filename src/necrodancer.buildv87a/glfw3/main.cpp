@@ -62793,6 +62793,7 @@ void c_Conductor::p_AddProp(int t_propX,int t_propY,int t_propType){
 	}
 }
 void c_Conductor::p_Die(){
+	c_Enemy::p_Die();
 	m_theConductor=0;
 	bb_logger_Debug->p_TraceNotImplemented(String(L"Conductor.Die()",15));
 }

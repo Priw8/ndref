@@ -136,6 +136,7 @@ Class Conductor Extends Enemy
     End Method
 
     Method Die: Void()
+        Super.Die()
         Conductor.theConductor = Null
         Debug.TraceNotImplemented("Conductor.Die()")
     End Method
