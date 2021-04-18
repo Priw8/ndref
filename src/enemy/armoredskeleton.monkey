@@ -18,7 +18,7 @@ Class ArmoredSkeleton Extends Enemy
         Super.New()
 
         If Shrine.warShrineActive
-            l = math.Min(3, l)
+            l = math.Max(3, l)
         End If
 
         Self.Init(xVal, yVal, l, "armoredskeleton")

@@ -55107,7 +55107,7 @@ c_ArmoredSkeleton::c_ArmoredSkeleton(){
 c_ArmoredSkeleton* c_ArmoredSkeleton::m_new(int t_xVal,int t_yVal,int t_l){
 	c_Enemy::m_new();
 	if(c_Shrine::m_warShrineActive){
-		t_l=bb_math_Min(3,t_l);
+		t_l=bb_math_Max(3,t_l);
 	}
 	this->p_Init3(t_xVal,t_yVal,t_l,String(L"armoredskeleton",15),String(),-1,-1);
 	this->m_animOverride=0;
