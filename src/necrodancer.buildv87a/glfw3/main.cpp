@@ -26814,27 +26814,37 @@ void c_Level::m_PlaceEnemiesZone1(){
 							if((dynamic_cast<c_Bat*>(t_enemy))!=0){
 								(new c_Bat)->m_new(t_enemy->m_x,t_enemy->m_y,4);
 							}else{
-								int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(6,true);
+								int t_enemyRoll6=c_Util::m_RndIntRangeFromZero(9,true);
 								int t_101=t_enemyRoll6;
-								if(t_101==0){
+								if(t_101==0 || t_101==4){
 									(new c_Beetle)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 								}else{
 									if(t_101==1){
-										(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+										(new c_Mole)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 									}else{
 										if(t_101==2){
-											(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+											(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 										}else{
 											if(t_101==3){
-												(new c_GoblinBomber)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+												(new c_Golem)->m_new(t_enemy->m_x,t_enemy->m_y,2);
 											}else{
-												if(t_101==4){
-													(new c_SleepingGoblin)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
+												if(t_101==5){
+													(new c_ShoveMonster)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(1,2,true,-1));
 												}else{
-													if(t_101==5){
-														(new c_Monkey)->m_new(t_enemy->m_x,t_enemy->m_y,c_Util::m_RndIntRange(3,4,true,-1));
+													if(t_101==6){
+														(new c_Yeti)->m_new(t_enemy->m_x,t_enemy->m_y,1);
 													}else{
-														(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+														if(t_101==7){
+															(new c_Hellhound)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+														}else{
+															if(t_101==8){
+																(new c_Harpy)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+															}else{
+																if(t_101==9){
+																	(new c_Pixie)->m_new(t_enemy->m_x,t_enemy->m_y,1);
+																}
+															}
+														}
 													}
 												}
 											}

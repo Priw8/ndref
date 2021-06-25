@@ -9910,21 +9910,25 @@ Class Level
                     If Bat(enemy)
                         New Bat(enemy.x, enemy.y, 4)
                     Else
-                        Local enemyRoll = Util.RndIntRangeFromZero(6, True)
+                        Local enemyRoll = Util.RndIntRangeFromZero(9, True)
                         Select enemyRoll
-                            Case 0
+                            Case 0, 4
                                 New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
                             Case 1
-                                New Hellhound(enemy.x, enemy.y, 1)
+                                New Mole(enemy.x, enemy.y, 1)
                             Case 2
-                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                                New Golem(enemy.x, enemy.y, 1)
                             Case 3
-                                New GoblinBomber(enemy.x, enemy.y, 1)
-                            Case 4
-                                New SleepingGoblin(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                                New Golem(enemy.x, enemy.y, 2)
                             Case 5
-                                New Monkey(enemy.x, enemy.y, Util.RndIntRange(3, 4, True, -1))
-                            Default
+                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 6
+                                New Yeti(enemy.x, enemy.y, 1)
+                            Case 7
+                                New Hellhound(enemy.x, enemy.y, 1)
+                            Case 8
+                                New Harpy(enemy.x, enemy.y, 1)
+                            Case 9
                                 New Pixie(enemy.x, enemy.y, 1)
                         End Select
                     End
