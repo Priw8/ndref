@@ -3063,8 +3063,38 @@ Class Level
             End If
         End For
 
+        'Necrolevel-specific: since the Update method never runs for enemies, enemy removal has to be done during level creation.
+        'Since normally, they despawn on the 1st frame of the level... for some reason, I guess
+        Level.RemoveBannedEnemies()
+
         Return True
     End Function
+
+    Function IsBannedEnemy: Bool(enemy: Enemy)
+        If Harpy(enemy) And (
+          Util.IsCharacterActive(Character.Mary) Or
+          Util.IsCharacterActive(Character.Dove) Or
+          (Util.AreAriaOrCodaActive() And
+          controller_game.currentZone <= 3)) Then
+            Return True
+        End
+        
+        If (Ghost(enemy) Or Blademaster(enemy)) And
+          Util.IsCharacterActive(Character.Mary) Then
+            Return True
+        End
+
+        Return False
+    End
+
+    Function RemoveBannedEnemies: Void()
+        For Local enemy := EachIn Enemy.enemyList
+            If Level.IsBannedEnemy(enemy) Then
+                enemy.coinsToDrop = 0
+                enemy.Die()
+            End If
+        End For
+    End
 
     Function CreateMapZone1: Bool()
         Local room1: RoomData

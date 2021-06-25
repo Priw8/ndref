@@ -7071,6 +7071,8 @@ class c_Level : public Object{
 	static c_RoomData* m_PlaceRoomZone12(c_RoomData*);
 	static bool m_CreateMapZone1();
 	static bool m_IsPassable();
+	static bool m_IsBannedEnemy(c_Enemy*);
+	static void m_RemoveBannedEnemies();
 	static bool m_CreateMap(c_LevelObject*);
 	static void m_ResetCustomLevel(bool,int);
 	static c_Stack2* m_zoneOrder;
@@ -30419,6 +30421,25 @@ bool c_Level::m_IsPassable(){
 	}
 	return false;
 }
+bool c_Level::m_IsBannedEnemy(c_Enemy* t_enemy){
+	if(((dynamic_cast<c_Harpy*>(t_enemy))!=0) && (c_Util::m_IsCharacterActive(12) || c_Util::m_IsCharacterActive(6) || c_Util::m_AreAriaOrCodaActive() && bb_controller_game_currentZone<=3)){
+		return true;
+	}
+	if((((dynamic_cast<c_Ghost*>(t_enemy))!=0) || ((dynamic_cast<c_Blademaster*>(t_enemy))!=0)) && c_Util::m_IsCharacterActive(12)){
+		return true;
+	}
+	return false;
+}
+void c_Level::m_RemoveBannedEnemies(){
+	c_Enumerator4* t_=c_Enemy::m_enemyList->p_ObjectEnumerator();
+	while(t_->p_HasNext()){
+		c_Enemy* t_enemy=t_->p_NextObject();
+		if(m_IsBannedEnemy(t_enemy)){
+			t_enemy->m_coinsToDrop=0;
+			t_enemy->p_Die();
+		}
+	}
+}
 bool c_Level::m_CreateMap(c_LevelObject* t_levelObj){
 	if(bb_controller_game_currentLevel==1){
 		m_previousLevelMinibosses->p_Clear();
@@ -30633,6 +30654,7 @@ bool c_Level::m_CreateMap(c_LevelObject* t_levelObj){
 			m_previousLevelMinibosses->p_Push4(t_enemy->m_enemyType);
 		}
 	}
+	m_RemoveBannedEnemies();
 	return true;
 }
 void c_Level::m_ResetCustomLevel(bool t_inEditor,int t_randSeed){
