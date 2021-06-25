@@ -9880,25 +9880,21 @@ Class Level
                     If Bat(enemy)
                         New Bat(enemy.x, enemy.y, 4)
                     Else
-                        Local enemyRoll = Util.RndIntRangeFromZero(9, True)
+                        Local enemyRoll = Util.RndIntRangeFromZero(6, True)
                         Select enemyRoll
-                            Case 0, 4
+                            Case 0
                                 New Beetle(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
                             Case 1
-                                New Mole(enemy.x, enemy.y, 1)
-                            Case 2
-                                New Golem(enemy.x, enemy.y, 1)
-                            Case 3
-                                New Golem(enemy.x, enemy.y, 2)
-                            Case 5
-                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
-                            Case 6
-                                New Yeti(enemy.x, enemy.y, 1)
-                            Case 7
                                 New Hellhound(enemy.x, enemy.y, 1)
-                            Case 8
-                                New Harpy(enemy.x, enemy.y, 1)
-                            Case 9
+                            Case 2
+                                New ShoveMonster(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 3
+                                New GoblinBomber(enemy.x, enemy.y, 1)
+                            Case 4
+                                New SleepingGoblin(enemy.x, enemy.y, Util.RndIntRange(1, 2, True, -1))
+                            Case 5
+                                New Monkey(enemy.x, enemy.y, Util.RndIntRange(3, 4, True, -1))
+                            Default
                                 New Pixie(enemy.x, enemy.y, 1)
                         End Select
                     End
@@ -10464,13 +10460,41 @@ Class Level
                 End
 
                 If ArmoredSkeleton(enemy)
-                    New Lich(enemy.x, enemy.y, enemy.level)
+                    If Util.RndBool(True) Then
+                        New Lich(enemy.x, enemy.y, enemy.level)
+                    Else
+                        New SkeletonKnight(enemy.x, enemy.y, enemy.level)
+                    End
                 Else If SkeletonMage(enemy)
-                    New Warlock(enemy.x, enemy.y, enemy.level)
+                    If Util.RndBool(True) Then
+                        Local warlockLevel := enemy.level - 1
+                        If warlockLevel < 1 Then
+                            warlockLevel = 1
+                        End
+                        New Warlock(enemy.x, enemy.y, warlockLevel)
+                    Else
+                        Local slimeLevel := enemy.level + 3
+                        If slimeLevel > 5 Then
+                            slimeLevel = 5
+                        End
+                        New Slime(enemy.x, enemy.y, slimeLevel)
+                    End
                 Else If Mushroom(enemy)
-                    New Blademaster(enemy.x, enemy.y, enemy.level)
+                    If Util.RndBool(True) Then
+                        New Blademaster(enemy.x, enemy.y, enemy.level)
+                    Else
+                        If enemy.level = 1 Then
+                            New IceElemental(enemy.x, enemy.y, 1)
+                        Else
+                            New FireElemental(enemy.x, enemy.y, 1)
+                        End
+                    End
                 Else If Armadillo(enemy)
-                    New Armadillo(enemy.x, enemy.y, 3)
+                    If Util.RndBool(True) Then
+                        New Armadillo(enemy.x, enemy.y, 3)
+                    Else
+                        New Goblin(enemy.x, enemy.y, enemy.level)
+                    End
                 Else If Golem(enemy)
                     If Not Util.RndBool(True) Then
                         New Yeti(enemy.x, enemy.y, 1)
