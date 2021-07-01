@@ -1674,7 +1674,7 @@ Class Level
                 rightBat.ActivateLight(0.01, 1.5)
         End Select
 
-        Level.BossMaybeMinibossesAt(-6, 0, 5, 0)
+        Level.BossMaybeMinibossesAt(-6, -10, 5, -10)
 
         Select controller_game.currentZone
             Case 1
@@ -1764,7 +1764,7 @@ Class Level
         Local enemy12 := Enemy.MakeEnemy(point.x + 3, point.y - 9, enemyType1)
         enemy12.ActivateLight(0.01, 1.5)
 
-        Level.BossMaybeMinibossesAt(-5, 0, 4, 0)
+        Level.BossMaybeMinibossesAt(-5, -10, 4, -10)
 
         New BounceTrap(-4, -11, BounceTrapDirection.Omni)
         New BounceTrap(4, -11, BounceTrapDirection.Omni)
@@ -1935,7 +1935,7 @@ Class Level
             pawn.currentMoveDelay = pawnMoveDelayBase + math.Abs(pawnMoveDelayDirection - ((pawnMoveDelayOffset + i) Mod 8))
         End For
 
-        Level.BossMaybeMinibossesAt(-3, 0, 3, 0)
+        Level.BossMaybeMinibossesAt(-3, -10, 3, -10)
 
         Enemy.enemiesPaused = True
     End Function
@@ -1977,7 +1977,7 @@ Class Level
         Local coralRiff := New Octoboss(0, -14, 1)
         coralRiff.ActivateLight(0.01, 1.5)
 
-        Level.BossMaybeMinibossesAt(-5, 0, 4, 0)
+        Level.BossMaybeMinibossesAt(-5, -10, 4, -10)
 
         Enemy.enemiesPaused = True
     End Function
@@ -2162,7 +2162,7 @@ Class Level
         Local enemy4 := Enemy.MakeEnemy(point.x + 5, point.y - 13, enemyType4)
         enemy4.ActivateLight(0.01, 1.5)
 
-        Level.BossMaybeMinibossesAt(-5, 0, 4, 0)
+        Level.BossMaybeMinibossesAt(-5, -10, 4, -10)
 
         Enemy.enemiesPaused = True
     End Function
